@@ -1,0 +1,103 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://www.poweregg.net/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<p:head title="#{messages.utsr_e_title_search_screen}">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+	<style type="text/css">
+table.detail tr:last-child td.label:nth-last-child(2) {
+	border-bottom: 1px solid #cccccc;
+	visibility: hidden;
+}
+</style>
+</p:head>
+<f:metadata>
+	<f:viewAction action="#{UTSR01Bean.initPageSearch}" />
+</f:metadata>
+
+<p:body>
+	<h:form id="frm">
+		<p:panelTabs>
+			<p:tab disabled="true" immediate="true"
+				label="#{messages.utsr_search_title}" selected="true" />
+		</p:panelTabs>
+		<!-- PANEL CONTROLER -->
+		<p:panelController collapse="true" id="controller">
+		</p:panelController>
+		<!-- MAIN FRAME  -->
+		<p:panelMain id="main">
+			<f:facet name="title">
+				<h:panelGroup>
+					<h1>
+						<h:outputText
+							value="#{messages.utsr_system_screen_title}#{messages.utsr_search_title}" />
+					</h1>
+				</h:panelGroup>
+			</f:facet>
+			<!-- メッセージ -->
+			<f:facet name="message">
+				<p:messages for="main" globalOnly="true" showDetail="true"
+					showSummary="false" />
+			</f:facet>
+			<p:div styleClass="contents">
+				<p:div>
+					<h:panelGrid columnClasses="label, item, label, item" columns="4"
+						styleClass="detail xdb_stdlayout">
+
+						<p:outputLabel for="i_KanjiComp"
+							value="#{messages.utsr_kanji_company_name}" />
+						<p:inputText id="i_KanjiComp" styleClass="long text_on"
+							value="#{UTSR01Bean.utsrSearchCond.companyNameKanji}" />
+
+						<p:outputLabel for="i_KanaComp"
+							value="#{messages.utsr_kana_company_name}" />
+						<p:inputText id="i_KanaComp" styleClass="long text_on"
+							value="#{UTSR01Bean.utsrSearchCond.companyNameKana}" />
+
+						<p:outputLabel for="i_Location" value="#{messages.utsr_location}" />
+						<p:inputText id="i_Location" styleClass="long text_on"
+							value="#{UTSR01Bean.utsrSearchCond.locationText}" />
+
+						<p:outputLabel for="i_CorpPhone"
+							value="#{messages.utsr_corp_phone_number}" />
+						<p:inputText id="i_CorpPhone" styleClass="long text_off"
+							value="#{UTSR01Bean.utsrSearchCond.telNumberText}" />
+
+						<p:outputLabel for="i_KanjiRepresent"
+							value="#{messages.utsr_kanji_representative}" />
+						<p:inputText id="i_KanjiRepresent" styleClass="long text_on"
+							value="#{UTSR01Bean.utsrSearchCond.representativeKanji}" />
+
+						<p:outputLabel for="i_KanaRepresent"
+							value="#{messages.utsr_kana_representative}" />
+						<p:inputText id="i_KanaRepresent" styleClass="long text_on"
+							value="#{UTSR01Bean.utsrSearchCond.representativeKana}" />
+
+						<p:outputLabel for="i_CompCode"
+							value="#{messages.utsr_company_code}" />
+						<p:inputText id="i_CompCode" styleClass="long text_on"
+							value="#{UTSR01Bean.utsrSearchCond.tsrCompanyCode}" />
+
+						<p:outputLabel />
+						<p:inputText style="visibility: hidden;" styleClass="long" />
+
+					</h:panelGrid>
+				</p:div>
+			</p:div>
+
+			<p:div styleClass="contents">
+				<p:commandButton buttonClass="normal"
+					action="#{UTSR01Bean.toSearchListWebDB}"
+					label="#{messages.utsr_lb_search_btn}" spanClass="noimage" />
+			</p:div>
+		</p:panelMain>
+	</h:form>
+</p:body>
+
+</html>

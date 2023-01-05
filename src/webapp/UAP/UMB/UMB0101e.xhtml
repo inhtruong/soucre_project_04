@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!--
+    Process    : 工事未登録データ登録（CSVから作成）ファイル選択
+    Document   : UMB0101e
+    Created on : 
+    Author     : 
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://www.poweregg.net/jsf/html">
+<p:head>	
+	<f:metadata>
+		<f:viewAction action="#{UMB01Bean.initUMB0101e}" />
+		<f:viewParam name="csvFilePath" value="#{UMB01Bean.csvFilePath}" />
+	</f:metadata>
+</p:head>
+#{UMB01Bean.returnCode}
+</html>

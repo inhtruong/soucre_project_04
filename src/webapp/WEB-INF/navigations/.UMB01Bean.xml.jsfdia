@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#UAP#UMB#UMB0101e.xhtml"
+  PATH="/UAP/UMB/UMB0101e.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#UAP#UMB#UMB0101e.xhtml:0" NAME="item"
+   PATH="/UAP/UMB/UMB0101e.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="searchListWebDB::#UAP#UMB#UMB0102l.xhtml"
+    NAME="output" PATH="/UAP/UMB/UMB0102l.xhtml"
+    TARGET="rules:#UAP#UMB#UMB0102l.xhtml" TITLE="searchListWebDB" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#UAP#UMB#UMB0102l.xhtml"
+  PATH="/UAP/UMB/UMB0102l.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

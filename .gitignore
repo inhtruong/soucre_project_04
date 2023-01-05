@@ -1,0 +1,19 @@
+# Specify filepatterns you want git to ignore.
+/target/
+/.settings/
+/appLib/
+/batch/
+/CSV/
+/extlib/
+/glassfish/
+/lib/
+/pe-resources/
+/properties/
+/resources/
+/tool/
+.classpath
+.project
+build.properties
+build.xml
+eclipse-codeformat.xml
+eclipse-codetemplates.xml
