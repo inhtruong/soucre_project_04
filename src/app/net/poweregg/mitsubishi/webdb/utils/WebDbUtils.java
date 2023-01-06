@@ -42,13 +42,13 @@ public class WebDbUtils {
 	}
 
 	public WebDbUtils(List<ClassInfo> webDBClassInfos, int systemType) {
+		
 		webDBConnectParam = new WebDBConnectParam();
 		webDBConnectParam.setPe4jUrl(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue()));
 		webDBConnectParam.setApiKey(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_2.getValue()));
 		webDBConnectParam.setUri(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_3.getValue()));
-		webDBConnectParam.setModifyUri(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_3.getValue()));
-		webDBConnectParam.setGetWithBodyUri(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_3.getValue()));
-		webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_4.getValue()));
+		webDBConnectParam.setModifyUri(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_4.getValue()));
+		webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_5.getValue()));
 		webDBConnectParam.setSystem(systemType);
 		webDBConnectParam.setEncode(ENCODE);
 	}
@@ -539,7 +539,7 @@ public class WebDbUtils {
 		}
 		return arrayRecords;
 	}
-	
+
 	/**
 	 * WebDBの更新APIを実行する。
 	 * 
@@ -551,7 +551,7 @@ public class WebDbUtils {
 	 * @param notifyfollow
 	 * @param external
 	 * @return
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public String putJsonObject(JSONObject jsonString, String jsonNo, boolean notification, boolean notifyfollow,
 			boolean external) throws IOException {
@@ -568,24 +568,24 @@ public class WebDbUtils {
 			body.put("external", external);
 			body.put("record", jsonString);
 			System.out.println("UPDATE: " + body.toString());
-			
-			HttpPut  httpPut = new HttpPut(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
+
+			HttpPut httpPut = new HttpPut(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
 			httpPut.addHeader(HttpHeaders.ACCEPT, "application/json");
 			httpPut.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
 			httpPut.addHeader("X-API-Key", webDBConnectParam.getApiKey());
-			
-			StringEntity stringEntity = new StringEntity(body.toString(),ENCODE);
+
+			StringEntity stringEntity = new StringEntity(body.toString(), ENCODE);
 			httpPut.setEntity(stringEntity);
 			System.out.println("Executing request " + httpPut.getRequestLine());
-			 
+
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
-	             CloseableHttpResponse response = httpClient.execute(httpPut)){
+					CloseableHttpResponse response = httpClient.execute(httpPut)) {
 				int responseCode = response.getStatusLine().getStatusCode();
-				 if (responseCode != HttpStatus.SC_CREATED) {
-			            throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
-			     }
-	            JSONObject result = new JSONObject(EntityUtils.toString(response.getEntity()));
-	            StringBuffer msg = new StringBuffer();
+				if (responseCode != HttpStatus.SC_CREATED) {
+					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
+				}
+				JSONObject result = new JSONObject(EntityUtils.toString(response.getEntity()));
+				StringBuffer msg = new StringBuffer();
 				if (result.has(WebDbConstant.JSON_MESSAGE)) {
 					msg.append(StringUtils.addEmpty(result.get(WebDbConstant.JSON_MESSAGE)));
 				}
@@ -596,7 +596,7 @@ public class WebDbUtils {
 					return msg.toString();
 				}
 				System.out.println(result.toString());
-	        }	
+			}
 			return "";
 
 		} catch (Exception e) {
@@ -626,18 +626,18 @@ public class WebDbUtils {
 			body.put("record", jsonString);
 			body.put("external", external);
 			System.out.println("REGISTER: " + body.toString());
-			
-			HttpPost  httpPost = new HttpPost(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
+
+			HttpPost httpPost = new HttpPost(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
 			httpPost.addHeader(HttpHeaders.ACCEPT, "application/json");
 			httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
 			httpPost.addHeader("X-API-Key", webDBConnectParam.getApiKey());
-			
-			StringEntity stringEntity = new StringEntity(body.toString(),ENCODE);
+
+			StringEntity stringEntity = new StringEntity(body.toString(), ENCODE);
 			httpPost.setEntity(stringEntity);
 			System.out.println("Executing request " + httpPost.getRequestLine());
-			 
+
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
-	             CloseableHttpResponse response = httpClient.execute(httpPost)){
+					CloseableHttpResponse response = httpClient.execute(httpPost)) {
 				int responseCode = response.getStatusLine().getStatusCode();
 				if (responseCode != HttpStatus.SC_CREATED) {
 					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
@@ -662,7 +662,7 @@ public class WebDbUtils {
 			return e.getMessage();
 		}
 	}
-	
+
 	/**
 	 * regist json object
 	 * 
@@ -672,7 +672,8 @@ public class WebDbUtils {
 	 * @return String
 	 * @author minhnv
 	 */
-	public String registJsonObject(JSONObject jsonString, boolean notification, Boolean notifyfollow, boolean external) {
+	public String registJsonObject(JSONObject jsonString, boolean notification, Boolean notifyfollow,
+			boolean external) {
 		try {
 
 			// JSON型でボディを作成する。
@@ -684,14 +685,14 @@ public class WebDbUtils {
 			body.put("record", jsonString);
 			body.put("external", external);
 			System.out.println("REGISTER: " + body.toString());
-			
-			HttpPost  httpPost = new HttpPost(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
+
+			HttpPost httpPost = new HttpPost(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
 			httpPost.addHeader(HttpHeaders.ACCEPT, "application/json");
 			httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
 			httpPost.addHeader("X-API-Key", webDBConnectParam.getApiKey());
 
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
-		             CloseableHttpResponse response = httpClient.execute(httpPost)){
+					CloseableHttpResponse response = httpClient.execute(httpPost)) {
 				int responseCode = response.getStatusLine().getStatusCode();
 				if (responseCode != HttpStatus.SC_OK) {
 					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
@@ -716,7 +717,7 @@ public class WebDbUtils {
 			return e.getMessage();
 		}
 	}
-	
+
 	public JSONObject registJsonObjectReturnResult(JSONObject jsonString, boolean external) throws Exception {
 		try {
 
@@ -729,13 +730,13 @@ public class WebDbUtils {
 			body.put("external", external);
 			System.out.println("REGISTER: " + body.toString());
 
-			HttpPost  httpPost = new HttpPost(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
+			HttpPost httpPost = new HttpPost(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
 			httpPost.addHeader(HttpHeaders.ACCEPT, "application/json");
 			httpPost.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
 			httpPost.addHeader("X-API-Key", webDBConnectParam.getApiKey());
-			
+
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
-		             CloseableHttpResponse response = httpClient.execute(httpPost)){
+					CloseableHttpResponse response = httpClient.execute(httpPost)) {
 				int responseCode = response.getStatusLine().getStatusCode();
 				if (responseCode != HttpStatus.SC_CREATED) {
 					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);

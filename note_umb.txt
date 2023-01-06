@@ -1,0 +1,6 @@
+1. Lấy parameter từ URL dùng 
+@RequestParameter(value="xxx")
+private String xxx;
+
+2. Lấy dữ liệu webdb
+Dùng restAPI (getJsonObject)

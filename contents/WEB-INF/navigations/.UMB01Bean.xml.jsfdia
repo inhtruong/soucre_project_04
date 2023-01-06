@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#UAP#UMB#UMB0101e.xhtml"
+  PATH="/UAP/UMB/UMB0101e.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#UAP#UMB#UMB0101e.xhtml:0" NAME="item"
+   PATH="/UAP/UMB/UMB0101e.xhtml" model-entity="JSFProcessItem"/>
+ </PROCESS-ITEM>
+</PROCESS>

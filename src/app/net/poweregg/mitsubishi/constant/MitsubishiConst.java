@@ -71,6 +71,42 @@ public class MitsubishiConst {
 	
 	public static final String SEARCH_LIST_WEBDB = "searchListWebDB";
 	public static final String BACK_TO_SEARCH = "backToSearhPage";
+	
+	// constant for csv umb01
+	public static final String DATA_LINE_NO = "データ移行NO";
+	public static final String DATA_NO = "データNO";
+	public static final String SOURCE_RECORD_CREATION_DATETIME = "送信元レコード作成日時";
+	public static final String COMPANY_CD = "会社CD";
+	public static final String TRANSACTION_CD = "取引CD";
+	public static final String SALES_DEPARTMENT_CD = "売上部門CD";
+	public static final String UPPER_CATEGORY_CD = "上位部門CD";
+	public static final String ACCOUNT_DEPARTMENT_CD = "会計部門CD";
+	public static final String ORDER_NO = "受注NO";
+	public static final String SALES_ORDER_NO = "受注明細NO";
+	public static final String CUSTOMER_CD = "得意先CD";
+	public static final String CUSTOMER_NAME = "得意先名";
+	public static final String DESTINATION_CD1 = "仕向先CD1";
+	public static final String DESTINATION_NAME1 = "仕向先名1";
+	public static final String DESTINATION_CD2 = "仕向先CD2";
+	public static final String DESTINATION_NAME2 = "仕向先名2";
+	public static final String DESTINATION_CD = "納品先CD";
+	public static final String DELIVERY_DESTINATION_NAME = "納品先名";
+	public static final String PRODUCT_NAME_ABBREVIATION = "品名略号";
+	public static final String COLOR_NO = "カラーNO";
+	public static final String GRADE_1 = "グレード1";
+	public static final String USER_ITEM = "ユーザー品目";
+	public static final String CURRENCY_CD = "通貨CD";
+	public static final String TRANSACTION_UNIT_CD = "取引単位CD";
+	public static final String PACKING = "荷姿";
+	public static final String CLIENT_BRANCH_NUMBER = "取引先枝番";
+	public static final String PRICE_FORM = "価格形態";
+	public static final String USAGE_REF = "用途参照";
+	public static final String SCHEDULED_DELIVERY_DATE = "納品予定日時";
+	public static final String PRODUCT_NAME_CLASS_CD1 = "品名分類CD1";
+	public static final String ORDER_DATE = "受注日";
+	public static final String REGISTRAR = "登録担当者";
+	public static final String SALESPERSON_CD = "売上担当者CD";
+	public static final String SALESPERSON_NAME = "売上担当者名";
 
 	public enum EVENT {
 		MODIFY("U"), CONFIRM("C");
@@ -117,7 +153,8 @@ public class MitsubishiConst {
 	public enum COMMON_NO {
 		/** SEARCH WEBDB */
 		COMMON_NO_UTSR01("TSR01"),
-		COMMON_NO_UTSR02("TSR02");
+		COMMON_NO_UTSR02("TSR02"),
+		COMMON_NO_UMB01("UMB01");
 
 		private final String value;
 

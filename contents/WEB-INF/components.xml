@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<components>
+<?xml version="1.0" encoding="UTF-8"?><components>
 	<resource-loader>
 		<bundle-names>
 			<value>system-messages</value>
@@ -303,6 +302,7 @@
 			<value>xdb04-resource</value>
 			<value>xdb06-resource</value>
 			<value>xdb99-resource</value>
+			<value>xdb95-resource</value>
 			<value>xdb96-resource</value>
 			<value>xdb98-resource</value>
 			<value>xdb97-resource</value>
@@ -320,102 +320,14 @@
 			<value>ksc-rest-resource</value>
 			<value>log06-resource</value>
 			<value>zmm42-resource</value>
-<!-- 3.2c Patch PL0 eKeihi #31244 start -->
-	<value>sso06-resource</value>
-	<value>nnv12-resource</value>
-<!-- 3.2c Patch PL0 eKeihi #31244 end -->
-
-		<!--EX-KEIHI START RESOURCE-->
-<value>pwacommon-resource</value>
-      <value>pwa01-resource</value>
-      <value>pwa85-resource</value>
-      <value>pwa62-resource</value>
-      <value>pwaa5-resource</value>
-      <value>pwaa9-resource</value>
-      <value>pwab4-resource</value>
-      <value>pwab1-resource</value>
-      <value>pwab5-resource</value>
-      <value>pwad6-resource</value>
-      <value>pwa63-resource</value>
-      <value>pwa64-resource</value>
-      <value>pwa56-resource</value>
-      <value>pwab3-resource</value>
-      <value>pwa86-resource</value>
-      <value>pwa87-resource</value>
-      <value>pwa88-resource</value>
-      <value>pwab9-resource</value>
-      <value>pwae1-resource</value>
-      <value>pwae2-resource</value>
-      <value>pwae3-resource</value>
-      <value>pwae4-resource</value>
-      <value>pwae5-resource</value>
-      <value>pwae6-resource</value>
-      <value>pwamiucom-resource</value>
-      <value>pwab2-resource</value>
-      <value>pwa80-resource</value>
-      <value>pwa10-resource</value>
-      <value>pwa05-resource</value>
-      <value>pwa03-resource</value>
-      <value>pwa04-resource</value>
-      <value>pwa57-resource</value>
-      <value>pwa15-resource</value>
-      <value>pwa99-resource</value>
-      <value>pwae0-resource</value>
-      <value>pwa53-resource</value>
-      <value>pwad5-resource</value>
-      <value>pwa54-resource</value>
-      <value>pwa55-resource</value>
-      <value>pwe15-resource</value>
-      <value>pwe16-resource</value>
-      <value>pwe17-resource</value>
-      <value>pwa2-resource</value>
-      <value>pwaa0-resource</value>
-      <value>pws99-resource</value>
-      <value>pwa14-resource</value>
-      <value>pwa81-resource</value>
-      <value>pwa51-resource</value>
-      <value>pwa52-resource</value>
-      <value>pwac1-resource</value>
-      <value>pwa82-resource</value>
-      <value>pwa50-resource</value>
-      <value>pwsa1-resource</value>
-      <value>pwsa2-resource</value>
-      <value>pwsa4-resource</value>
-      <value>pwaast01-resource</value>
-      <value>pwe10-resource</value>
-      <value>pwe11-resource</value>
-      <value>pwe12-resource</value>
-      <value>pwsa3-resource</value>
-      <value>pwa02-resource</value>
-      <value>pwa60-resource</value>
-      <value>pwa61-resource</value>
-      <value>pwe13-resource</value>
-      <value>pwaa3-resource</value>
-      <value>pwa16-resource</value>
-      <value>pwe01-resource</value>
-      <value>pws01-resource</value>
-      <value>pws52-resource</value>
-      <value>pwe14-resource</value>
-      <value>pws2-resource</value>
-      <value>pwad3-resource</value>
-      <value>pwad1_resource</value>
-      <value>pwacommon-specialChar-resource</value>
-      <value>pwaast02-resource</value>
-      <value>pwap99-resource</value>
-      <value>pwab9p01-resource</value>
-      <value>pwa87p01-resource</value>
-      <value>pwa88p01-resource</value>
-      <value>pwa82p-resource</value>
-      <value>pwa86p01-resource</value>
-      <value>pwa86p02-resource</value>
-      <value>pwa20-resource</value>
-      <value>pwa89-resource</value>
-      <value>pwa89p01-resource</value>
-      <!--EX-KEIHI END RESOURCE-->
-      <!--EX-KEIHI START RESOURCE-->
-	  <value>utsr-resource</value>
-	  <value>umb-resource</value>
-      <!--EX-KEIHI END RESOURCE-->
+			<value>sso06-resource</value>
+			<value>nnv12-resource</value>
+			<value>fprcommon-resource</value>
+			<value>rrd05-resource</value>
+			<value>fap31-resource</value>
+			<!--MITSUBISHI START RESOURCE-->
+			<value>umb01-resource</value>
+			<!--MITSUBISHI END RESOURCE-->
     </bundle-names>
 	</resource-loader>
 </components>

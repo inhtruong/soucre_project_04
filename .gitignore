@@ -1,7 +1,6 @@
 # Specify filepatterns you want git to ignore.
 /target/
 /.settings/
-/appLib/
 /batch/
 /CSV/
 /extlib/

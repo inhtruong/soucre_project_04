@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+    Process    : 価格マスタ伺い申請(新規)
+    Document   : UMB0102e
+    Created on : 
+    Author     : 
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://www.poweregg.net/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j">
+<p:head>
+	<f:metadata>
+		<f:viewAction action="#{UMB10Bean.init}" />
+	</f:metadata>
+	<p:body styleClass="settingPage">
+		<h:form id="frm" enctype="multipart/form-data">
+			<p:panelTabs>
+				<p:tab label="" selected="true" disabled="true" />
+			</p:panelTabs>
+
+			<!-- 左ペイン -->
+			<p:panelController id="controller" collapse="true">
+			</p:panelController>
+
+			<!-- メイン -->
+			<p:panelMain id="main" requiredGuidance="true">
+				<f:facet name="message">
+					<p:messages for="main" showDetail="true" showSummary="false"
+						globalOnly="true">
+					</p:messages>
+				</f:facet>
+
+				<f:facet name="title">
+					<h:panelGroup>
+						<h1>
+							<h:outputText value="123"></h:outputText>
+						</h1>
+					</h:panelGroup>
+				</f:facet>
+
+				<!-- ボタン -->
+				<f:facet name="navi-upper-left">
+					<h:panelGroup>
+						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
+							label="確認" confirmFlag="true">&#160;&#160;</p:commandButton>
+						<p:commandButton buttonClass="normal" img="/img/b_save.gif"
+							label="一時保存" confirmFlag="false">&#160;&#160;</p:commandButton>
+						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
+							immediate="true" label="キャンセル" cancelButton="true">&#160;&#160;</p:commandButton>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="navi-bottom-left">
+					<h:panelGroup>
+						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
+							label="確認" confirmFlag="true">&#160;&#160;</p:commandButton>
+						<p:commandButton buttonClass="normal" img="/img/b_save.gif"
+							label="一時保存" confirmFlag="false">&#160;&#160;</p:commandButton>
+						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
+							immediate="true" label="キャンセル" cancelButton="true">&#160;&#160;</p:commandButton>
+					</h:panelGroup>
+				</f:facet>
+				<p:div id="divInput" styleClass="contents margin">
+					<p:div style="margin-left:15px" styleClass="requiredGuidance">
+						<span style="color: #ff0000">*</span>&#160;は必須項目です。</p:div>
+					<p:div styleClass="contents margin">
+						<table class="detail">
+							<tr>
+								<td class="label"><p:outputLabel for="applicant"
+										value="申請者" /></td>
+								<td class="item"><p:commandLink id="applicant" value=""
+										styleClass="required">
+									</p:commandLink></td>
+							</tr>
+							<tr>
+								<!--申請日-->
+								<td class="label"><p:outputLabel for="appDate" value="申請日" />
+									<h:outputText value="&#160;*" styleClass="necessary" /></td>
+								<td class="item"><p:inputDate id="appDate" value=""
+										maxlenght="8" styleClass="required">
+									</p:inputDate></td>
+							</tr>
+							<tr>
+								<!--件名-->
+								<td class="label"><p:outputLabel for="subject" value="件名" />
+									<h:outputText value="&#160;*" styleClass="necessary" /></td>
+								<td class="item"><p:inputText id="subject" value=""
+										maxlenght="100" styleClass="text_on long required">
+									</p:inputText></td>
+							</tr>
+							<tr>
+								<td class="label"><p:outputLabel value="優先度" /></td>
+								<td class="item"><h:selectOneMenu id="langType"
+										value="#{UMB10Bean.priority}" styleClass="">
+										<f:selectItems value="#{UMB10Bean.priorities}" />
+									</h:selectOneMenu></td>
+							</tr>
+						</table>
+					</p:div>
+
+					<p:div style="margin-left:15px">価格伺い申請（新規）</p:div>
+					<p:div styleClass="contents margin">
+						<h:panelGrid styleClass="detail" columns="2"
+							columnClasses="label, item">
+							<p:outputLabel for="tab1_categoryData" value="データ更新区分"></p:outputLabel>
+							<h:selectOneMenu id="tab1_categoryData" value="">
+								<f:selectItems value="" />
+							</h:selectOneMenu>
+
+							<p:outputLabel for="tab1_temPriceMasterReference"
+								value="仮価格マスタ参照"></p:outputLabel>
+							<h:panelGroup>
+								<p:commandLink>検索して指定</p:commandLink>
+								<p:inputText id="tab1_temPriceMasterReference"
+									styleClass="required short text_off" maxlength="8"
+									value="temPriceMasterReference" />
+							</h:panelGroup>
+
+							<p:outputLabel for="tab1_priceMasterReference" value="価格マスタ参照"></p:outputLabel>
+							<h:panelGroup>
+								<p:commandLink>検索して指定</p:commandLink>
+								<p:inputText id="tab1_priceMasterReference"
+									styleClass="required short text_off" maxlength="8"
+									value="priceMasterReference" />
+							</h:panelGroup>
+
+							<p:outputLabel for="tab1_priceMasterReference" value="顧客要望事確認"></p:outputLabel>
+							<p:inputSelectManyCheckbox id="tab1_priceMasterReference"
+								value="" onclick="">
+								<f:selectItem itemLabel="未" itemValue="0" />
+								<f:selectItem itemLabel="済" itemValue="1" />
+							</p:inputSelectManyCheckbox>
+
+							<p:outputLabel for="tab1_priceMasterReference" value="契約番号"></p:outputLabel>
+							<h:panelGroup>
+								<p:inputText id="tab1_priceMasterReference"
+									styleClass="required short text_off" maxlength="8" value="" />
+							</h:panelGroup>
+
+							<!-- ドロップダウンマスタ参照部分 -->
+							<ui:include src="UMB010201e.xhtml">
+								<ui:param name="renderDataOnly" value="false" />
+							</ui:include>
+
+
+
+						</h:panelGrid>
+					</p:div>
+
+					<p:div styleClass="contents margin">
+						<!-- 紙添付資料 -->
+						<p:outputLabel for="tab1_paperAttachment" value="紙添付資料"></p:outputLabel>
+						<p:inputTextarea id="tab1_paperAttachment" required="false"
+							styleClass="textarea_on" cols="30" rows="4" maxlength="1500"
+							value="#{UBM11Bean.bmregularRingi.maintenanceComment}" />
+
+						<!-- 紙添付資料 -->
+						<h:panelGrid columns="2" styleClass="detail"
+							columnClasses="labelAdd, item">
+							<p:outputLabel value="添付ファイル" for="DocKbn" />
+							<p:inputAttachFile id="DocKbn" value="#{UMB10Bean.attachFile}" />
+						</h:panelGrid>
+					</p:div>
+				</p:div>
+			</p:panelMain>
+		</h:form>
+	</p:body>
+</html>

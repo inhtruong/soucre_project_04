@@ -26,7 +26,7 @@ public class UMB01Batch {
 		if (args.length < 2) {
 			System.out.print("工事未登録データ登録");
 			System.out.println("args must be: connectURL csvFilePath");
-			System.out.println(" Example: UMB01Batch http://localhost:8080/pe4j C:\\CsvFilePath");
+			System.out.println(" Example: UMB01Batch http://localhost:9090/pe4j C:\\CsvFilePath");
 			System.exit(101);
 		}
 		final String jsfPath = "/UAP/UMB/UMB0101e.jsf";

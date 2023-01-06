@@ -2,8 +2,8 @@
 <!--
     Process    : 工事未登録データ登録（CSVから作成）ファイル選択
     Document   : UMB0101e
-    Created on : 
-    Author     : 
+    Created on : 2022/12/29
+    Author     : diennv
 -->
 
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -11,7 +11,7 @@
 	xmlns:p="http://www.poweregg.net/jsf/html">
 <p:head>	
 	<f:metadata>
-		<f:viewAction action="#{UMB01Bean.initUMB0101e}" />
+		<f:viewAction action="#{UMB01Bean.executeBatch}" />
 		<f:viewParam name="csvFilePath" value="#{UMB01Bean.csvFilePath}" />
 	</f:metadata>
 </p:head>

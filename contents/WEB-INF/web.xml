@@ -272,11 +272,12 @@
 			/WEB-INF/navigations/ZMM3611Bean.xml,
 			/WEB-INF/navigations/NMM0203Bean.xml,
 			/WEB-INF/navigations/ZMM4201Bean.xml,
-			/WEB-INF/navigations/SSO06Bean.xml,			
+			/WEB-INF/navigations/SSO06Bean.xml,
 			/WEB-INF/navigations/RRD05Bean.xml,
 			/WEB-INF/navigations/FAP31Bean.xml,/WEB-INF/navigations/exkeihiPagesFaces.xml,/WEB-INF/navigations/PWA01Bean.xml,/WEB-INF/navigations/PWA02Bean.xml,/WEB-INF/navigations/PWA03Bean.xml,/WEB-INF/navigations/PWA04Bean.xml,/WEB-INF/navigations/PWA05Bean.xml,/WEB-INF/navigations/PWA16Bean.xml,/WEB-INF/navigations/PWA20Bean.xml,/WEB-INF/navigations/PWA50Bean.xml,/WEB-INF/navigations/PWA51Bean.xml,/WEB-INF/navigations/PWA52Bean.xml,/WEB-INF/navigations/PWA53Bean.xml,/WEB-INF/navigations/PWA54Bean.xml,/WEB-INF/navigations/PWA55Bean.xml,/WEB-INF/navigations/PWA56Bean.xml,/WEB-INF/navigations/PWA57Bean.xml,/WEB-INF/navigations/PWA61Bean.xml,/WEB-INF/navigations/PWA62Bean.xml,/WEB-INF/navigations/PWA63Bean.xml,/WEB-INF/navigations/PWA64Bean.xml,/WEB-INF/navigations/PWA80Bean.xml,/WEB-INF/navigations/PWA81Bean.xml,/WEB-INF/navigations/PWA82Bean.xml,/WEB-INF/navigations/PWA82PBean.xml,/WEB-INF/navigations/PWA85Bean.xml,/WEB-INF/navigations/PWA85P01Bean.xml,/WEB-INF/navigations/PWA86Bean.xml,/WEB-INF/navigations/PWA86P01Bean.xml,/WEB-INF/navigations/PWA86P02Bean.xml,/WEB-INF/navigations/PWA87Bean.xml,/WEB-INF/navigations/PWA87P01Bean.xml,/WEB-INF/navigations/PWA88Bean.xml,/WEB-INF/navigations/PWA88P01Bean.xml,/WEB-INF/navigations/PWA89Bean.xml,/WEB-INF/navigations/PWA89P01Bean.xml,/WEB-INF/navigations/PWAA0Bean.xml,/WEB-INF/navigations/PWAA3Bean.xml,/WEB-INF/navigations/PWAA3P01Bean.xml,/WEB-INF/navigations/PWAA5Bean.xml,/WEB-INF/navigations/PWAA9Bean.xml,/WEB-INF/navigations/PWAAST01Bean.xml,/WEB-INF/navigations/PWAAST02Bean.xml,/WEB-INF/navigations/PWAB1Bean.xml,/WEB-INF/navigations/PWAB2Bean.xml,/WEB-INF/navigations/PWAB3Bean.xml,/WEB-INF/navigations/PWAB3P01Bean.xml,/WEB-INF/navigations/PWAB4Bean.xml,/WEB-INF/navigations/PWAB4P01Bean.xml,/WEB-INF/navigations/PWAB5Bean.xml,/WEB-INF/navigations/PWAB9Bean.xml,/WEB-INF/navigations/PWAB9P01Bean.xml,/WEB-INF/navigations/PWAC1Bean.xml,/WEB-INF/navigations/PWAD1Bean.xml,/WEB-INF/navigations/PWAD3Bean.xml,/WEB-INF/navigations/PWAD5Bean.xml,/WEB-INF/navigations/PWAD6Bean.xml,/WEB-INF/navigations/PWAE0Bean.xml,/WEB-INF/navigations/PWAE1Bean.xml,/WEB-INF/navigations/PWAE2Bean.xml,/WEB-INF/navigations/PWAE3Bean.xml,/WEB-INF/navigations/PWAE5Bean.xml,/WEB-INF/navigations/PWAE6Bean.xml,/WEB-INF/navigations/PWE10Bean.xml,/WEB-INF/navigations/PWE13Bean.xml,/WEB-INF/navigations/PWE15Bean.xml,/WEB-INF/navigations/PWE16Bean.xml,/WEB-INF/navigations/PWS01Bean.xml,/WEB-INF/navigations/PWS99Bean.xml,/WEB-INF/navigations/PWSA1P01Bean.xml,/WEB-INF/navigations/PWSA2P01Bean.xml,
-			/WEB-INF/navigations/UTSR01Bean.xml,			
+			<!--ANKEI START-->
 			/WEB-INF/navigations/UMB01Bean.xml
+			<!--ANKEI END-->
 			</param-value>
 	</context-param>
 	<context-param>
@@ -468,7 +469,6 @@
 		<init-param>
 				<param-name>nocheck-url-pattern</param-name>
 				<param-value>
-					/UAP/UMB/UMB0101e.jsf
 				</param-value>
 		</init-param>
 	</filter>
@@ -1589,6 +1589,144 @@
 		<local>net.poweregg.organization.imp.service.OrgImportService</local>
 		<ejb-link>OrgImportServiceBean</ejb-link>
 	</ejb-local-ref>
+	
+	<!-- Addon -->
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUbm/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.bmregular.ApprovalServiceUbm</local>
+		<ejb-link>ApprovalServiceUbmBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUbm/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.bmregular.ReportServiceUbm</local>
+		<ejb-link>ReportServiceUbmBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUbs/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.bmspot.ApprovalServiceUbs</local>
+		<ejb-link>ApprovalServiceUbsBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUbs/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.bmspot.ReportServiceUbs</local>
+		<ejb-link>ReportServiceUbsBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/AttachFileService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.common.AttachFileService</local>
+		<ejb-link>AttachFileServiceBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/BukMasterService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.common.BukMasterService</local>
+		<ejb-link>BukMasterServiceBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/KeiMasterService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.common.KeiMasterService</local>
+		<ejb-link>KeiMasterServiceBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/SeiMasterService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.common.SeiMasterService</local>
+		<ejb-link>SeiMasterServiceBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ZipCodeService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.common.ZipCodeService</local>
+		<ejb-link>ZipCodeServiceBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUkc/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.control.ApprovalServiceUkc</local>
+		<ejb-link>ApprovalServiceUkcBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUkc/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.control.ReportServiceUkc</local>
+		<ejb-link>ReportServiceUkcBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUkk/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.guard.ApprovalServiceUkk</local>
+		<ejb-link>ApprovalServiceUkkBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUkk/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.guard.ReportServiceUkk</local>
+		<ejb-link>ReportServiceUkkBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/UmmAccountService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.master.UmmAccountService</local>
+		<ejb-link>UmmAccountServiceBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/UmmConvertService/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.master.UmmConvertService</local>
+		<ejb-link>UmmConvertServiceBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUot/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.outer.ApprovalServiceUot</local>
+		<ejb-link>ApprovalServiceUotBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUot/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.outer.ReportServiceUot</local>
+		<ejb-link>ReportServiceUotBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUsl/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.sale.ApprovalServiceUsl</local>
+		<ejb-link>ApprovalServiceUslBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUsl/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.sale.ReportServiceUsl</local>
+		<ejb-link>ReportServiceUslBean</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUsp/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.simple.ApprovalServiceUsp</local>
+		<ejb-link>ApprovalServiceUspBean</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ReportServiceUsp/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>jp.co.ankei.simple.ReportServiceUsp</local>
+		<ejb-link>ReportServiceUspBean</ejb-link>
+	</ejb-local-ref>
+	
+	<!-- Addon -->
+	
 	<error-page>
 	    <exception-type>org.jboss.weld.context.NonexistentConversationException</exception-type>
 	    <location>/operationTimeout.jsf?nocid=true</location>
@@ -1600,5 +1738,5 @@
 	<error-page>
 	   <error-code>500</error-code>
 	   <location>/errorDisplay.jsf</location>
-	</error-page>  	
+	</error-page>
 </web-app>

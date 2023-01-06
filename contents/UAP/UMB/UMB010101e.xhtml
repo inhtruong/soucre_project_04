@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http:// www.w3.org/TR/xhtml1-transitional.dtd">
+<!--
+ 	Process 	: 人事情報見直し申請 - 住居情報
+ 	Document	: umb010201e.xhtml
+ 	Created on  : 2023/01/04
+ 	Author		: dattdd
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://www.poweregg.net/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<p:head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</p:head>
+<ui:composition>
+
+
+	<p:outputLabel for="tab1_temPriceMasterReference" value="仮価格マスタ参照"></p:outputLabel>
+	<h:panelGroup>
+		<!--データ移行NO-->
+		<p:outputLabel for="tab1_dataMigrationNO" value="データ移行NO" />
+		<p:inputNumber id="tab1_dataMigrationNO"
+			styleClass="text6 text_off required" digitsBeforePoint="15"
+			digitsAfterPoint="0" onchange="" minus="true" value="" />
+		<!--データNO-->
+		<p:outputLabel for="tab1_dataNO" value="データNO" />
+		<p:inputNumber id="tab1_dataNO" styleClass="text6 text_off required"
+			digitsBeforePoint="15" digitsAfterPoint="0" onchange="" minus="true"
+			value="" />
+		<!--送信元レコード作成日時-->
+		<p:outputLabel for="tab1_sourceRecordCreationDatetime"
+			value="送信元レコード作成日時" />
+		<p:inputDate id="tab1_sourceRecordCreationDatetime" required="false"
+			styleClass="short text_off required" maxlength="20"
+			converterMessage="業務開始予定日は数字で入力してください。" value="" />
+		<!--会社CD-->
+		<p:outputLabel for="tab1_companyCD" value="会社CD" />
+		<p:inputText id="tab1_companyCD" styleClass="short text_off required"
+			maxlength="20" value="" />
+		<!--取引CD-->
+		<p:outputLabel for="tab1_transactionCD" value="取引CD" />
+		<p:inputText id="tab1_transactionCD" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--売上部門CD-->
+		<p:outputLabel for="tab1_salesDepartmentCD" value="売上部門CD" />
+		<p:inputText id="tab1_salesDepartmentCD" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--上位部門CD-->
+		<p:outputLabel for="tab1_upperCategoryCD" value="上位部門CD" />
+		<p:inputText id="tab1_upperCategoryCD" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--会計部門CD-->
+		<p:outputLabel for="tab1_accountDepartmentCD" value="会計部門CD" />
+		<p:inputText id="tab1_accountDepartmentCD" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--受注NO-->
+		<p:outputLabel for="tab1_orderNO" value="受注NO" />
+		<p:inputText id="tab1_orderNO" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--受注明細NO-->
+		<p:outputLabel for="tab1_orderDetailNO" value="受注明細NO" />
+		<p:inputText id="tab1_orderDetailNO" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--得意先CD-->
+		<p:outputLabel for="tab1_customerCD" value="得意先CD" />
+		<p:inputText id="tab1_customerCD" styleClass="short text_off required"
+			maxlength="20" value="" />
+		<!--得意先名-->
+		<p:outputLabel for="tab1_customerName" value="得意先名" />
+		<p:inputText id="tab1_customerName" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--仕向先CD1-->
+		<p:outputLabel for="tab1_destinationCD1" value="仕向先CD1" />
+		<p:inputText id="tab1_destinationCD1"
+			styleClass="short text_off required" maxlength="20" value="" />
+		<!--仕向先名1-->
+		<p:outputLabel for="tab1_destinationName1" value="仕向先名1" />
+		<p:inputText id="tab1_destinationName1" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--仕向先CD2-->
+		<p:outputLabel for="tab1_destinationCD2" value="仕向先CD2" />
+		<p:inputText id="tab1_destinationCD2"
+			styleClass="short text_off required" maxlength="20" value="" />
+		<!--仕向先名2-->
+		<p:outputLabel for="tab1_destinationName2" value="仕向先名2" />
+		<p:inputText id="tab1_destinationName2" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--納品先CD-->
+		<p:outputLabel for="tab1_destinationCD" value="納品先CD" />
+		<p:inputText id="tab1_destinationCD" styleClass="short text_off "
+			maxlength="20" value="" />
+		<!--納品先名-->
+		<p:outputLabel for="tab1_destinationName" value="納品先名" />
+		<p:inputText id="tab1_destinationName" styleClass="short text_off"
+			maxlength="40" value="" />
+		<!--品名略号-->
+		<p:outputLabel for="tab1_productNameAbbreviation" value="品名略号" />
+		<p:inputText id="tab1_productNameAbbreviation"
+			styleClass="short text_off required" maxlength="40" value="" />
+		<!--カラーNo-->
+		<p:outputLabel for="tab1_colorNo" value="-カラーNo" />
+		<p:inputText id="tab1_colorNo" styleClass="short text_off required"
+			maxlength="5" value="" />
+		<!--グレード1-->
+		<p:outputLabel for="tab1_grade1" value="グレード1" />
+		<p:inputText id="tab1_grade1" styleClass="short text_off required"
+			maxlength="5" value="" />
+		<!--ユーザー品目-->
+		<p:outputLabel for="tab1_userItem" value="ユーザー品目" />
+		<p:inputText id="tab1_userItem" styleClass="short text_off"
+			maxlength="40" value="" />
+		<!--通貨CD-->
+		<p:outputLabel for="tab1_currencyCD" value="通貨CD" />
+		<p:inputText id="tab1_currencyCD" styleClass="short text_off required"
+			maxlength="3" value="" />
+		<!--取引単位CD-->
+		<p:outputLabel for="tab1_transactionUnitCD" value="仕向先名2" />
+		<p:inputText id="tab1_transactionUnitCD" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--荷姿-->
+		<p:outputLabel for="tab1_packing" value="荷姿" />
+		<p:inputText id="tab1_packing" styleClass="short text_off"
+			maxlength="20" value="" />
+		<!--取引先枝番-->
+		<p:outputLabel for="tab1_clientBranchNumber" value="取引先枝番" />
+		<p:inputText id="tab1_clientBranchNumber"
+			styleClass="short text_off required" maxlength="2" value="" />
+		<!--価格形態-->
+		<p:outputLabel for="tab1_priceForm" value="価格形態" />
+		<p:inputText id="tab1_priceForm" styleClass="short text_off required"
+			maxlength="2" value="" />
+		<!--用途参照(WebDB参照)-->
+		<p:outputLabel for="tab1_usageReference" value="用途参照" />
+		<p:commandLink id="tab1_usageReference"
+			styleClass="short text_off required" value="" />
+		<!--納品予定日時-->
+		<p:outputLabel for="tab1_scheduledDeliveryDate" value="納品予定日時" />
+		<p:inputDate id="tab1_scheduledDeliveryDate" required="false"
+			styleClass="short text_off" maxlength="20" value="" />
+		<!--品目分類CD1-->
+		<p:outputLabel for="tab1_commodityClassificationCD1" value="品目分類CD1" />
+		<p:inputText id="tab1_commodityClassificationCD1"
+			styleClass="short text_off" maxlength="20" value="" />
+		<!--受注日-->
+		<p:outputLabel for="tab1_orderDate" value="受注日" />
+		<p:inputDate id="tab1_orderDate" required="false"
+			styleClass="short text_off" maxlength="20" value="" />
+		<!--登録担当者-->
+		<p:outputLabel for="tab1_registrar" value="登録担当者" />
+		<p:inputText id="tab1_registrar" styleClass="short text_off"
+			maxlength="100" value="" />
+		<!--警告-->
+		<p:outputLabel for="tab1_waring" value="警告" />
+		<h:selectOneMenu id="tab1_waring" value="">
+			<f:selectItems value="" />
+		</h:selectOneMenu>
+		<!--ロット数量-->
+		<p:outputLabel for="tab1_lotQuantity" value="ロット数量" />
+		<p:inputNumber id="tab1_lotQuantity"
+			styleClass="text6 text_off required" digitsBeforePoint="21"
+			digitsAfterPoint="8" onchange="" minus="true" value="" />
+		<table>
+			<tr>
+				<td rowspan="2">&#160;</td>
+				<td colspan="2">割し増し無</td>
+			</tr>
+			<tr>
+				<td>口銭率</td>
+				<td>口銭金率</td>
+			</tr>
+			<tr>
+				<td>
+					<!--末端価格--> 
+					<p:outputLabel for="tab1_retailPrice" value="末端価格" />
+				</td>
+				<td>口銭率</td>
+				<td>口銭金率</td>
+			</tr>
+			<p:inputNumber id="tab1_retailPrice"
+				styleClass="text6 text_off required" digitsBeforePoint="21"
+				digitsAfterPoint="8" onchange="" minus="true" value="" />
+			<!--小口配送単価-->
+			<p:outputLabel for="tab1_priceSmallParcelDelivery" value="小口配送単価" />
+			<p:inputNumber id="tab1_priceSmallParcelDelivery"
+				styleClass="text6 text_off" digitsBeforePoint="21"
+				digitsAfterPoint="8" onchange="" minus="true" value="" />
+			<!--小口着色単価-->
+			<p:outputLabel for="tab1_foreheadColorUnitPrice" value="小口着色単価" />
+			<p:inputNumber id="tab1_foreheadColorUnitPrice"
+				styleClass="text6 text_off" digitsBeforePoint="21"
+				digitsAfterPoint="8" onchange="" minus="true" value="" />
+			<!--一次店口銭金額-->
+			<p:outputLabel for="tab1_primaryStoreCommissionAmount"
+				value="一次店口銭金額" />
+			<p:inputNumber id="tab1_primaryStoreCommissionAmount"
+				styleClass="text6 text_off" digitsBeforePoint="21"
+				digitsAfterPoint="8" onchange="" minus="true" value="" />
+			<!--一次店口銭率-->
+			<p:outputLabel for="tab1_primaryStoreOpeningRate" value="一次店口銭率" />
+			<p:inputNumber id="tab1_primaryStoreOpeningRate"
+				styleClass="text6 text_off" digitsBeforePoint="21"
+				digitsAfterPoint="8" onchange="" minus="true" value="" />
+			<!--末端価格1(割増無)-->
+			<!--末端価格2(割増無)-->
+			<!--末端価格1(配送)-->
+			<!--末端価格2(配送)-->
+			<!--末端価格1(299kg)-->
+			<!--末端価格2(299kg)-->
+			<!--末端価格(1100kg)-->
+			<!--末端価格2(100kg)-->
+			<!--小口配送単価1(配送)-->
+			<!--小口配送単価2(配送)-->
+			<!--小口配送単価1(100k)-->
+			<!--小口配送単価2(100kg)-->
+			<!--小口着色単価1(299kg)-->
+			<!--小口着色単価2(299kg)-->
+			<!--小口着色単価1(100kg)-->
+			<!--小口着色単価2(100kg)-->
+			<!--末端価格合計1(割増無)-->
+			<!--末端価格合計2(割増無)-->
+			<!--末端価格合計1(配送)-->
+			<!--末端価格合計2(配送)-->
+			<!--末端価格合計1(299kg)-->
+			<!--末端価格合計2(299kg)-->
+			<!--末端価格合計1(100kg)-->
+			<!--末端価格合計2(100kg)-->
+			<!--一次店口銭(金額)(割増無)-->
+			<!--一次店口銭(金額)(配送)-->
+			<!--一次店口銭(金額)(299kg)-->
+			<!--一次店口銭(金額)(100kg)-->
+			<!--一次店口銭率(割増無)-->
+			<!--一次店口銭率(配送)-->
+			<!--一次店口銭率(299kg)-->
+			<!--一次店口銭率(100kg)-->
+			<!--一次店口銭金額(割増無)-->
+			<!--一次店口銭金額(配送)-->
+			<!--一次店口銭金額(299kg)-->
+			<!--一次店口銭金額(100kg)-->
+			<!--二次店口銭率-->
+			<!--二次店口銭額-->
+			<!--仕切単価1(計算値)(割増無)-->
+			<!--仕切単価2(計算値)(割増無)-->
+			<!--仕切単価1(計算値)(小口)-->
+			<!--仕切単価2(計算値)(小口)-->
+			<!--仕切単価1(計算値)(299kg)-->
+			<!--仕切単価2(計算値)(299kg)-->
+			<!--仕切単価1(計算値)(100kg)-->
+			<!--仕切単価2(計算値)(100kg)-->
+			<!--仕切単価(決定値)-->
+		</table>
+	</h:panelGroup>
+
+</ui:composition>
+</html>
