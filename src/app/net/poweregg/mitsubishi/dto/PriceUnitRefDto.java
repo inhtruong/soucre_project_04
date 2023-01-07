@@ -40,7 +40,7 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * 送信元レコード作成日時
 	 */
-	private String createAt;
+	private String srcCreateDate;
 	
 	/**
 	 * 会社CD
@@ -108,9 +108,9 @@ public class PriceUnitRefDto implements Serializable {
 	private String destinationName2;
 
 	/**
-	 * 仕向先CD
+	 * 納品先CD
 	 */
-	private String destinationCD;
+	private String deliveryDestinationCD;
 
 	/**
 	 * 納品先名
@@ -230,17 +230,17 @@ public class PriceUnitRefDto implements Serializable {
 	}
 
 	/**
-	 * @return the createAt
+	 * @return the srcCreateDate
 	 */
-	public String getCreateAt() {
-		return createAt;
+	public String getSrcCreateDate() {
+		return srcCreateDate;
 	}
 
 	/**
-	 * @param createAt the createAt to set
+	 * @param srcCreateDate the srcCreateDate to set
 	 */
-	public void setCreateAt(String createAt) {
-		this.createAt = createAt;
+	public void setSrcCreateDate(String srcCreateDate) {
+		this.srcCreateDate = srcCreateDate;
 	}
 
 	/**
@@ -426,17 +426,17 @@ public class PriceUnitRefDto implements Serializable {
 	}
 
 	/**
-	 * @return the destinationCD
+	 * @return the deliveryDestinationCD
 	 */
-	public String getDestinationCD() {
-		return destinationCD;
+	public String getDeliveryDestinationCD() {
+		return deliveryDestinationCD;
 	}
 
 	/**
-	 * @param destinationCD the destinationCD to set
+	 * @param deliveryDestinationCD the deliveryDestinationCD to set
 	 */
-	public void setDestinationCD(String destinationCD) {
-		this.destinationCD = destinationCD;
+	public void setDeliveryDestinationCD(String deliveryDestinationCD) {
+		this.deliveryDestinationCD = deliveryDestinationCD;
 	}
 
 	/**

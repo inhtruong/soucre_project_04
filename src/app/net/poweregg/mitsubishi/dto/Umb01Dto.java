@@ -25,6 +25,8 @@ public class Umb01Dto implements Serializable {
 		super();
 	}
 	
+	private String id;
+	
 	/**
 	 * 仮単価マスタデータ参照
 	 */
@@ -51,7 +53,7 @@ public class Umb01Dto implements Serializable {
 	private BigDecimal partitionUnitPrice;
 	
 	/**
-	 * 仮単価マスタ・価格マスタより参照Dto
+	 * 仮単価マスcタ・価格マスタより参照Dto
 	 */
 	private PriceUnitRefDto unitPriceRefDto;
 	
@@ -64,6 +66,20 @@ public class Umb01Dto implements Serializable {
 	 * 
 	 */
 	private PriceCalParam priceCalParam;
+
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the unitPriceDataRef

@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.core.HttpHeaders;
@@ -390,6 +391,24 @@ public class WebDbUtils {
 			return BigDecimal.ZERO;
 		}
 		return new BigDecimal(json.getString(WebDbConstant.JSON_RECORD_VALUE));
+	}
+	
+	/**
+	 * レコード情報から指定したフィールド名の値を取得する
+	 *
+	 * @param record    レコード情報
+	 * @param fieldName フィールド名
+	 * @return レコード値
+	 * @throws JSONException
+	 */
+	public static Date getDateValue(JSONObject record, String fieldName) throws JSONException {
+		JSONObject json = null;
+		try {
+			json = record.getJSONObject(fieldName);
+		} catch (JSONException e) {
+			return null;
+		}
+		return new Date(json.getString(WebDbConstant.JSON_RECORD_VALUE));
 	}
 
 	/**

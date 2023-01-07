@@ -11,10 +11,12 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.json.JSONObject;
 
+import net.poweregg.annotations.Login;
 import net.poweregg.annotations.PEIntercepter;
 import net.poweregg.annotations.RequestParameter;
 import net.poweregg.common.ClassificationService;
@@ -23,10 +25,13 @@ import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
 import net.poweregg.mitsubishi.dto.UmitsubishiTempDto;
+import net.poweregg.mitsubishi.service.MitsubishiService;
 import net.poweregg.mitsubishi.webdb.utils.CSVUtils;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.util.NumberUtils;
+import net.poweregg.util.StringUtils;
+import net.poweregg.web.engine.navigation.LoginUser;
 import net.poweregg.webdb.util.ArrayCollectionUtil;
 
 @Named("UMB01Bean")
@@ -37,6 +42,9 @@ public class UMB01Bean implements Serializable {
 
 	@EJB
 	private ClassificationService classificationService;
+	
+	@EJB
+	private MitsubishiService mitsubishiService;
 
 	private Integer returnCode;
 
@@ -47,8 +55,17 @@ public class UMB01Bean implements Serializable {
 	@RequestParameter(value="datano")
 	private String dataNo;
 	
-	public void initUMB0102e() {
-		System.out.println("Data No: " + dataNo);
+	@Inject
+	@Login
+	private LoginUser loginUser;
+	
+	public String initUMB0102e() throws Exception {
+		if (loginUser == null) {
+			return "login";
+		}
+		
+		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
+		return StringUtils.EMPTY;
 	}
 
 	public void executeBatch() throws Exception {
@@ -307,7 +324,7 @@ public class UMB01Bean implements Serializable {
 			calValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
 					.subtract(secondStoreOpenRate.multiply(retailPrice));
 		}
-	  
+
 		// pattern 2
 		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
@@ -406,7 +423,7 @@ public class UMB01Bean implements Serializable {
 			}
 		}
 
-  }
+	}
 
 	public String getCsvFilePath() {
 		return this.csvFilePath;

@@ -8,4 +8,7 @@
             <redirect/>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/UAP/UMB/UMB0102e.xhtml</from-view-id>
+    </navigation-rule>
 </faces-config>
