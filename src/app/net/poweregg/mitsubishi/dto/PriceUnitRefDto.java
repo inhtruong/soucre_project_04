@@ -1,6 +1,7 @@
 package net.poweregg.mitsubishi.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.enterprise.context.ConversationScoped;
@@ -30,17 +31,17 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * データ移行NO
 	 */
-	private String dataMigrationNo;
+	private BigDecimal dataMigrationNo;
 	
 	/**
 	 * データNO
 	 */
-	private String dataNo;
+	private BigDecimal dataNo;
 	
 	/**
 	 * 送信元レコード作成日時
 	 */
-	private String srcCreateDate;
+	private Date srcCreateDate;
 	
 	/**
 	 * 会社CD
@@ -65,7 +66,7 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * 会計部門CD
 	 */
-	private String accountingDepartmentCD;
+	private String accountDepartmentCD;
 	
 	/**
 	 * 受注NO
@@ -185,7 +186,7 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * 登録担当者
 	 */
-	private Date companyRegister;
+	private String registrar;
 
 	/**
 	 * @return the customerReqConfirm
@@ -204,42 +205,42 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * @return the dataMigrationNo
 	 */
-	public String getDataMigrationNo() {
+	public BigDecimal getDataMigrationNo() {
 		return dataMigrationNo;
 	}
 
 	/**
 	 * @param dataMigrationNo the dataMigrationNo to set
 	 */
-	public void setDataMigrationNo(String dataMigrationNo) {
+	public void setDataMigrationNo(BigDecimal dataMigrationNo) {
 		this.dataMigrationNo = dataMigrationNo;
 	}
 
 	/**
 	 * @return the dataNo
 	 */
-	public String getDataNo() {
+	public BigDecimal getDataNo() {
 		return dataNo;
 	}
 
 	/**
 	 * @param dataNo the dataNo to set
 	 */
-	public void setDataNo(String dataNo) {
+	public void setDataNo(BigDecimal dataNo) {
 		this.dataNo = dataNo;
 	}
 
 	/**
 	 * @return the srcCreateDate
 	 */
-	public String getSrcCreateDate() {
+	public Date getSrcCreateDate() {
 		return srcCreateDate;
 	}
 
 	/**
 	 * @param srcCreateDate the srcCreateDate to set
 	 */
-	public void setSrcCreateDate(String srcCreateDate) {
+	public void setSrcCreateDate(Date srcCreateDate) {
 		this.srcCreateDate = srcCreateDate;
 	}
 
@@ -302,15 +303,15 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * @return the accountingDepartmentCD
 	 */
-	public String getAccountingDepartmentCD() {
-		return accountingDepartmentCD;
+	public String getAccountDepartmentCD() {
+		return accountDepartmentCD;
 	}
 
 	/**
 	 * @param accountingDepartmentCD the accountingDepartmentCD to set
 	 */
-	public void setAccountingDepartmentCD(String accountingDepartmentCD) {
-		this.accountingDepartmentCD = accountingDepartmentCD;
+	public void setAccountDepartmentCD(String accountDepartmentCD) {
+		this.accountDepartmentCD = accountDepartmentCD;
 	}
 
 	/**
@@ -638,15 +639,15 @@ public class PriceUnitRefDto implements Serializable {
 	/**
 	 * @return the companyRegister
 	 */
-	public Date getCompanyRegister() {
-		return companyRegister;
+	public String getRegistrar() {
+		return registrar;
 	}
 
 	/**
 	 * @param companyRegister the companyRegister to set
 	 */
-	public void setCompanyRegister(Date companyRegister) {
-		this.companyRegister = companyRegister;
+	public void setRegistrar(String registrar) {
+		this.registrar = registrar;
 	}
 
 

@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
+import net.poweregg.util.DateUtils;
 import net.poweregg.util.StringUtils;
 
 /**
@@ -408,7 +409,7 @@ public class WebDbUtils {
 		} catch (JSONException e) {
 			return null;
 		}
-		return new Date(json.getString(WebDbConstant.JSON_RECORD_VALUE));
+		return DateUtils.getDate(json.getString(WebDbConstant.JSON_RECORD_VALUE));
 	}
 
 	/**
