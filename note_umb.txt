@@ -4,3 +4,8 @@ private String xxx;
 
 2. Lấy dữ liệu webdb
 Dùng restAPI (getJsonObject)
+
+
+Vướng mắc:
+Các xử lý baseForm
+Dữ liệu từ JSON null
