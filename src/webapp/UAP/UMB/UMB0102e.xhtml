@@ -66,42 +66,40 @@
 				<p:div styleClass="contents" style="margin-bottom:10px;">
 					<h:panelGrid columns="2" styleClass="detail"
 						columnClasses="label, item">
-						<p:outputLabel value="#{messages.rrd11_l_applier}" for="i_emp"
-							rendered="#{RRD11Bean.selectEmp == '0'}" />
-						<p:outputEmp value="#{RRD11Bean.emp}" id="i_emp"
-							rendered="#{RRD11Bean.selectEmp == '0'}" />
+						<p:outputLabel value="#{messages.umb_l_applier}" for="i_emp"
+							rendered="#{UMB01Bean.selectEmp == '0'}" />
+						<p:outputEmp value="#{UMB01Bean.emp}" id="i_emp"
+							rendered="#{UMB01Bean.selectEmp == '0'}" />
 
-						<p:outputLabel value="#{messages.rrd11_l_applier}" for="i_emp2"
-							rendered="#{RRD11Bean.selectEmp == '1'}" />
-						<p:selectEmp id="i_emp2" value="#{RRD11Bean.inputEmpParam}"
-							corpId="#{RRD11Bean.empParam.corpId}" nowrap="true"
-							required="true" rendered="#{RRD11Bean.selectEmp == '1'}"
+						<p:outputLabel value="#{messages.umb_l_applier}" for="i_emp2"
+							rendered="#{UMB01Bean.selectEmp == '1'}" />
+						<p:selectEmp id="i_emp2" value="#{UMB01Bean.inputEmpParam}"
+							corpId="#{UMB01Bean.empParam.corpId}" nowrap="true"
+							required="true" rendered="#{UMB01Bean.selectEmp == '1'}"
 							immediate="true">
 						</p:selectEmp>
-						<p:outputLabel value="#{messages.rrd11_l_applyDate}"
+
+						<p:outputLabel value="#{messages.umb_l_applyDate}"
 							for="i_appDate" />
 						<p:inputDate id="i_appDate" required="true"
-							value="#{RRD11Bean.applyDate}">
+							value="#{UMB01Bean.applyDate}">
 							<f:converter converterId="net.poweregg.faces.DateConverter" />
 						</p:inputDate>
-						<p:outputLabel value="#{messages.rrd11_l_subjectName}"
-							for="i_subject" rendered="#{RRD11Bean.appMatter.titleInputFlag}" />
-						<p:inputText id="i_subject" required="true"
-							value="#{RRD11Bean.titleApply}" styleClass="long text_on"
-							validator="net.poweregg.faces.TextValidator"
-							rendered="#{RRD11Bean.appMatter.titleInputFlag}" />
-						<p:outputLabel value="#{messages.rrd11_l_priority}"
-							rendered="#{RRD11Bean.appMatter.priorityUsageFlag != false}" />
 
+						<p:outputLabel value="#{messages.umb_l_subjectName}"
+							for="i_subject" />
+						<p:inputText id="i_subject" required="true"
+							value="#{UMB01Bean.titleApply}" styleClass="long text_on"
+							validator="net.poweregg.faces.TextValidator" />
+
+						<p:outputLabel value="#{messages.umb_l_priority}" />
 						<h:selectOneRadio styleClass="collapse-table-nopad"
-							value="#{RRD11Bean.priority}"
-							rendered="#{RRD11Bean.appMatter.priorityUsageFlag != false}">
-							<f:selectItem itemLabel="#{messages.rrd11_l_usual}"
+							value="#{UMB01Bean.priority}">
+							<f:selectItem itemLabel="#{messages.umb_l_usual}"
 								itemValue="0001" />
-							<f:selectItem itemLabel="#{messages.rrd11_l_urgent}"
+							<f:selectItem itemLabel="#{messages.umb_l_urgent}"
 								itemValue="0002" />
 						</h:selectOneRadio>
-
 					</h:panelGrid>
 				</p:div>
 

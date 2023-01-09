@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import net.poweregg.mitsubishi.service.MitsubishiService;
 import net.poweregg.mitsubishi.webdb.utils.CSVUtils;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
+import net.poweregg.organization.entity.Employee;
 import net.poweregg.util.NumberUtils;
 import net.poweregg.util.StringUtils;
 import net.poweregg.web.engine.navigation.LoginUser;
@@ -39,6 +41,9 @@ import net.poweregg.webdb.util.ArrayCollectionUtil;
 @PEIntercepter
 public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	private static final String PRIORITY_USUAL = "0001";
+    private static final String PRIORITY_URGENT = "0002";
 
 	@EJB
 	private ClassificationService classificationService;
@@ -59,10 +64,27 @@ public class UMB01Bean implements Serializable {
 	@Login
 	private LoginUser loginUser;
 	
+	private String selectEmp = "";
+	
+	private Employee emp;
+	
+	/** 申請日 */
+    private Date applyDate;
+    /** 件名 */
+    private String titleApply = "";
+    /** 優先度 */
+    private String priority = "";
+    
 	public String initUMB0102e() throws Exception {
 		if (loginUser == null) {
 			return "login";
 		}
+		
+		selectEmp = "0";
+        emp = loginUser.getCurrentLoginInfo().getEmployee();
+        applyDate = new Date();
+        titleApply = "";
+        priority = PRIORITY_USUAL;
 		
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
 		return StringUtils.EMPTY;
@@ -467,5 +489,75 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setDataNo(String dataNo) {
 		this.dataNo = dataNo;
+	}
+
+	/**
+	 * @return the selectEmp
+	 */
+	public String getSelectEmp() {
+		return selectEmp;
+	}
+
+	/**
+	 * @param selectEmp the selectEmp to set
+	 */
+	public void setSelectEmp(String selectEmp) {
+		this.selectEmp = selectEmp;
+	}
+
+	/**
+	 * @return the emp
+	 */
+	public Employee getEmp() {
+		return emp;
+	}
+
+	/**
+	 * @param emp the emp to set
+	 */
+	public void setEmp(Employee emp) {
+		this.emp = emp;
+	}
+
+	/**
+	 * @return the applyDate
+	 */
+	public Date getApplyDate() {
+		return applyDate;
+	}
+
+	/**
+	 * @param applyDate the applyDate to set
+	 */
+	public void setApplyDate(Date applyDate) {
+		this.applyDate = applyDate;
+	}
+
+	/**
+	 * @return the titleApply
+	 */
+	public String getTitleApply() {
+		return titleApply;
+	}
+
+	/**
+	 * @param titleApply the titleApply to set
+	 */
+	public void setTitleApply(String titleApply) {
+		this.titleApply = titleApply;
+	}
+
+	/**
+	 * @return the priority
+	 */
+	public String getPriority() {
+		return priority;
+	}
+
+	/**
+	 * @param priority the priority to set
+	 */
+	public void setPriority(String priority) {
+		this.priority = priority;
 	}
 }
