@@ -117,6 +117,21 @@
 						</h:panelGrid>
 					</p:div>
 				</p:div>
+				
+				<p:div styleClass="contents margin">
+                  <h:panelGrid columns="2" styleClass="detail" columnClasses="label, item">
+                  		<p:outputLabel value="#{messages.umb_l_paperAppending}"
+                              for="i_paperAppending"/>
+                        <p:inputTextarea id="i_paperAppending" 
+                            cols="30" rows="3" maxlength="600"
+                            value="#{UMB01Bean.paperDocument}"
+                            validator="net.poweregg.faces.TextValidator"/>
+                        <p:outputLabel value="#{messages.umb_l_attachFile}"
+                                for="i_attachFile"/>
+                        <p:inputAttachFile id="i_attachFile"
+                                  value="#{UMB01Bean.attachFileList}"/>
+                    </h:panelGrid>
+                </p:div>
 			</p:panelMain>
 		</h:form>
 	</p:body>

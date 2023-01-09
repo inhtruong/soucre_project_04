@@ -31,6 +31,7 @@ import net.poweregg.mitsubishi.webdb.utils.CSVUtils;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.organization.entity.Employee;
+import net.poweregg.ui.param.AttachFile;
 import net.poweregg.util.NumberUtils;
 import net.poweregg.util.StringUtils;
 import net.poweregg.web.engine.navigation.LoginUser;
@@ -71,9 +72,12 @@ public class UMB01Bean implements Serializable {
 	/** 申請日 */
     private Date applyDate;
     /** 件名 */
-    private String titleApply = "";
+    private String titleApply;
     /** 優先度 */
-    private String priority = "";
+    private String priority;
+    
+    private String paperDocument;
+    private List<AttachFile> attachFileList;
     
 	public String initUMB0102e() throws Exception {
 		if (loginUser == null) {
@@ -85,6 +89,8 @@ public class UMB01Bean implements Serializable {
         applyDate = new Date();
         titleApply = "";
         priority = PRIORITY_USUAL;
+        paperDocument = "";
+        attachFileList = null;
 		
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
 		return StringUtils.EMPTY;
@@ -559,5 +565,33 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setPriority(String priority) {
 		this.priority = priority;
+	}
+
+	/**
+	 * @return the paperDocument
+	 */
+	public String getPaperDocument() {
+		return paperDocument;
+	}
+
+	/**
+	 * @param paperDocument the paperDocument to set
+	 */
+	public void setPaperDocument(String paperDocument) {
+		this.paperDocument = paperDocument;
+	}
+
+	/**
+	 * @return the attachFileList
+	 */
+	public List<AttachFile> getAttachFileList() {
+		return attachFileList;
+	}
+
+	/**
+	 * @param attachFileList the attachFileList to set
+	 */
+	public void setAttachFileList(List<AttachFile> attachFileList) {
+		this.attachFileList = attachFileList;
 	}
 }
