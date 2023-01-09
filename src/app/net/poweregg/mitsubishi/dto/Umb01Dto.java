@@ -1,6 +1,3 @@
-/**
- * 
- */
 package net.poweregg.mitsubishi.dto;
 
 import java.io.Serializable;
@@ -23,6 +20,9 @@ public class Umb01Dto implements Serializable {
 	
 	public Umb01Dto() {
 		super();
+		this.priceUnitRefDto = new PriceUnitRefDto();
+		this.priceRefDto = new PriceRefDto();
+		this.priceCalParam = new PriceCalParam();
 	}
 	
 	private String id;
@@ -53,9 +53,9 @@ public class Umb01Dto implements Serializable {
 	private BigDecimal partitionUnitPrice;
 	
 	/**
-	 * 仮単価マスcタ・価格マスタより参照Dto
+	 * 仮単価マスタ・価格マスタより参照Dto
 	 */
-	private PriceUnitRefDto unitPriceRefDto;
+	private PriceUnitRefDto priceUnitRefDto;
 	
 	/**
 	 * 価格マスタより参照Dto
@@ -152,17 +152,17 @@ public class Umb01Dto implements Serializable {
 	}
 
 	/**
-	 * @return the unitPriceRefDto
+	 * @return the priceUnitRefDto
 	 */
-	public PriceUnitRefDto getUnitPriceRefDto() {
-		return unitPriceRefDto;
+	public PriceUnitRefDto getPriceUnitRefDto() {
+		return priceUnitRefDto;
 	}
 
 	/**
-	 * @param unitPriceRefDto the unitPriceRefDto to set
+	 * @param priceUnitRefDto the priceUnitRefDto to set
 	 */
-	public void setUnitPriceRefDto(PriceUnitRefDto unitPriceRefDto) {
-		this.unitPriceRefDto = unitPriceRefDto;
+	public void setPriceUnitRefDto(PriceUnitRefDto priceUnitRefDto) {
+		this.priceUnitRefDto = priceUnitRefDto;
 	}
 
 	/**

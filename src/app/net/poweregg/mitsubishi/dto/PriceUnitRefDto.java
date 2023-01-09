@@ -7,13 +7,15 @@ import java.util.Date;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
 
+import net.poweregg.ui.param.WDBRefParam;
+
 /**
  * 仮単価マスタ・価格マスタより参照Dto
  * 
  * @author dattdd
  *
  */
-@Named(value = "UnitPriceRefDto")
+@Named(value = "PriceUnitRefDto")
 @ConversationScoped
 public class PriceUnitRefDto implements Serializable {
 
@@ -164,9 +166,14 @@ public class PriceUnitRefDto implements Serializable {
 	private String priceForm;
 	
 	/**
+	 * 用途CD
+	 */
+	private String usageCD;
+	
+	/**
 	 * 用途参照
 	 */
-	private String usageRef;
+	private WDBRefParam usageRef;
 	
 	/**
 	 * 納品予定日時
@@ -581,16 +588,30 @@ public class PriceUnitRefDto implements Serializable {
 	}
 
 	/**
+	 * @return the usageCD
+	 */
+	public String getUsageCD() {
+		return usageCD;
+	}
+
+	/**
+	 * @param usageCD the usageCD to set
+	 */
+	public void setUsageCD(String usageCD) {
+		this.usageCD = usageCD;
+	}
+
+	/**
 	 * @return the usageRef
 	 */
-	public String getUsageRef() {
+	public WDBRefParam getUsageRef() {
 		return usageRef;
 	}
 
 	/**
 	 * @param usageRef the usageRef to set
 	 */
-	public void setUsageRef(String usageRef) {
+	public void setUsageRef(WDBRefParam usageRef) {
 		this.usageRef = usageRef;
 	}
 
