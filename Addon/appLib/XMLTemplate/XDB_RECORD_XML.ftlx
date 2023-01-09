@@ -1,0 +1,5 @@
+<#if param.item?has_content>
+<XDB_LAYOUT type="record">
+ <#outputformat "undefined">${param.item}</#outputformat>
+</XDB_LAYOUT>
+</#if>

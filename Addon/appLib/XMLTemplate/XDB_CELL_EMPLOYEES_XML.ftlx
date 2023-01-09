@@ -1,0 +1,13 @@
+<XDB_CELL>
+	<XDB_FIELD type="${param.cond.itemType}" fieldid="${param.cond.fieldId}"></XDB_FIELD>
+	<#list param.cond.codeNameLst as emp>
+		<XDB_CODE cnt="${emp?index}">
+			<![CDATA[${emp.code!}]]>
+		</XDB_CODE> 
+	</#list>
+	<#if param.cond.codeNameLst?has_content>
+	<XDB_LABEL type="${param.cond.itemType!}" empName="${param.cond.firstEmpName!}" countOtherEmployee="${param.cond.countOtherEmps!}" otherEmployee="${param.cond.otherEmps!}">
+		<![CDATA[]]>
+	</XDB_LABEL>
+	</#if>
+</XDB_CELL>

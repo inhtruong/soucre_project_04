@@ -1,0 +1,14 @@
+<XDB_CELL>
+	<XDB_FIELD type="${param.cond.itemType}" fieldid="${param.cond.fieldId}"></XDB_FIELD>
+	<#list param.cond.codeNameLst as item>
+		<XDB_CODE cnt="${item?index}">
+			<![CDATA[${item.code!}]]>
+		</XDB_CODE>
+	</#list>
+	<XDB_LABEL type="${param.cond.itemType}" 
+		<#if param.cond.entName?has_content>ent="${param.cond.entName}"</#if> 
+		<#if param.cond.postName?has_content>pos="${param.cond.postName}"</#if> 
+		<#if param.cond.perName?has_content>per="${param.cond.perName}"</#if>>
+		<![CDATA[Customer]]>
+	</XDB_LABEL>
+</XDB_CELL>

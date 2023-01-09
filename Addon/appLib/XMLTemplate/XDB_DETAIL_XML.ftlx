@@ -1,0 +1,5 @@
+<#if param.row?has_content>
+<XDB_LAYOUT type="detail">
+	<#outputformat "undefined">${param.row}</#outputformat>
+</XDB_LAYOUT>
+</#if>

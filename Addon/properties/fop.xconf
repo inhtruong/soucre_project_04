@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+
+<!-- NOTE: This is the version of the configuration -->
+<fop version="1.0">
+<renderers>
+ <renderer mime="application/pdf">
+
+<fonts>
+<!--<auto-detect/>-->
+
+<font metrics-url="C:/PE4J/PEWEB/properties/IpagStsong.xml" kerning="yes" embed-url="C:/PE4J/PEWEB/applib/fonts/IpagStsong.ttf">
+    <font-triplet name="IPAGothic" style="normal" weight="normal"/>
+    <font-triplet name="IPAGothic" style="normal" weight="bold"/>
+    <font-triplet name="IPAGothic" style="italic" weight="normal"/>
+    <font-triplet name="sans-serif" style="normal" weight="normal"/>
+    <font-triplet name="sans-serif" style="normal" weight="bold"/>
+    <font-triplet name="sans-serif" style="italic" weight="normal"/>
+    <font-triplet name="Helvetica" style="normal" weight="normal"/>
+    <font-triplet name="Helvetica" style="normal" weight="bold"/>
+    <font-triplet name="Helvetica" style="italic" weight="normal"/>
+    <font-triplet name="SansSerif" style="normal" weight="normal"/>
+    <font-triplet name="SansSerif" style="normal" weight="bold"/>
+    <font-triplet name="SansSerif" style="italic" weight="normal"/>
+    <font-triplet name="Times" style="normal" weight="normal"/>
+    <font-triplet name="Times" style="normal" weight="bold"/>
+    <font-triplet name="Times" style="italic" weight="normal"/>
+    <font-triplet name="Times Roman," style="normal" weight="normal"/>
+    <font-triplet name="Times Roman," style="normal" weight="bold"/>
+    <font-triplet name="Times Roman," style="italic" weight="normal"/>
+    <font-triplet name="Times-Roman" style="normal" weight="normal"/>
+    <font-triplet name="Times-Roman" style="normal" weight="bold"/>
+    <font-triplet name="Times-Roman" style="italic" weight="normal"/>
+    <font-triplet name="serif" style="normal" weight="normal"/>
+    <font-triplet name="serif" style="normal" weight="bold"/>
+    <font-triplet name="serif" style="italic" weight="normal"/>
+    <font-triplet name="any" style="normal" weight="normal"/>
+    <font-triplet name="any" style="normal" weight="bold"/>
+    <font-triplet name="any" style="italic" weight="normal"/>
+    <font-triplet name="Courier" style="normal" weight="normal"/>
+    <font-triplet name="Courier" style="normal" weight="bold"/>
+    <font-triplet name="Courier" style="italic" weight="normal"/>
+    <font-triplet name="monospace" style="normal" weight="normal"/>
+    <font-triplet name="monospace" style="normal" weight="bold"/>
+    <font-triplet name="monospace" style="italic" weight="normal"/>
+    <font-triplet name="Monospaced" style="normal" weight="normal"/>
+    <font-triplet name="Monospaced" style="normal" weight="bold"/>
+    <font-triplet name="Monospaced" style="italic" weight="normal"/>
+    <font-triplet name="Symbol" style="normal" weight="normal"/>
+    <font-triplet name="Symbol" style="normal" weight="bold"/>
+    <font-triplet name="Symbol" style="italic" weight="normal"/>
+    <font-triplet name="ZapfDingbats" style="normal" weight="normal"/>
+    <font-triplet name="ZapfDingbats" style="normal" weight="bold"/>
+    <font-triplet name="ZapfDingbats" style="italic" weight="normal"/>
+</font>
+</fonts>
+
+ </renderer>
+</renderers>
+
+</fop>
+

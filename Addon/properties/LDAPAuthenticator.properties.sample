@@ -1,0 +1,3 @@
+AuthLDAPUrl=ldap://adserver.example.local/cn=users,dc=example,dc=local?sAMAccountName
+AuthLDAPBindDN=cn=POWEREGG,cn=Users,dc=example,dc=local
+AuthLDAPBindPassword=password

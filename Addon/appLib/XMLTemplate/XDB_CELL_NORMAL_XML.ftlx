@@ -1,0 +1,9 @@
+<XDB_CELL>
+	<XDB_FIELD type="${param.cond.itemType}" fieldid="${param.cond.fieldId}"></XDB_FIELD>
+	<XDB_CODE cnt="${param.cond.dispOrder!}">
+		<![CDATA[${param.cond.codeName.code!}]]>
+	</XDB_CODE>
+	<XDB_LABEL cnt="${param.cond.dispOrder!}">
+		<![CDATA[${param.cond.codeName.name!}]]>
+	</XDB_LABEL>
+</XDB_CELL>

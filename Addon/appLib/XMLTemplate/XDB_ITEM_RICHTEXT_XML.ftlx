@@ -1,0 +1,10 @@
+<XDB_ITEM type="${param.cond.itemType}" spLabel="${param.cond.fieldName}" fieldid="${param.cond.fieldId}">
+	<XDB_DATA cnt="${param.cond.dispOrder}">
+		<XDB_CODE>
+			<![CDATA[${param.cond.codeName.code!?no_esc}]]>
+		</XDB_CODE>
+		<XDB_NAME>
+			<![CDATA[${param.cond.codeName.name!?no_esc}]]>
+		</XDB_NAME>
+	</XDB_DATA>
+</XDB_ITEM>

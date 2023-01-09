@@ -1,0 +1,11 @@
+<XDB_CELL>
+<XDB_FIELD type="${param.cond.itemType}" fieldid="${param.cond.fieldId}"></XDB_FIELD>
+<#list param.cond.files as cell>
+	<XDB_CODE cnt="${cell?index}">
+		<![CDATA[${cell.docId!}]]>
+	</XDB_CODE>
+	<XDB_LABEL type="${param.cond.itemType}" fileSize="${cell.fileSize!}" fileName="${cell.encodedFileName!}" docId="${cell.docId!}" cnt="${cell?index}">
+		<![CDATA[${cell.fileName!}]]>
+	</XDB_LABEL>
+</#list>
+</XDB_CELL>

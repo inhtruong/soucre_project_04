@@ -1,0 +1,3 @@
+<XDB_ROW type="data" >
+<#outputformat "undefined">${param.cell}</#outputformat>
+</XDB_ROW>

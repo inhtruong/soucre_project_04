@@ -1,0 +1,12 @@
+<XDB_ITEM type="${param.cond.itemType}" spLabel="${param.cond.fieldName}" fieldid="${param.cond.fieldId}">
+<#list param.cond.files as item>
+	<XDB_DATA cnt="${item?index}" fileSize="${item.fileSize!}" fileName="${item.encodedFileName!}" docId="${item.docId!}">
+		<XDB_CODE>
+			<![CDATA[${item.docId!}]]>
+		</XDB_CODE>
+		<XDB_NAME>
+			<![CDATA[${item.fileName!}]]>
+		</XDB_NAME>
+	</XDB_DATA>
+</#list>
+</XDB_ITEM>

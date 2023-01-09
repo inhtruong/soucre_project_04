@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RPR0101r_subReport3" language="groovy" pageWidth="664" pageHeight="595" orientation="Landscape" columnWidth="664" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="APPLYMASTERID" class="java.math.BigDecimal"/>
+	<queryString>
+		<![CDATA[SELECT SCREENNAME FROM
+(SELECT SCREENNAME, DISPORDER, 'YES' AS HASPOSTSCRIPTCONN FROM XT2_SCREEN_DEF
+WHERE ID IN
+(
+ SELECT SCREENID FROM RT2_POSTSCRIPT_CONN WHERE APPMATTERID = $P{APPLYMASTERID}
+)
+UNION
+SELECT '※設定なし' SCREENNAME, -1 AS DISPORDER,
+  case
+    WHEN (SELECT COUNT(ID) FROM RT2_POSTSCRIPT_CONN WHERE APPMATTERID = $P{APPLYMASTERID}) > 0 then 'YES'
+    ELSE 'NO'
+  end
+AS HASPOSTSCRIPTCONN) TEMPVIEW
+WHERE (SCREENNAME = '※設定なし' AND HASPOSTSCRIPTCONN='NO') OR (SCREENNAME <> '※設定なし'  AND HASPOSTSCRIPTCONN='YES')
+ORDER BY DISPORDER]]>
+	</queryString>
+	<field name="SCREENNAME" class="java.lang.String"/>
+	<group name="detail" minHeightToStartNewPage="20">
+		<groupHeader>
+			<band height="13">
+				<staticText>
+					<reportElement x="0" y="2" width="89" height="11"/>
+					<textElement>
+						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="HeiseiKakuGo-W5" pdfEncoding="UniJIS-UCS2-H"/>
+					</textElement>
+					<text><![CDATA[＜追記用画面＞]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="1" width="565" height="11" isPrintWhenDetailOverflows="true"/>
+				<textElement>
+					<font fontName="Serif" size="8" pdfFontName="HeiseiMin-W3" pdfEncoding="UniJIS-UCS2-H" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{SCREENNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

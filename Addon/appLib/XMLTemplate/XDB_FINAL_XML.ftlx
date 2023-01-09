@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<DOCUMENT method="xdb" version="1.0">
+<#outputformat "undefined">${param.xml}</#outputformat>
+</DOCUMENT>
