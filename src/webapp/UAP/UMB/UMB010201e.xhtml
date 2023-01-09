@@ -1,0 +1,123 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http:// www.w3.org/TR/xhtml1-transitional.dtd">
+<!--
+ 	Process 	: 人事情報見直し申請 - 住居情報
+ 	Document	: umb010201e.xhtml
+ 	Created on  : 2023/01/04
+ 	Author		: dattdd
+  -->
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://www.poweregg.net/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j">
+
+<p:head>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</p:head>
+<ui:composition>
+	<p:outputLabel for="tab1_dataMigrationNO" value="データ移行NO" />
+	<p:inputNumber id="tab1_dataMigrationNO" styleClass="middle text_off" digitsBeforePoint="15" digitsAfterPoint="0" onchange="" minus="true" dec="true" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.dataMigrationNo}"/>
+
+	<p:outputLabel for="tab1_dataNO" value="データNO" />
+	<p:inputNumber id="tab1_dataNO" styleClass="middle text_off" digitsBeforePoint="15" digitsAfterPoint="0" onchange="" minus="true" dec="true" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.dataNo}"/>
+
+	<p:outputLabel for="tab1_sourceRecordCreationDatetime" value="送信元レコード作成日時" />
+	<p:inputDateTime id="tab1_sourceRecordCreationDatetime"
+		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.srcCreateDate}">
+		<f:converter converterId="net.poweregg.faces.DateConverter" />
+	</p:inputDateTime>
+
+	<p:outputLabel for="tab1_transactionCD" value="取引CD" />
+	<p:inputText id="tab1_transactionCD" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.transactionCD}" />
+
+	<p:outputLabel for="tab1_salesDepartmentCD" value="売上部門CD" />
+		<p:inputText id="tab1_salesDepartmentCD" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.salesDepartmentCD}" />
+
+	<p:outputLabel for="tab1_upperCategoryCD" value="上位部門CD" />
+	<p:inputText id="tab1_upperCategoryCD" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.upperCategoryCD}" />
+
+	<p:outputLabel for="tab1_accountDepartmentCD" value="会計部門CD" />
+	<p:inputText id="tab1_accountDepartmentCD" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.accountDepartmentCD}" />
+
+	<p:outputLabel for="tab1_orderNO" value="受注NO" />
+	<p:inputText id="tab1_orderNO" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.orderNo}" />
+
+	<p:outputLabel for="tab1_orderDetailNO" value="受注明細NO" />
+	<p:inputText id="tab1_orderDetailNO" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.salesOrderNo}" />
+
+	<p:outputLabel for="tab1_customerCD" value="得意先CD" />
+	<p:inputText id="tab1_customerCD" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerCD}" />
+
+	<p:outputLabel for="tab1_customerName" value="得意先名" />
+	<p:inputText id="tab1_customerName" styleClass="long text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerName}" />
+
+	<p:outputLabel for="tab1_destinationCD1" value="仕向先CD1" />
+	<p:inputText id="tab1_destinationCD1" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationCD1}" />
+
+	<p:outputLabel for="tab1_destinationName1" value="仕向先名1" />
+	<p:inputText id="tab1_destinationName1" styleClass="long text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationName1}" />
+
+	<p:outputLabel for="tab1_destinationCD2" value="仕向先CD2" />
+	<p:inputText id="tab1_destinationCD2" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationCD2}" />
+
+	<p:outputLabel for="tab1_destinationName2" value="仕向先名2" />
+	<p:inputText id="tab1_destinationName2" styleClass="long text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationName2}" />
+
+	<p:outputLabel for="tab1_destinationCD" value="納品先CD" />
+	<p:inputText id="tab1_destinationCD" styleClass="middle text_off " maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.deliveryDestinationCD}" />
+
+	<p:outputLabel for="tab1_destinationName" value="納品先名" />
+	<p:inputText id="tab1_destinationName" styleClass="long text_off" maxlength="40" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.deliveryDestinationName}" />
+
+	<p:outputLabel for="tab1_productNameAbbreviation" value="品名略号" />
+	<p:inputText id="tab1_productNameAbbreviation" styleClass="long text_off" maxlength="40" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.productNameAbbreviation}" />
+
+	<p:outputLabel for="tab1_colorNo" value="カラーNo" />
+	<p:inputText id="tab1_colorNo" styleClass="middle text_off" maxlength="5" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.colorNo}" />
+
+	<p:outputLabel for="tab1_grade1" value="グレード1" />
+	<p:inputText id="tab1_grade1" styleClass="long text_off" maxlength="5" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.grade1}" />
+
+	<p:outputLabel for="tab1_userItem" value="ユーザー品目" />
+	<p:inputText id="tab1_userItem" styleClass="long text_off" maxlength="40" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.userItem}" />
+
+	<p:outputLabel for="tab1_currencyCD" value="通貨CD" />
+	<p:inputText id="tab1_currencyCD" styleClass="middle text_off" maxlength="3" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.currencyCD}" />
+
+	<p:outputLabel for="tab1_transactionUnitCD" value="仕向先名2" />
+	<p:inputText id="tab1_transactionUnitCD" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.transactionUnitCD}" />
+
+	<p:outputLabel for="tab1_packing" value="荷姿" />
+	<p:inputText id="tab1_packing" styleClass="long text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.packing}" />
+
+	<p:outputLabel for="tab1_clientBranchNumber" value="取引先枝番" />
+	<p:inputText id="tab1_clientBranchNumber" styleClass="middle text_off" maxlength="2" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.clientBranchNumber}" />
+
+	<p:outputLabel for="tab1_priceForm" value="価格形態" />
+	<p:inputText id="tab1_priceForm" styleClass="middle text_off" maxlength="2" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.priceForm}" />
+
+	<p:outputLabel for="tab1_usageReference" value="用途参照" />
+	<p:commandLink id="tab1_usageReference" styleClass="short text_off" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.usageCD}" />
+
+	<p:outputLabel for="tab1_scheduledDeliveryDate" value="納品予定日時" />
+	<p:inputDateTime id="tab1_scheduledDeliveryDate"
+		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.deliveryDate}">
+		<f:converter converterId="net.poweregg.faces.DateConverter" />
+	</p:inputDateTime>
+
+	<p:outputLabel for="tab1_commodityClassificationCD1" value="品目分類CD1" />
+	<p:inputText id="tab1_commodityClassificationCD1" styleClass="middle text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.commodityClassificationCD1}" />
+
+	<p:outputLabel for="tab1_orderDate" value="受注日" />
+	<p:inputDate id="tab1_orderDate" required="false"
+		  styleClass="short text_off" maxlength="20" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.orderDate}"/>
+
+	<p:outputLabel for="tab1_registrar" value="登録担当者" />
+	<p:inputText id="tab1_registrar" styleClass="long text_off" maxlength="100" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.registrar}" />
+
+</ui:composition>
+</html>
