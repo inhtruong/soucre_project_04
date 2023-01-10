@@ -44,7 +44,7 @@ public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final String PRIORITY_USUAL = "0001";
-    private static final String PRIORITY_URGENT = "0002";
+	private static final String PRIORITY_URGENT = "0002";
 
 	@EJB
 	private ClassificationService classificationService;
@@ -70,28 +70,40 @@ public class UMB01Bean implements Serializable {
 	private Employee emp;
 	
 	/** 申請日 */
-    private Date applyDate;
-    /** 件名 */
-    private String titleApply;
-    /** 優先度 */
-    private String priority;
-    
-    private String paperDocument;
-    private List<AttachFile> attachFileList;
-    
+	private Date applyDate;
+	/** 件名 */
+	private String titleApply;
+	/** 優先度 */
+	private String priority;
+
+	private String paperDocument;
+	private List<AttachFile> attachFileList;
+	
+	private List<String> transactionList;
+	private List<String> dataUpdateCategoryList;
+	
+	private String unitPriceDataRef;
+	private String priceDataRef;
+	private String usageRef;
+
 	public String initUMB0102e() throws Exception {
 		if (loginUser == null) {
 			return "login";
 		}
-		
+
 		selectEmp = "0";
-        emp = loginUser.getCurrentLoginInfo().getEmployee();
-        applyDate = new Date();
-        titleApply = "";
-        priority = PRIORITY_USUAL;
-        paperDocument = "";
-        attachFileList = null;
-		
+		emp = loginUser.getCurrentLoginInfo().getEmployee();
+		applyDate = new Date();
+		titleApply = "";
+		priority = PRIORITY_USUAL;
+		paperDocument = "";
+		attachFileList = null;
+		unitPriceDataRef= "";
+		priceDataRef= "";
+		usageRef= "";
+
+		// TODO Instance transactionList, dataUpdateCategoryList
+
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
 		return StringUtils.EMPTY;
 	}
@@ -593,5 +605,75 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setAttachFileList(List<AttachFile> attachFileList) {
 		this.attachFileList = attachFileList;
+	}
+
+	/**
+	 * @return the transactionList
+	 */
+	public List<String> getTransactionList() {
+		return transactionList;
+	}
+
+	/**
+	 * @param transactionList the transactionList to set
+	 */
+	public void setTransactionList(List<String> transactionList) {
+		this.transactionList = transactionList;
+	}
+
+	/**
+	 * @return the dataUpdateCategoryList
+	 */
+	public List<String> getDataUpdateCategoryList() {
+		return dataUpdateCategoryList;
+	}
+
+	/**
+	 * @param dataUpdateCategoryList the dataUpdateCategoryList to set
+	 */
+	public void setDataUpdateCategoryList(List<String> dataUpdateCategoryList) {
+		this.dataUpdateCategoryList = dataUpdateCategoryList;
+	}
+
+	/**
+	 * @return the unitPriceDataRef
+	 */
+	public String getUnitPriceDataRef() {
+		return unitPriceDataRef;
+	}
+
+	/**
+	 * @param unitPriceDataRef the unitPriceDataRef to set
+	 */
+	public void setUnitPriceDataRef(String unitPriceDataRef) {
+		this.unitPriceDataRef = unitPriceDataRef;
+	}
+
+	/**
+	 * @return the priceDataRef
+	 */
+	public String getPriceDataRef() {
+		return priceDataRef;
+	}
+
+	/**
+	 * @param priceDataRef the priceDataRef to set
+	 */
+	public void setPriceDataRef(String priceDataRef) {
+		this.priceDataRef = priceDataRef;
+	}
+
+	/**
+	 * @return the usageRef
+	 */
+	public String getUsageRef() {
+		return usageRef;
+	}
+
+	/**
+	 * @param usageRef the usageRef to set
+	 */
+	public void setUsageRef(String usageRef) {
+		this.usageRef = usageRef;
 	}
 }

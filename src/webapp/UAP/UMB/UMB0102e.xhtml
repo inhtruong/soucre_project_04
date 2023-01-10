@@ -21,7 +21,12 @@
 	<p:body styleClass="settingPage">
 		<h:form id="frm" enctype="multipart/form-data">
 			<p:panelTabs>
-				<p:tab label="123" selected="true" disabled="true" />
+				<p:tab label="#{messages.umb_l_application}" selected="true"
+					disabled="true" />
+				<p:tab label="#{messages.umb_l_inquiry}" selected="false"
+					disabled="true" />
+				<p:tab label="#{messages.umb_l_temporarySaving}" selected="false"
+					disabled="true" />
 			</p:panelTabs>
 
 			<p:panelController id="controller" collapse="true">
@@ -37,7 +42,7 @@
 				<f:facet name="title">
 					<h:panelGroup>
 						<h1>
-							<h:outputText value="123"></h:outputText>
+							<h:outputText value="価格伺い申請（入力）"></h:outputText>
 						</h1>
 					</h:panelGroup>
 				</f:facet>
@@ -79,8 +84,7 @@
 							immediate="true">
 						</p:selectEmp>
 
-						<p:outputLabel value="#{messages.umb_l_applyDate}"
-							for="i_appDate" />
+						<p:outputLabel value="#{messages.umb_l_applyDate}" for="i_appDate" />
 						<p:inputDate id="i_appDate" required="true"
 							value="#{UMB01Bean.applyDate}">
 							<f:converter converterId="net.poweregg.faces.DateConverter" />
@@ -117,21 +121,21 @@
 						</h:panelGrid>
 					</p:div>
 				</p:div>
-				
+
 				<p:div styleClass="contents margin">
-                  <h:panelGrid columns="2" styleClass="detail" columnClasses="label, item">
-                  		<p:outputLabel value="#{messages.umb_l_paperAppending}"
-                              for="i_paperAppending"/>
-                        <p:inputTextarea id="i_paperAppending" 
-                            cols="30" rows="3" maxlength="600"
-                            value="#{UMB01Bean.paperDocument}"
-                            validator="net.poweregg.faces.TextValidator"/>
-                        <p:outputLabel value="#{messages.umb_l_attachFile}"
-                                for="i_attachFile"/>
-                        <p:inputAttachFile id="i_attachFile"
-                                  value="#{UMB01Bean.attachFileList}"/>
-                    </h:panelGrid>
-                </p:div>
+					<h:panelGrid columns="2" styleClass="detail"
+						columnClasses="label, item">
+						<p:outputLabel value="#{messages.umb_l_paperAppending}"
+							for="i_paperAppending" />
+						<p:inputTextarea id="i_paperAppending" cols="30" rows="3"
+							maxlength="600" value="#{UMB01Bean.paperDocument}"
+							validator="net.poweregg.faces.TextValidator" />
+						<p:outputLabel value="#{messages.umb_l_attachFile}"
+							for="i_attachFile" />
+						<p:inputAttachFile id="i_attachFile"
+							value="#{UMB01Bean.attachFileList}" />
+					</h:panelGrid>
+				</p:div>
 			</p:panelMain>
 		</h:form>
 	</p:body>

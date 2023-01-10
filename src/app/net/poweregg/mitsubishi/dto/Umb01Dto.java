@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
 
+import net.poweregg.ui.param.WDBRefParam;
+
 /**
  * UMB Dto
  * 
@@ -30,12 +32,12 @@ public class Umb01Dto implements Serializable {
 	/**
 	 * 仮単価マスタデータ参照
 	 */
-	private String unitPriceDataRef;
+	private WDBRefParam unitPriceDataRef;
 	
 	/**
 	 * 単価マスタ参照
 	 */
-	private String priceDataRef;
+	private WDBRefParam priceDataRef;
 	
 	/**
 	 * 二次店口銭率
@@ -84,28 +86,28 @@ public class Umb01Dto implements Serializable {
 	/**
 	 * @return the unitPriceDataRef
 	 */
-	public String getUnitPriceDataRef() {
+	public WDBRefParam getUnitPriceDataRef() {
 		return unitPriceDataRef;
 	}
 
 	/**
 	 * @param unitPriceDataRef the unitPriceDataRef to set
 	 */
-	public void setUnitPriceDataRef(String unitPriceDataRef) {
+	public void setUnitPriceDataRef(WDBRefParam unitPriceDataRef) {
 		this.unitPriceDataRef = unitPriceDataRef;
 	}
 
 	/**
 	 * @return the priceDataRef
 	 */
-	public String getPriceDataRef() {
+	public WDBRefParam getPriceDataRef() {
 		return priceDataRef;
 	}
 
 	/**
 	 * @param priceDataRef the priceDataRef to set
 	 */
-	public void setPriceDataRef(String priceDataRef) {
+	public void setPriceDataRef(WDBRefParam priceDataRef) {
 		this.priceDataRef = priceDataRef;
 	}
 

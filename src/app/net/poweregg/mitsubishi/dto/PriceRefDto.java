@@ -67,6 +67,11 @@ public class PriceRefDto implements Serializable {
 	private BigDecimal unitPriceBefRevision;
 	
 	/**
+	 * データ更新区分CD
+	 */
+	private String dataUpdateCategoryCD;
+	
+	/**
 	 * データ更新区分
 	 */
 	private String dataUpdateCategory;
@@ -192,6 +197,20 @@ public class PriceRefDto implements Serializable {
 	 */
 	public void setPrimaryStoreOpenRate(BigDecimal primaryStoreOpenRate) {
 		this.primaryStoreOpenRate = primaryStoreOpenRate;
+	}
+
+	/**
+	 * @return the dataUpdateCategoryCD
+	 */
+	public String getDataUpdateCategoryCD() {
+		return dataUpdateCategoryCD;
+	}
+
+	/**
+	 * @param dataUpdateCategoryCD the dataUpdateCategoryCD to set
+	 */
+	public void setDataUpdateCategoryCD(String dataUpdateCategoryCD) {
+		this.dataUpdateCategoryCD = dataUpdateCategoryCD;
 	}
 
 	/**
