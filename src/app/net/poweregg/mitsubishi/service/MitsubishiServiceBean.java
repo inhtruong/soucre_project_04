@@ -1,5 +1,6 @@
 package net.poweregg.mitsubishi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -16,6 +17,7 @@ import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
+import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 import net.poweregg.mitsubishi.webdb.utils.Operand;
 import net.poweregg.mitsubishi.webdb.utils.QueryConj;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
@@ -73,15 +75,110 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		return umb01Dto;
 	}
 
+	/**
+	 * get table from table master of price
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public List<UmitsubishiMasterDto> getDataPriceMaster() throws Exception {
+		Long offset = 0L;
+		Long limit = null;
+		// get classInfo by commonNo: UMB01
+		List<ClassInfo> webDBClassInfos = classificationService.getClassInfoList(WebDbConstant.ALL_CORP,
+				COMMON_NO.COMMON_NO_UMB01.getValue());
+		List<UmitsubishiMasterDto> umbResults = new ArrayList<>();
+
+		if (webDBClassInfos == null) {
+			return null;
+		}
+
+		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0);
+
+		// call API
+		JSONObject jsonObj = webdbUtils.getDataFormAPI(null, null, offset, limit);
+		// get list json records
+		JSONArray resultJson = webdbUtils.getJsonObjectWebDB(jsonObj, offset, limit);
+
+		// Khong tim duoc thi record no return luon
+		if (resultJson == null || resultJson.length() == 0) {
+			return new ArrayList<>();
+		}
+
+		// parse json to dto
+		for (int i = 0; i < resultJson.length(); i++) {
+			UmitsubishiMasterDto umbTempDto = new UmitsubishiMasterDto();
+			JSONObject recordObj = resultJson.getJSONObject(i);
+			for (int j = 0; j < recordObj.length(); j++) {
+				/** データ行NO */
+				umbTempDto.setDataLineNo(WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_LINE_NO));
+				/** データNO */
+				umbTempDto.setDataNo(WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO));
+				/** 送信元レコード作成日時 */
+				umbTempDto.setSrcCreateDate(
+						WebDbUtils.getValue(recordObj, MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME));
+				/** データ更新区分 */
+				umbTempDto.setUpdateCategory(WebDbUtils.getValue(recordObj, MitsubishiConst.DATE_UPDATE_CATEGORY));
+				/** 得意先CD */
+				umbTempDto.setCustomerCD(WebDbUtils.getValue(recordObj, MitsubishiConst.CUSTOMER_CD));
+				/** 仕向先CD1 */
+				umbTempDto.setDestinationCD1(WebDbUtils.getValue(recordObj, MitsubishiConst.DESTINATION_CD1));
+				/** 仕向先CD2 */
+				umbTempDto.setDestinationCD2(WebDbUtils.getValue(recordObj, MitsubishiConst.DESTINATION_CD2));
+				/** 品名略号 */
+				umbTempDto.setProductNameAbbreviation(
+						WebDbUtils.getValue(recordObj, MitsubishiConst.PRODUCT_NAME_ABBREVIATION));
+				/** カラーNo */
+				umbTempDto.setColorNo(WebDbUtils.getValue(recordObj, MitsubishiConst.COLOR_NO));
+				/** グレード1 */
+				umbTempDto.setGrade1(WebDbUtils.getValue(recordObj, MitsubishiConst.GRADE_1));
+				/** 適用開始日 */
+				umbTempDto.setStartDateApplication(
+						WebDbUtils.getValue(recordObj, MitsubishiConst.APPLICATION_START_DATE));
+				/** ロット数量 */
+				umbTempDto.setLotQuantity(WebDbUtils.getValue(recordObj, MitsubishiConst.LOT_QUANTITY));
+				/** 通貨CD */
+				umbTempDto.setUpdateCategory(WebDbUtils.getValue(recordObj, MitsubishiConst.DATE_UPDATE_CATEGORY));
+				/** 取引先枝番 */
+				umbTempDto.setClientBranchNumber(WebDbUtils.getValue(recordObj, MitsubishiConst.CLIENT_BRANCH_NUMBER));
+				/** 価格形態 */
+				umbTempDto.setPriceForm(WebDbUtils.getValue(recordObj, MitsubishiConst.PRICE_FORM));
+				/** 仕切単価 */
+				umbTempDto.setUnitPricePartition(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE));
+				/** 改定前単価 */
+				umbTempDto.setUnitPriceBefRevision(
+						WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION));
+				/** 小口配送単価 */
+				umbTempDto.setUnitPriceSmallParcel(
+						WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
+				/** 小口着色単価 */
+				umbTempDto.setUnitPriceForeheadColor(
+						WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
+				/** 末端価格 */
+				umbTempDto.setRetailPrice(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE));
+				/** 契約番号 */
+				umbTempDto.setContractNumber(WebDbUtils.getValue(recordObj, MitsubishiConst.CONTRACT_NUMBER));
+				/** 用途参照 */
+				umbTempDto.setUsageRef(WebDbUtils.getValue(recordObj, MitsubishiConst.USAGE_REF));
+
+			}
+			umbResults.add(umbTempDto);
+		}
+		return umbResults;
+	}
+
 	private void parseJSONtoUMB01(Umb01Dto umb01Dto, JSONObject resultJson) throws JSONException {
 		// id
 		umb01Dto.setId(WebDbUtils.getValue(resultJson, "No"));
 		// データ移行NO
-		umb01Dto.getPriceUnitRefDto().setDataMigrationNo(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.DATA_LINE_NO));
+		umb01Dto.getPriceUnitRefDto()
+				.setDataMigrationNo(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.DATA_LINE_NO));
 		// データNO
 		umb01Dto.getPriceUnitRefDto().setDataNo(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.DATA_NO));
 		// 送信元レコード作成日時
-		umb01Dto.getPriceUnitRefDto().setSrcCreateDate(WebDbUtils.getDateValue(resultJson, MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME));
+		umb01Dto.getPriceUnitRefDto()
+				.setSrcCreateDate(WebDbUtils.getDateValue(resultJson, MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME));
 		// 会社CD
 		umb01Dto.getPriceUnitRefDto().setCompanyCD(WebDbUtils.getValue(resultJson, MitsubishiConst.COMPANY_CD));
 		// 取引CD

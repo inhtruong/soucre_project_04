@@ -72,10 +72,13 @@ public class MitsubishiConst {
 	public static final String SEARCH_LIST_WEBDB = "searchListWebDB";
 	public static final String BACK_TO_SEARCH = "backToSearhPage";
 	
+
+	
 	// constant for csv umb01
 	public static final String DATA_LINE_NO = "データ移行NO";
 	public static final String DATA_NO = "データNO";
 	public static final String SOURCE_RECORD_CREATION_DATETIME = "送信元レコード作成日時";
+	public static final String DATE_UPDATE_CATEGORY = "データ更新区分";
 	public static final String COMPANY_CD = "会社CD";
 	public static final String TRANSACTION_CD = "取引CD";
 	public static final String SALES_DEPARTMENT_CD = "売上部門CD";
@@ -95,11 +98,20 @@ public class MitsubishiConst {
 	public static final String COLOR_NO = "カラーNO";
 	public static final String GRADE_1 = "グレード1";
 	public static final String USER_ITEM = "ユーザー品目";
+	public static final String APPLICATION_START_DATE = "適用開始日";
+	public static final String LOT_QUANTITY = "ロット数量";
 	public static final String CURRENCY_CD = "通貨CD";
 	public static final String TRANSACTION_UNIT_CD = "取引単位CD";
 	public static final String PACKING = "荷姿";
 	public static final String CLIENT_BRANCH_NUMBER = "取引先枝番";
 	public static final String PRICE_FORM = "価格形態";
+	public static final String PARTITION_UNIT_PRICE = "仕切単価(決定値)";
+	public static final String UNIT_PRICE_BEFORE_REVISION = "改定前単価";
+	public static final String UNIT_PRICE_SMALL_PARCEL = "小口配送単価";
+	public static final String UNIT_PRICE_FOREHEAD_COLOR = "小口着色単価";
+	public static final String RETAIL_PRICE = "末端価格、エンドユーザー単価";
+	public static final String CONTRACT_NUMBER = "契約番号";
+	public static final String USAGE_CD = "用途CD";
 	public static final String USAGE_REF = "用途参照";
 	public static final String SCHEDULED_DELIVERY_DATE = "納品予定日時";
 	public static final String PRODUCT_NAME_CLASS_CD1 = "品名分類CD1";
@@ -107,6 +119,12 @@ public class MitsubishiConst {
 	public static final String REGISTRAR = "登録担当者";
 	public static final String SALESPERSON_CD = "売上担当者CD";
 	public static final String SALESPERSON_NAME = "売上担当者名";
+	public static final String PRICE_MASTER = "価格マスタ";
+	public static final String STATUS = "状態";
+	public static final String NEW_APPLICATION_URL = "価格伺いマスタ申請(新規)";
+	public static final String EDIT_REQUEST_URL = "価格伺いマスタ申請(編集)";
+	public static final String DEPRECATION_REQUEST_URL = "価格伺いマスタ申請(廃止)";
+	public static final String NOT_APPLIED = "未申請";
 
 	public enum EVENT {
 		MODIFY("U"), CONFIRM("C");
@@ -183,5 +201,21 @@ public class MitsubishiConst {
 		public String getValue() {
 			return value;
 		}
+	}
+
+	public enum BATCH_ID {
+
+		UMB01_BATCH("UMB01Batch");
+		
+		private final String value;
+
+		BATCH_ID(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
 	}
 }
