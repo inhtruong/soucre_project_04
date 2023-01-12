@@ -24,6 +24,8 @@ public class PriceCalParam implements Serializable {
 		super();
 	}
 	
+	private String pattern;
+	
 	/**
 	 * 末端価格1(割増無)
 	 */
@@ -227,7 +229,7 @@ public class PriceCalParam implements Serializable {
 	/**
 	 * 仕切単価1(計算値)(小口)
 	 */
-	private String unitPartitionUnitPrice1;
+	private String deliPartitionUnitPrice1;
 	
 	/**
 	 * 仕切単価2(計算値)(小口)
@@ -253,6 +255,20 @@ public class PriceCalParam implements Serializable {
 	 * 仕切単価2(計算値)(100kg)
 	 */
 	private String smallPartitionUnitPrice2;
+
+	/**
+	 * @return the pattern
+	 */
+	public String getPattern() {
+		return pattern;
+	}
+
+	/**
+	 * @param pattern the pattern to set
+	 */
+	public void setPattern(String pattern) {
+		this.pattern = pattern;
+	}
 
 	/**
 	 * @return the noPreRetailPrice1
@@ -815,17 +831,17 @@ public class PriceCalParam implements Serializable {
 	}
 
 	/**
-	 * @return the unitPartitionUnitPrice1
+	 * @return the deliPartitionUnitPrice1
 	 */
-	public String getUnitPartitionUnitPrice1() {
-		return unitPartitionUnitPrice1;
+	public String getDeliPartitionUnitPrice1() {
+		return deliPartitionUnitPrice1;
 	}
 
 	/**
-	 * @param unitPartitionUnitPrice1 the unitPartitionUnitPrice1 to set
+	 * @param deliPartitionUnitPrice1 the deliPartitionUnitPrice1 to set
 	 */
-	public void setUnitPartitionUnitPrice1(String unitPartitionUnitPrice1) {
-		this.unitPartitionUnitPrice1 = unitPartitionUnitPrice1;
+	public void setDeliPartitionUnitPrice1(String deliPartitionUnitPrice1) {
+		this.deliPartitionUnitPrice1 = deliPartitionUnitPrice1;
 	}
 
 	/**

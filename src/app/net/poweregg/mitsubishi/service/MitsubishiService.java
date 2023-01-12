@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import net.poweregg.mitsubishi.dto.PriceCalParam;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
 import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 
@@ -18,5 +19,11 @@ public interface MitsubishiService {
 	 * @throws Exception
 	 */
 	public List<UmitsubishiMasterDto> getDataPriceMaster() throws Exception;
+	
+	/**
+	 * create XML table price
+	 * @return
+	 */
+	public String createXMLTablePrice(PriceCalParam param);
 	
 }

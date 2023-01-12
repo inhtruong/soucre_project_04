@@ -8,12 +8,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -25,7 +28,11 @@ import net.poweregg.annotations.PEIntercepter;
 import net.poweregg.annotations.RequestParameter;
 import net.poweregg.common.ClassificationService;
 import net.poweregg.common.entity.ClassInfo;
+import net.poweregg.dataflow.ApplyException;
+import net.poweregg.dataflow.DataFlowService;
 import net.poweregg.dataflow.DataFlowUtil;
+import net.poweregg.dataflow.DataflowHelperBean;
+import net.poweregg.dataflow.entity.ApplicationForm;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
@@ -37,6 +44,7 @@ import net.poweregg.mitsubishi.webdb.utils.LogUtils;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.organization.entity.Employee;
+import net.poweregg.seam.faces.FacesMessages;
 import net.poweregg.ui.param.AttachFile;
 import net.poweregg.util.JSFUtil;
 import net.poweregg.util.NumberUtils;
@@ -59,6 +67,9 @@ public class UMB01Bean implements Serializable {
 
 	@EJB
 	private MitsubishiService mitsubishiService;
+	
+	@EJB
+	private DataFlowService FlowService;
 
 	private Integer returnCode;
 
@@ -68,10 +79,21 @@ public class UMB01Bean implements Serializable {
 
 	@RequestParameter(value = "datano")
 	private String dataNo;
+	@RequestParameter(value="mode")
+	private String mode;
 
 	@Inject
 	@Login
 	private LoginUser loginUser;
+	
+	@Inject
+	private DataflowHelperBean dataflowHelper;
+	
+	@Inject
+	private transient FacesMessages facesMessages;
+	
+	// 申請受付番号
+    private Long appRecepNo;
 
 	private String fileUrlPath;
 
@@ -91,6 +113,8 @@ public class UMB01Bean implements Serializable {
 	
 	private List<String> transactionList;
 	private List<String> dataUpdateCategoryList;
+	private List<String> reasonInquiryList;
+	private List<String> retroactiveClassificationList;
 	
 	private String unitPriceDataRef;
 	private String priceDataRef;
@@ -98,25 +122,23 @@ public class UMB01Bean implements Serializable {
 	
 	private String outputHtml;
 
-	/**
-	 * @return the outputHtml
-	 */
-	public String getOutputHtml() {
-		return outputHtml;
-	}
-
-	/**
-	 * @param outputHtml the outputHtml to set
-	 */
-	public void setOutputHtml(String outputHtml) {
-		this.outputHtml = outputHtml;
-	}
-
 	public String initUMB0102e() throws Exception {
 		if (loginUser == null) {
 			return "login";
 		}
-
+		
+		if ("1".equals(mode)) {
+			modeNewApply();
+		} else if ("2".equals(mode)){
+			// modeModifyApply()
+		} else {
+			// modeDeleteApply()
+		}
+		
+		return StringUtils.EMPTY;
+	}
+	
+	private void modeNewApply() throws Exception {
 		selectEmp = "0";
 		emp = loginUser.getCurrentLoginInfo().getEmployee();
 		applyDate = new Date();
@@ -127,33 +149,77 @@ public class UMB01Bean implements Serializable {
 		unitPriceDataRef= "";
 		priceDataRef= "";
 		usageRef= "";
-
+		
 		// TODO Instance transactionList, dataUpdateCategoryList
-
+		
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
 		
-		BigDecimal value1 = new BigDecimal("1000");
-		BigDecimal value2 = new BigDecimal("199");
-		BigDecimal value3 = value1.add(value2);
-		
-		String xmlString = new String();
-        xmlString = "";
-        String CR_LF = System.getProperties().getProperty("line.separator");
-        xmlString += "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + CR_LF;
-        xmlString += "<U_MITSUBISHI>" + CR_LF;
-
-        xmlString += "<TB_DEFAULT>" + CR_LF;
-			xmlString += "<TERMINALUNITPRICE>" + value1.toString() + "</TERMINALUNITPRICE>" + CR_LF;
-			xmlString += "<TOTALTERMINALUNITPRICE>" + value1.toString() + "</TOTALTERMINALUNITPRICE>" + CR_LF;
-			xmlString += "<PARTITIONUNITPRICE>" + value2.toString() + "</PARTITIONUNITPRICE>" + CR_LF;
-			xmlString += "<PARTITIONUNITPRICE_D>" + value3.toString() + "</PARTITIONUNITPRICE_D>" + CR_LF;
-        xmlString += "</TB_DEFAULT>" + CR_LF;
-        xmlString += "</U_MITSUBISHI>" + CR_LF;
-        
-		outputHtml = new DataFlowUtil().transformXML2HTML(xmlString, "umb01Test.xsl");
-		
-		return StringUtils.EMPTY;
+		outputHtml = new DataFlowUtil()
+				.transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto.getPriceCalParam()), "umb01Test.xsl");
 	}
+	
+	/**
+     * 確認ボタン押下時のアクション.
+     * @return "confirm"
+     */
+    public String toConfirm() {
+        // ワークフローパラメタ編集
+        dataflowHelper.setApplyDate(getToday());
+        dataflowHelper.setTitle("機械警備新規稟議書：" + loginUser.getEmpName());
+        dataflowHelper.setBaseForm("9310");
+        dataflowHelper.setApplicant(loginUser.getCorpID(), loginUser.getDeptID(), loginUser.getEmpID());
+        dataflowHelper.setApplyCondition("1");
+        dataflowHelper.setRouteEdit(true);  // ルート変更可能に設定
+        dataflowHelper.setXslFileName("umb02.xsl");
+
+        try {
+        	appRecepNo = dataflowHelper.prepareApply();
+            return "confirm";
+        } catch (ApplyException e) {
+            return "" ;
+        }
+    }
+    
+    /******************************************
+     * 申請ボタン押下時のアクション
+     * @return "apply"
+     ******************************************/
+    public String apply() {
+
+        try {
+            // 申請確定
+            dataflowHelper.apply();
+            // 自分のデータを保存する.
+            ApplicationForm apForm = FlowService.findApplicationFormByRecpNo(appRecepNo);
+
+//            outerRingi.setAppRecpNo(appRecepNo);
+//            outerRingi.setApplicationNo(apForm.getApplicationNo().getApplicationNo());
+//            approvalServiceUot.save(outerRingi);
+
+            facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+
+            dataflowHelper.reset();
+
+            return "apply";
+        } catch (ApplyException ex) {
+	// コード変換 :  nullと空文字の違い　処理日付　 20211215  移行ツール ver1
+            return "" ;
+        }
+    }
+    
+    /**
+     * 現在時間取得
+     * @return 
+     */
+    private Date getToday() {
+        GregorianCalendar calelder = new GregorianCalendar();
+        calelder.setTime(new Date());
+        calelder.set(Calendar.HOUR_OF_DAY, 0);
+        calelder.set(Calendar.MINUTE, 0);
+        calelder.set(Calendar.SECOND, 0);
+        calelder.set(Calendar.MILLISECOND, 0);
+        return calelder.getTime();
+    }
 
 	public void executeBatch() throws Exception {
 		String logFileFullPath = "";
@@ -545,7 +611,7 @@ public class UMB01Bean implements Serializable {
 		BigDecimal lotQuantity = umb01Dto.getPriceRefDto().getLotQuantity();
 		BigDecimal tempValue = new BigDecimal("0");
 		BigDecimal valueLotSmall = new BigDecimal("100");
-		BigDecimal valueLotLarge = new BigDecimal("100");
+		BigDecimal valueLotLarge = new BigDecimal("300");
 
 		// pattern 1
 		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
@@ -592,7 +658,7 @@ public class UMB01Bean implements Serializable {
 			//set data 
 			umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(retailPrice.add(unitPriceSmallParcel).toString());
-			umb01Dto.getPriceCalParam().setUnitPartitionUnitPrice1(tempValue.toString());
+			umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
 		}
 
 		// pattern 4
@@ -641,12 +707,16 @@ public class UMB01Bean implements Serializable {
 				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			if (valueLotSmall.compareTo(lotQuantity) >= 0 && valueLotLarge.compareTo(lotQuantity) < 0) {
+			if (valueLotSmall.compareTo(lotQuantity) < 0) {
 				tempValue = retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor)
 						.subtract(primaryStoreOpenRate
 								.multiply(retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor)))
 						.subtract(secondStoreOpenRate
 								.multiply(retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor)));
+			} else if (valueLotSmall.compareTo(lotQuantity) >= 0 && valueLotLarge.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceSmallParcel)
+						.subtract(primaryStoreOpenRate.multiply(retailPrice.add(unitPriceSmallParcel)))
+						.subtract(secondStoreOpenRate.multiply(retailPrice.add(unitPriceSmallParcel)));
 			} else {
 				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
 						.subtract(secondStoreOpenRate.multiply(retailPrice));
@@ -890,5 +960,47 @@ public class UMB01Bean implements Serializable {
 
 	public void setFileUrlPath(String fileUrlPath) {
 		this.fileUrlPath = fileUrlPath;
+	}
+
+	/**
+	 * @return the reasonInquiryList
+	 */
+	public List<String> getReasonInquiryList() {
+		return reasonInquiryList;
+	}
+
+	/**
+	 * @param reasonInquiryList the reasonInquiryList to set
+	 */
+	public void setReasonInquiryList(List<String> reasonInquiryList) {
+		this.reasonInquiryList = reasonInquiryList;
+	}
+
+	/**
+	 * @return the retroactiveClassificationList
+	 */
+	public List<String> getRetroactiveClassificationList() {
+		return retroactiveClassificationList;
+	}
+
+	/**
+	 * @param retroactiveClassificationList the retroactiveClassificationList to set
+	 */
+	public void setRetroactiveClassificationList(List<String> retroactiveClassificationList) {
+		this.retroactiveClassificationList = retroactiveClassificationList;
+	}
+
+	/**
+	 * @return the outputHtml
+	 */
+	public String getOutputHtml() {
+		return outputHtml;
+	}
+
+	/**
+	 * @param outputHtml the outputHtml to set
+	 */
+	public void setOutputHtml(String outputHtml) {
+		this.outputHtml = outputHtml;
 	}
 }

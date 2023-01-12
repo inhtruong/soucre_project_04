@@ -16,6 +16,7 @@ import net.poweregg.common.ClassificationService;
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
+import net.poweregg.mitsubishi.dto.PriceCalParam;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
 import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 import net.poweregg.mitsubishi.webdb.utils.Operand;
@@ -23,6 +24,7 @@ import net.poweregg.mitsubishi.webdb.utils.QueryConj;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.security.CertificationService;
+import net.poweregg.util.StringUtils;
 
 @Stateless
 public class MitsubishiServiceBean implements MitsubishiService {
@@ -251,5 +253,211 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		umb01Dto.getPriceUnitRefDto().setOrderDate(WebDbUtils.getDateValue(resultJson, MitsubishiConst.ORDER_DATE));
 		// 登録担当者
 		umb01Dto.getPriceUnitRefDto().setRegistrar(WebDbUtils.getValue(resultJson, MitsubishiConst.REGISTRAR));
+	}
+	
+	/**
+	 * create XML table price
+	 * @return
+	 */
+	public String createXMLTablePrice(PriceCalParam param) {
+		// XML作成部分
+		String xmlString = new String();
+		
+		xmlString = "";
+		String CR_LF = System.getProperties().getProperty("line.separator");
+		xmlString += "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + CR_LF;
+		xmlString += "<U_MITSUBISHI>" + CR_LF;
+		xmlString += "<TB_DEFAULT>" + CR_LF;
+		
+		xmlString += "<NOPRERETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getNoPreRetailPrice1()) 
+				+ "</NOPRERETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<NOPRERETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getNoPreRetailPrice2()) 
+				+ "</NOPRERETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<DELIRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getDeliRetailPrice1()) 
+				+ "</DELIRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<DELIRETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getNoPreRetailPrice2()) 
+				+ "</DELIRETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<LARGERETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getLargeRetailPrice1()) 
+				+ "</LARGERETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<LARGERETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getLargeRetailPrice2()) 
+				+ "</LARGERETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<SMALLRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getSmallRetailPrice1()) 
+				+ "</SMALLRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<SMALLRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getLargeRetailPrice2()) 
+				+ "</SMALLRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<DELIUNITPRICEPARCEL1>" 
+				+ StringUtils.toEmpty(param.getDeliUnitPriceParcel1()) 
+				+ "</DELIUNITPRICEPARCEL1>" + CR_LF;
+		
+		xmlString += "<DELIUNITPRICEPARCEL2>" 
+				+ StringUtils.toEmpty(param.getDeliUnitPriceParcel2()) 
+				+ "</DELIUNITPRICEPARCEL2>" + CR_LF;
+		
+		xmlString += "<SMALLUNITPRICEPARCEL1>" 
+				+ StringUtils.toEmpty(param.getSmallUnitPriceParcel1()) 
+				+ "</SMALLUNITPRICEPARCEL1>" + CR_LF;
+		
+		xmlString += "<SMALLUNITPRICEPARCEL2>" 
+				+ StringUtils.toEmpty(param.getSmallUnitPriceParcel2()) 
+				+ "</SMALLUNITPRICEPARCEL2>" + CR_LF;
+		
+		xmlString += "<LARGEUNITPRICEFOREHEAD1>" 
+				+ StringUtils.toEmpty(param.getLargeUnitPriceForehead1()) 
+				+ "</LARGEUNITPRICEFOREHEAD1>" + CR_LF;
+		
+		xmlString += "<LARGEUNITPRICEFOREHEAD2>" 
+				+ StringUtils.toEmpty(param.getLargeUnitPriceForehead2()) 
+				+ "</LARGEUNITPRICEFOREHEAD2>" + CR_LF;
+		
+		xmlString += "<SMALLUNITPRICEFOREHEAD1>" 
+				+ StringUtils.toEmpty(param.getSmallUnitPriceForehead1()) 
+				+ "</SMALLUNITPRICEFOREHEAD1>" + CR_LF;
+		
+		xmlString += "<SMALLUNITPRICEFOREHEAD2>" 
+				+ StringUtils.toEmpty(param.getSmallUnitPriceForehead2()) 
+				+ "</SMALLUNITPRICEFOREHEAD2>" + CR_LF;
+		
+		xmlString += "<NOPRETOTALRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getNoPreTotalRetailPrice1())
+				+ "</NOPRETOTALRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<NOPRETOTALRETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getNoPreTotalRetailPrice2()) 
+				+ "</NOPRETOTALRETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<DELITOTALRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getDeliTotalRetailPrice1()) 
+				+ "</DELITOTALRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<DELITOTALRETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getDeliTotalRetailPrice2()) 
+				+ "</DELITOTALRETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<LARGETOTALRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getLargeTotalRetailPrice1()) 
+				+ "</LARGETOTALRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<LARGETOTALRETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getLargeTotalRetailPrice1()) 
+				+ "</LARGETOTALRETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<SMALLTOTALRETAILPRICE1>" 
+				+ StringUtils.toEmpty(param.getSmallTotalRetailPrice1()) 
+				+ "</SMALLTOTALRETAILPRICE1>" + CR_LF;
+		
+		xmlString += "<SMALLTOTALRETAILPRICE2>" 
+				+ StringUtils.toEmpty(param.getSmallTotalRetailPrice2()) 
+				+ "</SMALLTOTALRETAILPRICE2>" + CR_LF;
+		
+		xmlString += "<NOPREPRIMARYOPENAMOUNT>" 
+				+ StringUtils.toEmpty(param.getNoPrePrimaryOpenAmount()) 
+				+ "</NOPREPRIMARYOPENAMOUNT>" + CR_LF;
+		
+		xmlString += "<DELIPRIMARYOPENAMOUNT>" 
+				+ StringUtils.toEmpty(param.getDeliPrimaryOpenAmount()) 
+				+ "</DELIPRIMARYOPENAMOUNT>" + CR_LF;
+		
+		xmlString += "<LARGEPRIMARYOPENAMOUNT>" 
+				+ StringUtils.toEmpty(param.getLargePrimaryOpenAmount()) 
+				+ "</LARGEPRIMARYOPENAMOUNT>" + CR_LF;
+		
+		xmlString += "<SMALLPRIMARYOPENAMOUNT>" 
+				+ StringUtils.toEmpty(param.getSmallPrimaryOpenAmount()) 
+				+ "</SMALLPRIMARYOPENAMOUNT>" + CR_LF;
+		
+		xmlString += "<NOPREPRIMARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getNoPrePrimaryOpenRate()) 
+				+ "</NOPREPRIMARYOPENRATE>" + CR_LF;
+		
+		xmlString += "<DELIPRIMARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getDeliPrimaryOpenRate()) 
+				+ "</DELIPRIMARYOPENRATE>" + CR_LF;
+		
+		xmlString += "<LARGEPRIMARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getLargePrimaryOpenRate()) 
+				+ "</LARGEPRIMARYOPENRATE>" + CR_LF;
+		
+		xmlString += "<SMALLPRIMARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getSmallPrimaryOpenRate()) 
+				+ "</SMALLPRIMARYOPENRATE>" + CR_LF;
+		
+		xmlString += "<NOPREPRIMARYCOMMISAMOUNT>" 
+				+ StringUtils.toEmpty(param.getNoPrePrimaryCommisAmount()) 
+				+ "</NOPREPRIMARYCOMMISAMOUNT>" + CR_LF;
+		
+		xmlString += "<DELIPRIMARYCOMMISAMOUNT>" 
+				+ StringUtils.toEmpty(param.getDeliPrimaryCommisAmount()) 
+				+ "</DELIPRIMARYCOMMISAMOUNT>" + CR_LF;
+		
+		xmlString += "<LARGEPRIMARYCOMMISAMOUNT>" 
+				+ StringUtils.toEmpty(param.getLargePrimaryCommisAmount()) 
+				+ "</LARGEPRIMARYCOMMISAMOUNT>" + CR_LF;
+		
+		xmlString += "<SMALLPRIMARYCOMMISAMOUNT>" 
+				+ StringUtils.toEmpty(param.getSmallPrimaryCommisAmount()) 
+				+ "</SMALLPRIMARYCOMMISAMOUNT>" + CR_LF;
+		
+		xmlString += "<SECONDSTOREOPENRATE>" 
+				+ StringUtils.toEmpty(param.getSecondStoreOpenRate()) 
+				+ "</SECONDSTOREOPENRATE>" + CR_LF;
+		
+		xmlString += "<SECONDSTOREOPENAMOUNT>" 
+				+ StringUtils.toEmpty(param.getSecondStoreOpenAmount()) 
+				+ "</SECONDSTOREOPENAMOUNT>" + CR_LF;
+		
+		xmlString += "<NOPREPARTITIONUNITPRICE1>" 
+				+ StringUtils.toEmpty(param.getNoPrePartitionUnitPrice1()) 
+				+ "</NOPREPARTITIONUNITPRICE1>" + CR_LF;
+		
+		xmlString += "<NOPREPARTITIONUNITPRICE2>" 
+				+ StringUtils.toEmpty(param.getNoPrePartitionUnitPrice2()) 
+				+ "</NOPREPARTITIONUNITPRICE2>" + CR_LF;
+		
+		xmlString += "<DELIPARTITIONUNITPRICE1>" 
+				+ StringUtils.toEmpty(param.getDeliPartitionUnitPrice1()) 
+				+ "</DELIPARTITIONUNITPRICE1>" + CR_LF;
+		
+		xmlString += "<DELIPARTITIONUNITPRICE2>" 
+				+ StringUtils.toEmpty(param.getDeliPartitionUnitPrice2()) 
+				+ "</DELIPARTITIONUNITPRICE2>" + CR_LF;
+		
+		xmlString += "<LARGEPARTITIONUNITPRICE1>" 
+				+ StringUtils.toEmpty(param.getLargePartitionUnitPrice1()) 
+				+ "</LARGEPARTITIONUNITPRICE1>" + CR_LF;
+		
+		xmlString += "<LARGEPARTITIONUNITPRICE2>" 
+				+ StringUtils.toEmpty(param.getLargePartitionUnitPrice2()) 
+				+ "</LARGEPARTITIONUNITPRICE2>" + CR_LF;
+		
+		xmlString += "<SMALLPARTITIONUNITPRICE1>" 
+				+ StringUtils.toEmpty(param.getSmallPartitionUnitPrice1()) 
+				+ "</SMALLPARTITIONUNITPRICE1>" + CR_LF;
+		
+		xmlString += "<SMALLPARTITIONUNITPRICE2>" 
+				+ StringUtils.toEmpty(param.getSmallPartitionUnitPrice2()) 
+				+ "</SMALLPARTITIONUNITPRICE2>"
+				+ CR_LF;
+		
+		xmlString += "</TB_DEFAULT>" + CR_LF;
+		xmlString += "</U_MITSUBISHI>" + CR_LF;
+		
+		return xmlString;
+		
 	}
 }
