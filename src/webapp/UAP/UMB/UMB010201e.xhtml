@@ -30,13 +30,13 @@
 		value="#{messages.umb_tab1_unitPriceDataReference}" />
 	<p:selectWebDBRef id="tab1_unitPriceDataReference"
 		value="#{UMB01Bean.umb01Dto.unitPriceDataRef}"
-		webdbRefID="#{UMB01Bean.unitPriceDataRef}" dbType="0" />
+		webdbRefID="#{UMB01Bean.unitPriceDataRef}" dbType="webDb" />
 
 	<p:outputLabel for="tab1_priceDataReference"
 		value="#{messages.umb_tab1_priceDataReference}" />
 	<p:selectWebDBRef id="tab1_priceDataReference"
 		value="#{UMB01Bean.umb01Dto.priceDataRef}"
-		webdbRefID="#{UMB01Bean.priceDataRef}" dbType="0" />
+		webdbRefID="#{UMB01Bean.priceDataRef}" dbType="webDb" />
 
 	<p:outputLabel for="tab1_customerReqConfirm"
 		value="#{messages.umb_tab1_customerReqConfirm}" />
@@ -201,12 +201,12 @@
 		value="#{messages.umb_tab1_priceForm}" />
 	<p:inputText id="tab1_priceForm" styleClass="middle text_off"
 		maxlength="2" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.priceForm}" />
-
+		
 	<p:outputLabel for="tab1_usageReference"
 		value="#{messages.umb_tab1_usageReference}" />
 	<p:selectWebDBRef id="tab1_usageReference"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.usageRef}"
-		webdbRefID="#{UMB01Bean.usageRef}" dbType="0" />
+		webdbRefID="#{UMB01Bean.usageRef}" dbType="webDb" />
 
 	<p:outputLabel for="tab1_scheduledDeliveryDate"
 		value="#{messages.umb_tab1_scheduledDeliveryDate}" />

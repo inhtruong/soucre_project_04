@@ -272,13 +272,15 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<U_MITSUBISHI>" + CR_LF;
 		xmlString += "<TB_DEFAULT>" + CR_LF;
 		
-//		xmlString += "<UNITPRICEDATAREF>" 
+		xmlString += "<UNITPRICEDATAREF>" 
 //				+ StringUtils.toEmpty(param.getUnitPriceDataRef())
-//				+ "</UNITPRICEDATAREF>" + CR_LF;
-//		
-//		xmlString += "<PRICEDATAREF>" 
+				+ "UNITPRICEDATAREF"
+				+ "</UNITPRICEDATAREF>" + CR_LF;
+		
+		xmlString += "<PRICEDATAREF>" 
 //				+ StringUtils.toEmpty(param.getPriceDataRef())
-//				+ "</PRICEDATAREF>" + CR_LF;
+				+ "PRICEDATAREF"
+				+ "</PRICEDATAREF>" + CR_LF;
 		
 		xmlString += "<DATAMIGRATIONNO>" 
 				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getDataMigrationNo())
@@ -288,9 +290,10 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getDataNo())
 				+ "</DATANO>" + CR_LF;
 		
-//		xmlString += "<SRCCREATEDATE>" 
+		xmlString += "<SRCCREATEDATE>" 
 //				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getSrcCreateDate())
-//				+ "</SRCCREATEDATE>" + CR_LF;
+				+ "10/10/2010"
+				+ "</SRCCREATEDATE>" + CR_LF;
 		
 		xmlString += "<COMPANYCD>" 
 				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getCompanyCD())
@@ -459,13 +462,15 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceRefDto().getDataUpdateCategory())
 				+ "</DATAUPDATECATEGORY>" + CR_LF;
 		
-//		xmlString += "<APPLICATIONSTARTDATE>" 
+		xmlString += "<APPLICATIONSTARTDATE>" 
 //				+ StringUtils.toEmpty(param.getPriceRefDto().getApplicationStartDate())
-//				+ "</APPLICATIONSTARTDATE>" + CR_LF;
-//		
-//		xmlString += "<APPLICATIONENDDATE>" 
+				+ "10/10/2001"
+				+ "</APPLICATIONSTARTDATE>" + CR_LF;
+		
+		xmlString += "<APPLICATIONENDDATE>" 
 //				+ StringUtils.toEmpty(param.getPriceRefDto().getApplicationEndDate())
-//				+ "</APPLICATIONENDDATE>" + CR_LF;
+				+ "10/10/2001"
+				+ "</APPLICATIONENDDATE>" + CR_LF;
 		
 		xmlString += "<CONTRACTNUMBER>" 
 				+ StringUtils.toEmpty(param.getPriceRefDto().getContractNumber())

@@ -24,6 +24,8 @@ public interface MitsubishiService {
 	 * create XML table price
 	 * @return
 	 */
-	public String createXMLTablePrice(PriceCalParam param);
+	public String createXMLTablePrice(Umb01Dto umb01Dto);
+	
+	public void updateRecordDbTemp(String recordNo, String appRecepNo) throws Exception;
 	
 }

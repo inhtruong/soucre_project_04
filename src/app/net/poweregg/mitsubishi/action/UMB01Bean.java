@@ -127,6 +127,7 @@ public class UMB01Bean implements Serializable {
 	private List<String> dataUpdateCategoryList;
 	private List<String> reasonInquiryList;
 	private List<String> retroactiveClassificationList;
+	private List<String> customerReqConfirmList;
 	
 	private String unitPriceDataRef;
 	private String priceDataRef;
@@ -163,10 +164,6 @@ public class UMB01Bean implements Serializable {
 		usageRef= "";
 		
 		// TODO Instance transactionList, dataUpdateCategoryList
-		transactionList = Arrays.asList("one", "two", "three", "four", "five");
-		dataUpdateCategoryList = Arrays.asList("one", "two", "three", "four", "five");
-		reasonInquiryList = Arrays.asList("one", "two", "three", "four", "five");
-		retroactiveClassificationList = Arrays.asList("one", "two", "three", "four", "five");
 		
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
 		
@@ -1031,6 +1028,20 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setRetroactiveClassificationList(List<String> retroactiveClassificationList) {
 		this.retroactiveClassificationList = retroactiveClassificationList;
+	}
+
+	/**
+	 * @return the customerReqConfirmList
+	 */
+	public List<String> getCustomerReqConfirmList() {
+		return customerReqConfirmList;
+	}
+
+	/**
+	 * @param customerReqConfirmList the customerReqConfirmList to set
+	 */
+	public void setCustomerReqConfirmList(List<String> customerReqConfirmList) {
+		this.customerReqConfirmList = customerReqConfirmList;
 	}
 
 	/**
