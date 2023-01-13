@@ -25,7 +25,7 @@
 		value="#{UMB01Bean.umb01Dto.priceRefDto.dataUpdateCategoryCD}">
 		<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
 	</h:selectOneMenu>
-
+	
 	<p:outputLabel for="tab1_unitPriceDataReference"
 		value="#{messages.umb_tab1_unitPriceDataReference}" />
 	<p:selectWebDBRef id="tab1_unitPriceDataReference"
@@ -76,7 +76,7 @@
 
 	<p:outputLabel for="tab1_transactionCD"
 		value="#{messages.umb_tab1_transactionCD}" />
-	<h:selectOneMenu
+	<h:selectOneMenu id="tab1_transactionCD"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.transactionCD}">
 		<f:selectItems value="#{UMB01Bean.transactionList}" />
 	</h:selectOneMenu>
@@ -233,5 +233,11 @@
 		maxlength="100"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.registrar}" />
 
+	<p:outputLabel rendered="#{UMB01.mode == '1'}" for="tab1_unitPriceBefRevision"
+		value="#{messages.umb_tab1_unitPriceBefRevision}" />
+	<p:inputNumber rendered="#{UMB01.mode == '1'}" id="tab1_unitPriceBefRevision" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true" value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceBefRevision}" />
+		
 </ui:composition>
 </html>

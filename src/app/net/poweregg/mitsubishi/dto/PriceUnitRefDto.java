@@ -23,6 +23,7 @@ public class PriceUnitRefDto implements Serializable {
 	
 	public PriceUnitRefDto() {
 		super();
+		this.usageRef = new WDBRefParam();
 	}
 	
 	/**

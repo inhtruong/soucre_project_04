@@ -25,6 +25,8 @@ public class Umb01Dto implements Serializable {
 		this.priceUnitRefDto = new PriceUnitRefDto();
 		this.priceRefDto = new PriceRefDto();
 		this.priceCalParam = new PriceCalParam();
+		this.unitPriceDataRef = new WDBRefParam();
+		this.priceDataRef = new WDBRefParam();
 	}
 	
 	private String id;

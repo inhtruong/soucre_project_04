@@ -10,5 +10,23 @@
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/UAP/UMB/UMB0102e.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>confirm</from-outcome>
+            <to-view-id>/UAP/UMB/UMB0102c.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/UAP/UMB/UMB0102c.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>return</from-outcome>
+            <to-view-id>/UAP/UMB/UMB0102e.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>apply</from-outcome>
+            <to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
 </faces-config>

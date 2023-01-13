@@ -204,6 +204,11 @@ public class UmitsubishiTempDto implements Serializable {
 	private String usageRef;
 
 	/**
+	 * 状態
+	 */
+	private String state;
+
+	/**
 	 * @return the productNameClassCD1
 	 */
 	public String getProductNameClassCD1() {
@@ -705,6 +710,20 @@ public class UmitsubishiTempDto implements Serializable {
 	 */
 	public void setDataNo(String dataNo) {
 		this.dataNo = dataNo;
+	}
+
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 
 }

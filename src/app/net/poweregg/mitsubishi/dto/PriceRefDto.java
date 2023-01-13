@@ -5,6 +5,7 @@ package net.poweregg.mitsubishi.dto;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 import javax.enterprise.context.ConversationScoped;
 import javax.inject.Named;
@@ -79,12 +80,12 @@ public class PriceRefDto implements Serializable {
 	/**
 	 * 適用開始日
 	 */
-	private String applicationStartDate;
+	private Date applicationStartDate;
 	
 	/**
 	 * 適用終了日
 	 */
-	private String applicationEndDate;
+	private Date applicationEndDate;
 	
 	/**
 	 * 契約番号
@@ -230,28 +231,28 @@ public class PriceRefDto implements Serializable {
 	/**
 	 * @return the applicationStartDate
 	 */
-	public String getApplicationStartDate() {
+	public Date getApplicationStartDate() {
 		return applicationStartDate;
 	}
 
 	/**
 	 * @param applicationStartDate the applicationStartDate to set
 	 */
-	public void setApplicationStartDate(String applicationStartDate) {
+	public void setApplicationStartDate(Date applicationStartDate) {
 		this.applicationStartDate = applicationStartDate;
 	}
 
 	/**
 	 * @return the applicationEndDate
 	 */
-	public String getApplicationEndDate() {
+	public Date getApplicationEndDate() {
 		return applicationEndDate;
 	}
 
 	/**
 	 * @param applicationEndDate the applicationEndDate to set
 	 */
-	public void setApplicationEndDate(String applicationEndDate) {
+	public void setApplicationEndDate(Date applicationEndDate) {
 		this.applicationEndDate = applicationEndDate;
 	}
 
