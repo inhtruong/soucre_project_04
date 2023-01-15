@@ -21,33 +21,33 @@
 <ui:composition>
 	<p:outputLabel for="tab1_dataUpdateCategoryCD"
 		value="#{messages.umb_tab1_dataUpdateCategoryCD}" />
-	<h:selectOneMenu id="tab1_dataUpdateCategoryCD"
+	<!-- <h:selectOneMenu id="tab1_dataUpdateCategoryCD"
 		value="#{UMB01Bean.umb01Dto.priceRefDto.dataUpdateCategoryCD}">
 		<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
-	</h:selectOneMenu>
+	</h:selectOneMenu> -->
 	
 	<p:outputLabel for="tab1_unitPriceDataReference"
 		value="#{messages.umb_tab1_unitPriceDataReference}" />
-	<p:selectWebDBRef id="tab1_unitPriceDataReference"
+	<!-- <p:selectWebDBRef id="tab1_unitPriceDataReference"
 		value="#{UMB01Bean.umb01Dto.unitPriceDataRef}"
-		webdbRefID="#{UMB01Bean.unitPriceDataRef}" dbType="webDb" />
+		webdbRefID="#{UMB01Bean.unitPriceDataRef}" dbType="webDb" /> -->
 
 	<p:outputLabel for="tab1_priceDataReference"
 		value="#{messages.umb_tab1_priceDataReference}" />
-	<p:selectWebDBRef id="tab1_priceDataReference"
+	<!-- <p:selectWebDBRef id="tab1_priceDataReference"
 		value="#{UMB01Bean.umb01Dto.priceDataRef}"
-		webdbRefID="#{UMB01Bean.priceDataRef}" dbType="webDb" />
+		webdbRefID="#{UMB01Bean.priceDataRef}" dbType="webDb" /> -->
 
 	<p:outputLabel for="tab1_customerReqConfirm"
 		value="#{messages.umb_tab1_customerReqConfirm}" />
-	<h:panelGroup>
+	<!-- <h:panelGroup>
 		<h:selectManyCheckbox id="tab1_customerReqConfirm"
 			styleClass="checktb"
 			value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerReqConfirm}">
 			<f:selectItem itemValue="0001" itemLabel="K" />
 			<f:selectItem itemValue="0002" itemLabel="O" />
 		</h:selectManyCheckbox>
-	</h:panelGroup>
+	</h:panelGroup> -->
 
 	<p:outputLabel for="tab1_contractNumber"
 		value="#{messages.umb_tab1_contractNumber}" />
@@ -76,10 +76,10 @@
 
 	<p:outputLabel for="tab1_transactionCD"
 		value="#{messages.umb_tab1_transactionCD}" />
-	<h:selectOneMenu id="tab1_transactionCD"
+	<!-- <h:selectOneMenu id="tab1_transactionCD"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.transactionCD}">
 		<f:selectItems value="#{UMB01Bean.transactionList}" />
-	</h:selectOneMenu>
+	</h:selectOneMenu> -->
 
 	<p:outputLabel for="tab1_salesDepartmentCD"
 		value="#{messages.umb_tab1_salesDepartmentCD}" />

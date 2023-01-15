@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <!--
+     Process    : 
+     Document   : UBM0102c
+ -->
+ <html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+       xmlns:f="http://xmlns.jcp.org/jsf/core"
+       xmlns:h="http://xmlns.jcp.org/jsf/html"
+       xmlns:p="http://www.poweregg.net/jsf/html">
+     <p:head title="ビルメンテ定例稟議書一時保存 削除確認 - #{messages.system_SystemName}">
+         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+     </p:head>
+     <p:body>
+         <h:form>
+             <p:panelTabs>
+                	<p:tab label="一時保存 削除確認"
+                             immediate="true"
+                             selected="true"
+                             disabled="true"/>
+             </p:panelTabs>
+             <p:panelController id="controller" collapse="#{viewstate.controllerCollapse}"/>
+             <p:panelMain id="main">
+                 <f:facet name="title">
+                     <h:panelGroup>
+                         <h1><p:outputLabel value="ビルメンテ定例稟議書一時保存 削除確認"/></h1>
+                     </h:panelGroup>
+                 </f:facet>
+                 <f:facet name="navi-upper-left">
+                     <h:panelGroup>
+                         <p:commandButton buttonClass="default"
+                                         img="/img/b_ok.gif" immediate="true"
+                                         label="削除"
+                                         action="#{UMB01Bean.apply}"/>&#160;&#160;
+                         <p:commandButton buttonClass="normal"
+                                         img="/img/b_return.gif" immediate="true"
+                                         label="戻る"
+                                         action="#{UMB01Bean.page0102eReturn}"/>
+                     </h:panelGroup>
+                 </f:facet>
+                 <f:facet name="navi-bottom-left">
+                     <h:panelGroup>
+                         <p:commandButton buttonClass="default"
+                                         img="/img/b_ok.gif" immediate="true"
+                                         label="削除"
+                                         action="#{UMB01Bean.apply}"/>&#160;&#160;
+                         <p:commandButton buttonClass="normal"
+                                         img="/img/b_return.gif" immediate="true"
+                                         label="戻る"
+                                         action="#{UMB01Bean.page0102eReturn}"/>
+                     </h:panelGroup>
+                 </f:facet>
+                 <f:facet name="message">
+                     <p:messages for="main" showDetail="true" showSummary="false" globalOnly="true"/>
+                 </f:facet>
+                <ui:include src="/FAP/FAP0010d.xhtml" >
+			     <ui:param name="fromScreen" value="UBM0102c"/>
+			</ui:include>
+             </p:panelMain>
+         </h:form>
+     </p:body>
+ </html>
+ 

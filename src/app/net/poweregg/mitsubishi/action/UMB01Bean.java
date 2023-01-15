@@ -46,7 +46,7 @@ import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 import net.poweregg.mitsubishi.dto.UmitsubishiTempDto;
 import net.poweregg.mitsubishi.service.MitsubishiService;
 import net.poweregg.mitsubishi.webdb.utils.CSVUtils;
-import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
+//import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
 import net.poweregg.mitsubishi.webdb.utils.LogUtils;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
@@ -59,6 +59,7 @@ import net.poweregg.util.NumberUtils;
 import net.poweregg.util.PESystemProperties;
 import net.poweregg.util.StringUtils;
 import net.poweregg.util.dataexport.DataExportRuntimeException;
+import net.poweregg.web.engine.dataflow.ConstStatus;
 import net.poweregg.web.engine.navigation.LoginUser;
 import net.poweregg.webdb.util.ArrayCollectionUtil;
 
@@ -77,7 +78,7 @@ public class UMB01Bean implements Serializable {
 	private MitsubishiService mitsubishiService;
 	
 	@EJB
-	private DataFlowService FlowService;
+	private DataFlowService flowService;
 
 	private Integer returnCode;
 
@@ -142,6 +143,17 @@ public class UMB01Bean implements Serializable {
 		
 		if ("1".equals(mode)) {
 			modeNewApply();
+			
+			// check appRecpNo  
+			Long appRecpNo = umb01Dto.getAppRecpNo();
+			ApplicationForm form = flowService.findApplicationFormByRecpNo(appRecpNo);
+			
+			if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(form.getStatus())
+					|| ConstStatus.STATUS_APPROVED.equals(form.getStatus())
+					|| ConstStatus.STATUS_COMPLETED.equals(form.getStatus())) {
+				// error
+				return "return";
+			}
 		} else if ("2".equals(mode)){
 			// modeModifyApply()
 		} else {
@@ -179,7 +191,7 @@ public class UMB01Bean implements Serializable {
 	public String toConfirm() {
 		// ワークフローパラメタ編集
 		dataflowHelper.setApplyDate(getToday());
-		dataflowHelper.setTitle("機械警備新規稟議書：" + loginUser.getEmpName());
+		dataflowHelper.setTitle(titleApply);
 		dataflowHelper.setBaseForm("U901");
 		dataflowHelper.setApplicant(loginUser.getCorpID(), loginUser.getDeptID(), loginUser.getEmpID());
 		dataflowHelper.setApplyCondition("a");
@@ -189,6 +201,7 @@ public class UMB01Bean implements Serializable {
 
 		try {
 			appRecepNo = dataflowHelper.prepareApply();
+			facesMessages.add("申請してよろしいですか？");
 			return "confirm";
 		} catch (ApplyException e) {
 			return "";
@@ -206,13 +219,12 @@ public class UMB01Bean implements Serializable {
 			// 申請確定
 			dataflowHelper.apply();
 			// 自分のデータを保存する.
-			ApplicationForm appForm = FlowService.findApplicationFormByRecpNo(appRecepNo);
+			ApplicationForm appForm = flowService.findApplicationFormByRecpNo(appRecepNo);
 			
-			// 
 			String recordNo = umb01Dto.getId();
 			
 			try {
-				mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString());
+				mitsubishiService.updateRecordDbTemp(recordNo, appForm.getStatus(), "Applyed");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -233,10 +245,18 @@ public class UMB01Bean implements Serializable {
 	 * 
 	 * @return "return"
 	 ******************************************/
-	public String pageReturn() {
+	public String page0102eReturn() {
+		return "return";
+	}
+	
+	/******************************************
+	 * 
+	 * 
+	 * @return "return"
+	 ******************************************/
+	public String page0102cReturn() {
 
 		FacesContextUtils.putToFlash("fromScreen", "UMB0102c");
-		FacesContextUtils.putToFlash("return", true);
 		return "return";
 
 	}
@@ -295,10 +315,10 @@ public class UMB01Bean implements Serializable {
 					WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0);
 					String result = webdbUtils.registJsonObject(putDataUmitsubishiTemp(webDBClassInfos, recordData),
 							true);
-					if (!ConvertUtils.isNullOrEmpty(result)) {
-						System.out.println(result);
-						LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), result);
-					}
+//					if (!ConvertUtils.isNullOrEmpty(result)) {
+//						System.out.println(result);
+//						LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), result);
+//					}
 				}
 				utx.commit();
 				setReturnCode(MitsubishiConst.RESULT_OK);
@@ -415,7 +435,7 @@ public class UMB01Bean implements Serializable {
 		StringBuilder url = new StringBuilder();
 		url.append(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue()))
 				.append(MessageFormat.format(messages.get("umb_l_url"), umbItem.getDataNo()));
-		regDataJson.put(MitsubishiConst.NEW_APPLICATION_URL, WebDbUtils.createRecordURL(url.toString()));
+//		regDataJson.put(MitsubishiConst.NEW_APPLICATION_URL, WebDbUtils.createRecordURL(url.toString()));
 
 		return regDataJson;
 	}

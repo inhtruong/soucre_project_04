@@ -70,6 +70,10 @@ public class Umb01Dto implements Serializable {
 	 * 
 	 */
 	private PriceCalParam priceCalParam;
+	
+	private Long appRecpNo;
+	
+	private String state;
 
 	/**
 	 * @return the id
@@ -195,5 +199,33 @@ public class Umb01Dto implements Serializable {
 	 */
 	public void setPriceCalParam(PriceCalParam priceCalParam) {
 		this.priceCalParam = priceCalParam;
+	}
+
+	/**
+	 * @return the appRecpNo
+	 */
+	public Long getAppRecpNo() {
+		return appRecpNo;
+	}
+
+	/**
+	 * @param appRecpNo the appRecpNo to set
+	 */
+	public void setAppRecpNo(Long appRecpNo) {
+		this.appRecpNo = appRecpNo;
+	}
+
+	/**
+	 * @return the state
+	 */
+	public String getState() {
+		return state;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(String state) {
+		this.state = state;
 	}
 }

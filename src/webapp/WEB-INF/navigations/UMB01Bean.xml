@@ -15,6 +15,11 @@
             <to-view-id>/UAP/UMB/UMB0102c.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
+        <navigation-case>
+            <from-outcome>return</from-outcome>
+            <to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/UAP/UMB/UMB0102c.xhtml</from-view-id>
