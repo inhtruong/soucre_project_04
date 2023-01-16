@@ -5,6 +5,9 @@ import java.util.List;
 import javax.ejb.Local;
 
 import org.json.JSONArray;
+
+import net.poweregg.common.entity.ClassInfo;
+import net.poweregg.mitsubishi.dto.PriceCalParam;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
 import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
@@ -28,9 +31,9 @@ public interface MitsubishiService {
 	public String createXMLTablePrice(Umb01Dto umb01Dto);
 	
 	public void updateRecordDbTemp(String recordNo, String appRecepNo, String state) throws Exception;
-	
+
 	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value) throws Exception;
-	
-	public WebDbUtils getInfoWebDb();
+
+	public List<ClassInfo> getInfoWebDb();
 	
 }

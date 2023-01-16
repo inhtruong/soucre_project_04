@@ -54,7 +54,8 @@
 						<p:commandButton buttonClass="normal" img="/img/b_save.gif"
 							label="一時保存" confirmFlag="false">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
-							immediate="true" label="キャンセル" cancelButton="true" action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
+							immediate="true" label="キャンセル" cancelButton="true"
+							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
 					</h:panelGroup>
 				</f:facet>
 				<f:facet name="navi-bottom-left">
@@ -64,7 +65,8 @@
 						<p:commandButton buttonClass="normal" img="/img/b_save.gif"
 							label="一時保存" confirmFlag="false">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
-							immediate="true" label="キャンセル" cancelButton="true">&#160;&#160;</p:commandButton>
+							immediate="true" label="キャンセル" cancelButton="true"
+							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
 					</h:panelGroup>
 				</f:facet>
 
@@ -121,16 +123,16 @@
 						</h:panelGrid>
 					</p:div>
 					<p:outputText escape="false" value="#{UMB01Bean.outputHtml}" />
-					
+
 					<p:div>
 						<h:panelGrid columnClasses="label, item" columns="2"
 							styleClass="detail xdb_stdlayout">
 
 							<p:outputLabel for="tab1_partitionUnitPrice"
 								value="#{messages.umb_tab1_partitionUnitPrice}" />
-							<p:inputNumber id="tab1_partitionUnitPrice" styleClass="short text_off"
-								digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
-								dec="true"
+							<p:inputNumber id="tab1_partitionUnitPrice"
+								styleClass="short text_off" digitsBeforePoint="21"
+								digitsAfterPoint="0" onchange="" minus="true" dec="true"
 								value="#{UMB01Bean.umb01Dto.partitionUnitPrice}" />
 
 							<p:outputLabel for="tab1_reasonInquiry"
@@ -139,25 +141,26 @@
 								value="#{UMB01Bean.umb01Dto.priceRefDto.reasonInquiry}">
 								<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
 							</h:selectOneMenu>
-							
-							<p:outputLabel value="#{messages.umb_tab1_dateApply}" for="tab1_dateApply"/>
+
+							<p:outputLabel value="#{messages.umb_tab1_dateApply}"
+								for="tab1_dateApply" />
 							<h:panelGroup>
 								<p:inputDate id="tab1_dateApplyStartDate"
-											value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}">
+									value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}">
 									<f:converter converterId="net.poweregg.faces.DateConverter" />
 								</p:inputDate>&#160;&#160;
 								<p:inputDate id="tab1_dateApplyEndDate"
-											value="#{UMB01Bean.umb01Dto.priceRefDto.applicationEndDate}">
+									value="#{UMB01Bean.umb01Dto.priceRefDto.applicationEndDate}">
 									<f:converter converterId="net.poweregg.faces.TimeConverter" />
 								</p:inputDate>
 							</h:panelGroup>
-							
-							<p:outputLabel rendered="#{UMB01.mode == '1'}" for="tab1_retroactiveClassification"
+
+							<p:outputLabel rendered="#{UMB01.mode == '1'}"
+								for="tab1_retroactiveClassification"
 								value="#{messages.umb_tab1_retroactiveClassification}" />
-							<h:selectOneMenu rendered="#{UMB01.mode == '1'}" id="tab1_retroactiveClassification"
-								value="#{UMB01Bean.umb01Dto.priceRefDto.retroactiveClassification}">
-								<f:selectItems value="#{UMB01Bean.retroactiveClassificationList}" />
-							</h:selectOneMenu>
+							<p:inputText rendered="#{UMB01.mode == '1'}" id="tab1_retroactiveClassification"
+								styleClass="short text_off" maxlength="20"
+								value="#{UMB01Bean.umb01Dto.priceUnitRefDto.retroactiveClassification}" />
 
 						</h:panelGrid>
 					</p:div>

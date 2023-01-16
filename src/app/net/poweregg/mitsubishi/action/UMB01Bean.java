@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -35,6 +34,7 @@ import net.poweregg.annotations.Single;
 import net.poweregg.common.ClassificationService;
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.dataflow.ApplyException;
+import net.poweregg.dataflow.ConstStatus;
 import net.poweregg.dataflow.DataFlowService;
 import net.poweregg.dataflow.DataFlowUtil;
 import net.poweregg.dataflow.DataflowHelperBean;
@@ -46,7 +46,7 @@ import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 import net.poweregg.mitsubishi.dto.UmitsubishiTempDto;
 import net.poweregg.mitsubishi.service.MitsubishiService;
 import net.poweregg.mitsubishi.webdb.utils.CSVUtils;
-//import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
+import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
 import net.poweregg.mitsubishi.webdb.utils.LogUtils;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
@@ -59,7 +59,6 @@ import net.poweregg.util.NumberUtils;
 import net.poweregg.util.PESystemProperties;
 import net.poweregg.util.StringUtils;
 import net.poweregg.util.dataexport.DataExportRuntimeException;
-import net.poweregg.web.engine.dataflow.ConstStatus;
 import net.poweregg.web.engine.navigation.LoginUser;
 import net.poweregg.webdb.util.ArrayCollectionUtil;
 
@@ -68,7 +67,7 @@ import net.poweregg.webdb.util.ArrayCollectionUtil;
 @PEIntercepter
 public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final String PRIORITY_USUAL = "0001";
 
 	@EJB
@@ -76,7 +75,7 @@ public class UMB01Bean implements Serializable {
 
 	@EJB
 	private MitsubishiService mitsubishiService;
-	
+
 	@EJB
 	private DataFlowService flowService;
 
@@ -88,7 +87,7 @@ public class UMB01Bean implements Serializable {
 
 	@RequestParameter(value = "datano")
 	private String dataNo;
-	@RequestParameter(value="mode")
+	@RequestParameter(value = "mode")
 	private String mode;
 
 	@Inject
@@ -98,22 +97,22 @@ public class UMB01Bean implements Serializable {
 	@Inject
 	@Login
 	private LoginUser loginUser;
-	
+
 	@Inject
 	private DataflowHelperBean dataflowHelper;
-	
+
 	@Inject
 	private transient FacesMessages facesMessages;
-	
+
 	// 申請受付番号
-    private Long appRecepNo;
+	private Long appRecepNo;
 
 	private String fileUrlPath;
 
 	private String selectEmp = "";
-	
+
 	private Employee emp;
-	
+
 	/** 申請日 */
 	private Date applyDate;
 	/** 件名 */
@@ -123,47 +122,58 @@ public class UMB01Bean implements Serializable {
 
 	private String paperDocument;
 	private List<AttachFile> attachFileList;
-	
+
 	private List<String> transactionList;
 	private List<String> dataUpdateCategoryList;
 	private List<String> reasonInquiryList;
 	private List<String> retroactiveClassificationList;
 	private List<String> customerReqConfirmList;
-	
+
 	private String unitPriceDataRef;
 	private String priceDataRef;
 	private String usageRef;
-	
+
 	private String outputHtml;
 
 	public String initUMB0102e() throws Exception {
+		//
+		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
+		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
+		
 		if (loginUser == null) {
 			return "login";
 		}
-		
+
 		if ("1".equals(mode)) {
 			modeNewApply();
-			
-			// check appRecpNo  
+
+			// check appRecpNo
 			Long appRecpNo = umb01Dto.getAppRecpNo();
 			ApplicationForm form = flowService.findApplicationFormByRecpNo(appRecpNo);
 			
+			if (form == null) {
+				return StringUtils.EMPTY;
+			}
+
 			if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(form.getStatus())
 					|| ConstStatus.STATUS_APPROVED.equals(form.getStatus())
 					|| ConstStatus.STATUS_COMPLETED.equals(form.getStatus())) {
-				// error
-				return "return";
+				LogUtils.writeLog(logFileFullPath, "UMB01", " Error: No Apply");
+				throw new Exception("Error: No Apply");
 			}
-		} else if ("2".equals(mode)){
+		} else if ("2".equals(mode)) {
 			// modeModifyApply()
 		} else {
 			// modeDeleteApply()
 		}
-		
+
 		return StringUtils.EMPTY;
 	}
-	
+
 	private void modeNewApply() throws Exception {
+		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
+		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
+		
 		selectEmp = "0";
 		emp = loginUser.getCurrentLoginInfo().getEmployee();
 		applyDate = new Date();
@@ -171,18 +181,28 @@ public class UMB01Bean implements Serializable {
 		priority = PRIORITY_USUAL;
 		paperDocument = "";
 		attachFileList = null;
-		unitPriceDataRef= "";
-		priceDataRef= "";
-		usageRef= "";
-		
+		unitPriceDataRef = "";
+		priceDataRef = "";
+		usageRef = "";
+
 		// TODO Instance transactionList, dataUpdateCategoryList
-		
+
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
 		
-		outputHtml = new DataFlowUtil()
-				.transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), "umb01.xsl");
+		if (umb01Dto == null) {
+			LogUtils.writeLog(logFileFullPath, "UMB01", "Error:" + dataNo + "not exist");
+//			throw new Exception(String.format(messages.getString("Error: No Apply"), C0000001Constants.WEBDB_CMN_NO));
+			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
+		}
+		
+		// Set AppRecpNo for new record
+		if (umb01Dto.getAppRecpNo() == null) {
+			umb01Dto.setAppRecpNo(NumberUtils.toLong(ConstStatus.STATUS_BEFORE_APPLY));
+		}
+		
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), "umb01.xsl");
 	}
-	
+
 	/**
 	 * 
 	 * 
@@ -208,28 +228,25 @@ public class UMB01Bean implements Serializable {
 		}
 	}
 
-	/******************************************
+	/**
 	 * 
 	 * 
 	 * @return "apply"
-	 ******************************************/
+	 **/
 	public String apply() {
-
 		try {
 			// 申請確定
 			dataflowHelper.apply();
 			// 自分のデータを保存する.
 			ApplicationForm appForm = flowService.findApplicationFormByRecpNo(appRecepNo);
-			
 			String recordNo = umb01Dto.getId();
-			
+
 			try {
-				mitsubishiService.updateRecordDbTemp(recordNo, appForm.getStatus(), "Applyed");
+				mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
 			dataflowHelper.reset();
 
@@ -239,24 +256,24 @@ public class UMB01Bean implements Serializable {
 			return "";
 		}
 	}
-	
-	/******************************************
+
+	/**
 	 * 
 	 * 
 	 * @return "return"
-	 ******************************************/
+	 **/
 	public String page0102eReturn() {
 		return "return";
 	}
 	
-	/******************************************
+	/**
 	 * 
 	 * 
 	 * @return "return"
-	 ******************************************/
+	 **/
 	public String page0102cReturn() {
-
 		FacesContextUtils.putToFlash("fromScreen", "UMB0102c");
+        FacesContextUtils.putToFlash("return", true);
 		return "return";
 
 	}
@@ -313,12 +330,12 @@ public class UMB01Bean implements Serializable {
 					UmitsubishiTempDto recordData = dataList.get(i);
 					// b.1. Insert 前払勧奨情報 get classInfo by commonNo: UMB01
 					WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0);
-					String result = webdbUtils.registJsonObject(putDataUmitsubishiTemp(webDBClassInfos, recordData),
-							true);
-//					if (!ConvertUtils.isNullOrEmpty(result)) {
-//						System.out.println(result);
-//						LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), result);
-//					}
+					String result = webdbUtils.registJsonObject(
+							putDataUmitsubishiTemp(webDBClassInfos, recordData), true);
+					if (!ConvertUtils.isNullOrEmpty(result)) {
+						System.out.println(result);
+						LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), result);
+					}
 				}
 				utx.commit();
 				setReturnCode(MitsubishiConst.RESULT_OK);
@@ -435,7 +452,7 @@ public class UMB01Bean implements Serializable {
 		StringBuilder url = new StringBuilder();
 		url.append(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue()))
 				.append(MessageFormat.format(messages.get("umb_l_url"), umbItem.getDataNo()));
-//		regDataJson.put(MitsubishiConst.NEW_APPLICATION_URL, WebDbUtils.createRecordURL(url.toString()));
+		regDataJson.put(MitsubishiConst.NEW_APPLICATION_URL, WebDbUtils.createRecordURL(url.toString()));
 
 		return regDataJson;
 	}
@@ -680,12 +697,12 @@ public class UMB01Bean implements Serializable {
 				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
 			tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
 					.subtract(secondStoreOpenRate.multiply(retailPrice));
-			
-			//set data 
+
+			// set data
 			umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
-			
+
 		}
 
 		// pattern 2
@@ -694,8 +711,8 @@ public class UMB01Bean implements Serializable {
 				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
 			tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
-			
-			//set data 
+
+			// set data
 			umb01Dto.getPriceCalParam().setNoPreRetailPrice2(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice2(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice2(tempValue.toString());
@@ -714,8 +731,8 @@ public class UMB01Bean implements Serializable {
 				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
 						.subtract(secondStoreOpenRate.multiply(retailPrice));
 			}
-			
-			//set data 
+
+			// set data
 			umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(retailPrice.add(unitPriceSmallParcel).toString());
 			umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());

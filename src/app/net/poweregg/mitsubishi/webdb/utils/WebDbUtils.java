@@ -112,6 +112,22 @@ public class WebDbUtils {
 	}
 
 	/**
+	 * JsonElemen項目(url)を作成する。
+	 *
+	 * @param value
+	 * @return
+	 */
+	public static JSONObject createRecordURL(String value) throws Exception {
+		JSONObject result = new JSONObject();
+		JSONObject valueItem = new JSONObject();
+		valueItem.put("url", StringUtils.toEmpty(value));
+		valueItem.put("name", StringUtils.toEmpty(value));
+		result.put("value", valueItem);
+
+		return result;
+	}
+
+	/**
 	 * JsonElemen項目(code)を作成する。
 	 *
 	 * @param value
@@ -460,7 +476,8 @@ public class WebDbUtils {
 		HttpURLConnection conn = null;
 		JSONObject jsonObj = new JSONObject();
 		try {
-			String url_string = webDBConnectParam.getPe4jUrl() + webDBConnectParam.getUri();
+			// String url_string = webDBConnectParam.getPe4jUrl() + webDBConnectParam.getUri();
+			String url_string = "http://localhost:8080/pe4j" + webDBConnectParam.getUri();
 			url_string += "?";
 			url_string += "database="
 					+ URLEncoder.encode(webDBConnectParam.getDatabase(), webDBConnectParam.getEncode());
@@ -589,7 +606,7 @@ public class WebDbUtils {
 			body.put("record", jsonString);
 			System.out.println("UPDATE: " + body.toString());
 
-			HttpPut httpPut = new HttpPut(webDBConnectParam.getPe4jUrl() + webDBConnectParam.getModifyUri());
+			HttpPut httpPut = new HttpPut("http://localhost:8080/pe4j" + webDBConnectParam.getModifyUri());
 			httpPut.addHeader(HttpHeaders.ACCEPT, "application/json");
 			httpPut.addHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
 			httpPut.addHeader("X-API-Key", webDBConnectParam.getApiKey());

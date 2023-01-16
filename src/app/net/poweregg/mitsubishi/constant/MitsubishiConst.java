@@ -32,6 +32,7 @@ public class MitsubishiConst {
 	public static final String CR_LF = "\r\n";
 	public static final String TENPU_DIR = "TENPU_DIR";
 	public static final String UNDER_LINE = "_";
+	public static final String HYPHEN = "-";
 	public static final String SEMICOLON = ";";
 	public static final String COLON = ":";
 	public static final String PERCENT = "%";
@@ -125,6 +126,10 @@ public class MitsubishiConst {
 	public static final String EDIT_REQUEST_URL = "価格伺いマスタ申請(編集)";
 	public static final String DEPRECATION_REQUEST_URL = "価格伺いマスタ申請(廃止)";
 	public static final String NOT_APPLIED = "未申請";
+	public static final String START_LOG = "処理開始";
+	public static final String END_LOG = "処理終了";
+	public static final String STATUS_CD = "状態CD";
+	public static final String APPRECPNO = "申請受付番号";
 
 	public enum EVENT {
 		MODIFY("U"), CONFIRM("C");

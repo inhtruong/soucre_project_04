@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-    <navigation-rule>
-        <from-view-id>/UAP/UMB/UMB0101e.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>searchListWebDB</from-outcome>
-            <to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/UAP/UMB/UMB0102e.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>confirm</from-outcome>
-            <to-view-id>/UAP/UMB/UMB0102c.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>return</from-outcome>
-            <to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/UAP/UMB/UMB0102c.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>return</from-outcome>
-            <to-view-id>/UAP/UMB/UMB0102e.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-        <navigation-case>
-            <from-outcome>apply</from-outcome>
-            <to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
-            <redirect/>
-        </navigation-case>
-    </navigation-rule>
+<faces-config xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.2"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+	<navigation-rule>
+		<from-view-id>/UAP/UMB/UMB0101e.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>searchListWebDB</from-outcome>
+			<to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/UAP/UMB/UMB0102e.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>confirm</from-outcome>
+			<to-view-id>/UAP/UMB/UMB0102c.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>return</from-outcome>
+			<to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/UAP/UMB/UMB0102c.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>return</from-outcome>
+			<to-view-id>/UAP/UMB/UMB0102e.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>apply</from-outcome>
+			<to-view-id>/UAP/UMB/UMB0102l.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

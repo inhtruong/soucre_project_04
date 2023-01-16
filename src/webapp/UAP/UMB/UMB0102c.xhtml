@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
  <!--
      Process    : 
-     Document   : UBM0102c
+     Document   : UMB0102c
  -->
  <html xmlns="http://www.w3.org/1999/xhtml"
        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
@@ -35,7 +35,7 @@
                          <p:commandButton buttonClass="normal"
                                          img="/img/b_return.gif" immediate="true"
                                          label="戻る"
-                                         action="#{UMB01Bean.page0102eReturn}"/>
+                                         action="#{UMB01Bean.return}"/>
                      </h:panelGroup>
                  </f:facet>
                  <f:facet name="navi-bottom-left">
@@ -47,14 +47,14 @@
                          <p:commandButton buttonClass="normal"
                                          img="/img/b_return.gif" immediate="true"
                                          label="戻る"
-                                         action="#{UMB01Bean.page0102eReturn}"/>
+                                         action="#{UMB01Bean.return}"/>
                      </h:panelGroup>
                  </f:facet>
                  <f:facet name="message">
                      <p:messages for="main" showDetail="true" showSummary="false" globalOnly="true"/>
                  </f:facet>
                 <ui:include src="/FAP/FAP0010d.xhtml" >
-			     <ui:param name="fromScreen" value="UBM0102c"/>
+			     <ui:param name="fromScreen" value="UMB0102c"/>
 			</ui:include>
              </p:panelMain>
          </h:form>

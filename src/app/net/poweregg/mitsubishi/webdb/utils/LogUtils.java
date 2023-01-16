@@ -91,9 +91,8 @@ public class LogUtils {
 			folderLog = folderLog + MitsubishiConst.SEPARATOR;
 		}
 		LogUtils.mkDir(folderLog);
-		// String logFileName = LogUtils.getCharData1(settingInfoList,
-		// MitsubishiConst.COMMON_NO_LOG0001.LOG_FILE_NAME.getValue());
-		// return folderLog + logFileName;
-		return folderLog;
+		String logFileName = LogUtils.getCharData1(settingInfoList,
+				MitsubishiConst.CLASS_NO.CLASSNO_7.getValue());
+		return folderLog + logFileName;
 	}
 }

@@ -38,17 +38,14 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 	@PersistenceContext(unitName = "pe4jPU")
 	private EntityManager em;
-
-	private static final String DATA_NO = "データNO";
 	
 	private Long offset = 0L;
 	private Long limit = null;
 
 	@Override
 	public Umb01Dto getDataMitsubishi(String dataNo) throws Exception {
-		
-		WebDbUtils webdbUtils = getInfoWebDb();
-		JSONArray rsJson = findDataUmbByCondition(webdbUtils, DATA_NO, dataNo);
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0);
+		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo);
 
 		// Khong tim duoc thi return
 		if (rsJson == null || rsJson.length() == 0) {
@@ -239,9 +236,9 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// 登録担当者
 		umb01Dto.getPriceUnitRefDto().setRegistrar(WebDbUtils.getValue(resultJson, MitsubishiConst.REGISTRAR));
 		
-		umb01Dto.setAppRecpNo(NumberUtils.toLong(WebDbUtils.getValue(resultJson, "appRecepNo")));
-		
-		umb01Dto.setState(WebDbUtils.getValue(resultJson, "status"));
+		umb01Dto.setAppRecpNo(NumberUtils.toLong(WebDbUtils.getValue(resultJson, MitsubishiConst.APPRECPNO)));
+
+		umb01Dto.setState(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
 	}
 	
 	/**
@@ -387,7 +384,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ "</USAGEREF>" + CR_LF;
 		
 		xmlString += "<DELIVERYDATE>" 
-				+ StringUtils.formatDate(param.getPriceUnitRefDto().getDeliveryDate())
+				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getDeliveryDate())
 				+ "</DELIVERYDATE>" + CR_LF;
 		
 		xmlString += "<COMMODITYCLASSIFICATIONCD1>" 
@@ -659,46 +656,45 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	}
 	
 	@Override
-	public void updateRecordDbTemp(String recordNo, String appRecepNo, String state) throws Exception {
-		WebDbUtils webdbUtils = getInfoWebDb();
+	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd) throws Exception {
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, WebDbConstant.JSON_NO, recordNo);
-		
+
 		// Khong tim duoc thi record no return luon
 		if (rsJson == null || rsJson.length() == 0) {
-			System.out.println("(RecordNo=" + recordNo +  ") is not exist");
+			System.out.println("(RecordNo=" + recordNo + ") is not exist");
 			return;
 		}
 		
-		// TH tim thay record do van con ton tai tren webdb tạm			
-		// chuan bi du lieu jsonobject dể 
-			JSONObject updateRecord = new JSONObject();
-			updateRecord.put("appRecepNo", WebDbUtils.createRecordItem(appRecepNo));
-			updateRecord.put("status", WebDbUtils.createRecordItem(state));
-		// update thông qua rest api		
-			webdbUtils.putJsonObject(updateRecord, recordNo, false, false, false);
+		// chuan bi du lieu jsonobject dể
+		JSONObject updateRecord = new JSONObject();
+		updateRecord.put("申請受付番号", WebDbUtils.createRecordItem(appRecepNo));
+		updateRecord.put("状態CD", WebDbUtils.createRecordItem(statusCd));
+		// update thông qua rest api
+		webdbUtils.putJsonObject(updateRecord, recordNo, false, false, false);
 	}
-	
+
 	@Override
-	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value) throws  Exception {
-		
+	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value) throws Exception {
+
 		JSONArray condOr = new JSONArray();
 		condOr.put(WebDbUtils.createConditionQuery(field, Operand.EQUALS, value));
 		JSONArray queryBlocks = new JSONArray();
 		queryBlocks.put(WebDbUtils.createConditionBlock(QueryConj.AND, QueryConj.AND, condOr));
-		
+
 		// call API
 		JSONObject tempJson = webdbUtils.getDataFormAPI(queryBlocks.toString(), null, offset, limit);
 		JSONArray rsJson = webdbUtils.getJsonObjectWebDB(tempJson, offset, limit);
-		
+
 		return rsJson;
 	}
-	
+
 	@Override
-	public WebDbUtils getInfoWebDb() {
+	public List<ClassInfo> getInfoWebDb() {
 		// get classInfo by commonNo: UMB01
 		List<ClassInfo> webDBClassInfos = classificationService.getClassInfoList(WebDbConstant.ALL_CORP,
 				MitsubishiConst.COMMON_NO.COMMON_NO_UMB01.getValue());
-		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0);
-		return webdbUtils;
+		
+		return webDBClassInfos;
 	}
 }

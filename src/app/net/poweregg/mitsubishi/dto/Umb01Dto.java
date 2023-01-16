@@ -71,8 +71,14 @@ public class Umb01Dto implements Serializable {
 	 */
 	private PriceCalParam priceCalParam;
 	
+	/**
+	 * appRecpNo
+	 */
 	private Long appRecpNo;
-	
+
+	/**
+	 * state
+	 */
 	private String state;
 
 	/**

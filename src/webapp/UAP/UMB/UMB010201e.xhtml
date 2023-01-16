@@ -21,10 +21,9 @@
 <ui:composition>
 	<p:outputLabel for="tab1_dataUpdateCategoryCD"
 		value="#{messages.umb_tab1_dataUpdateCategoryCD}" />
-	<!-- <h:selectOneMenu id="tab1_dataUpdateCategoryCD"
-		value="#{UMB01Bean.umb01Dto.priceRefDto.dataUpdateCategoryCD}">
-		<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
-	</h:selectOneMenu> -->
+	<p:inputText id="tab1_dataUpdateCategoryCD" styleClass="short text_off"
+		maxlength="20"
+		value="#{UMB01Bean.umb01Dto.priceRefDto.dataUpdateCategoryCD}" />
 	
 	<p:outputLabel for="tab1_unitPriceDataReference"
 		value="#{messages.umb_tab1_unitPriceDataReference}" />
@@ -40,14 +39,9 @@
 
 	<p:outputLabel for="tab1_customerReqConfirm"
 		value="#{messages.umb_tab1_customerReqConfirm}" />
-	<!-- <h:panelGroup>
-		<h:selectManyCheckbox id="tab1_customerReqConfirm"
-			styleClass="checktb"
-			value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerReqConfirm}">
-			<f:selectItem itemValue="0001" itemLabel="K" />
-			<f:selectItem itemValue="0002" itemLabel="O" />
-		</h:selectManyCheckbox>
-	</h:panelGroup> -->
+	<p:inputText id="tab1_customerReqConfirm" styleClass="short text_off"
+		maxlength="20"
+		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerReqConfirm}" />
 
 	<p:outputLabel for="tab1_contractNumber"
 		value="#{messages.umb_tab1_contractNumber}" />
@@ -76,10 +70,9 @@
 
 	<p:outputLabel for="tab1_transactionCD"
 		value="#{messages.umb_tab1_transactionCD}" />
-	<!-- <h:selectOneMenu id="tab1_transactionCD"
-		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.transactionCD}">
-		<f:selectItems value="#{UMB01Bean.transactionList}" />
-	</h:selectOneMenu> -->
+	<p:inputText id="tab1_transactionCD" styleClass="short text_off"
+		maxlength="20"
+		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.transactionCD}" />
 
 	<p:outputLabel for="tab1_salesDepartmentCD"
 		value="#{messages.umb_tab1_salesDepartmentCD}" />
@@ -204,9 +197,9 @@
 		
 	<p:outputLabel for="tab1_usageReference"
 		value="#{messages.umb_tab1_usageReference}" />
-	<p:selectWebDBRef id="tab1_usageReference"
+	<!-- <p:selectWebDBRef id="tab1_usageReference"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.usageRef}"
-		webdbRefID="#{UMB01Bean.usageRef}" dbType="webDb" />
+		webdbRefID="#{UMB01Bean.usageRef}" dbType="webDb" /> -->
 
 	<p:outputLabel for="tab1_scheduledDeliveryDate"
 		value="#{messages.umb_tab1_scheduledDeliveryDate}" />
