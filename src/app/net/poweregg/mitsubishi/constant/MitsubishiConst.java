@@ -100,6 +100,7 @@ public class MitsubishiConst {
 	public static final String GRADE_1 = "グレード1";
 	public static final String USER_ITEM = "ユーザー品目";
 	public static final String APPLICATION_START_DATE = "適用開始日";
+	public static final String APPLICATION_END_DATE = "適用終了日";
 	public static final String LOT_QUANTITY = "ロット数量";
 	public static final String CURRENCY_CD = "通貨CD";
 	public static final String TRANSACTION_UNIT_CD = "取引単位CD";
@@ -111,6 +112,12 @@ public class MitsubishiConst {
 	public static final String UNIT_PRICE_SMALL_PARCEL = "小口配送単価";
 	public static final String UNIT_PRICE_FOREHEAD_COLOR = "小口着色単価";
 	public static final String RETAIL_PRICE = "末端価格、エンドユーザー単価";
+	public static final String WARNING = "警告";
+	public static final String PRIMARY_STORE_COMMISSION_AMOUNT = "一次店口銭金額";
+	public static final String PRIMARY_STORE_OPEN_RATE = "一次店口銭率";
+	public static final String DATA_UPDATE_CATEGORY_CD = "データ更新区分CD";
+	public static final String REASON_INQUIRY = "伺い理由";
+	public static final String RETROACTIVE_CLASSIFICATION = "遡及区分";
 	public static final String CONTRACT_NUMBER = "契約番号";
 	public static final String USAGE_CD = "用途CD";
 	public static final String USAGE_REF = "用途参照";

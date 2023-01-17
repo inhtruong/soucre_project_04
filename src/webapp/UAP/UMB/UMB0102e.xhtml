@@ -50,9 +50,7 @@
 				<f:facet name="navi-upper-left">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmFlag="true" action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
-						<p:commandButton buttonClass="normal" img="/img/b_save.gif"
-							label="一時保存" confirmFlag="false">&#160;&#160;</p:commandButton>
+							label="確認" confirmFlag="true" confirmMessage="#{messages.umb_m_toConfirm}" action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
 							immediate="true" label="キャンセル" cancelButton="true"
 							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
@@ -61,9 +59,7 @@
 				<f:facet name="navi-bottom-left">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmFlag="true" action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
-						<p:commandButton buttonClass="normal" img="/img/b_save.gif"
-							label="一時保存" confirmFlag="false">&#160;&#160;</p:commandButton>
+							label="確認" confirmFlag="true" confirmMessage="#{messages.umb_m_toConfirm}" action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
 							immediate="true" label="キャンセル" cancelButton="true"
 							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
@@ -148,7 +144,7 @@
 								<p:inputDate id="tab1_dateApplyStartDate"
 									value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}">
 									<f:converter converterId="net.poweregg.faces.DateConverter" />
-								</p:inputDate>&#160;&#160;
+								</p:inputDate>&#160;&#160;~&#160;&#160;
 								<p:inputDate id="tab1_dateApplyEndDate"
 									value="#{UMB01Bean.umb01Dto.priceRefDto.applicationEndDate}">
 									<f:converter converterId="net.poweregg.faces.TimeConverter" />

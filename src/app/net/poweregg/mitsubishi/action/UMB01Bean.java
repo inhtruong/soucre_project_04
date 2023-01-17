@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.ConversationScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.InitialContext;
@@ -41,6 +42,7 @@ import net.poweregg.dataflow.DataflowHelperBean;
 import net.poweregg.dataflow.entity.ApplicationForm;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
+import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
 import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
 import net.poweregg.mitsubishi.dto.UmitsubishiTempDto;
@@ -69,6 +71,7 @@ public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PRIORITY_USUAL = "0001";
+	public static final String FILE_XML = "umb01.xsl";
 
 	@EJB
 	private ClassificationService classificationService;
@@ -123,11 +126,11 @@ public class UMB01Bean implements Serializable {
 	private String paperDocument;
 	private List<AttachFile> attachFileList;
 
-	private List<String> transactionList;
-	private List<String> dataUpdateCategoryList;
-	private List<String> reasonInquiryList;
-	private List<String> retroactiveClassificationList;
-	private List<String> customerReqConfirmList;
+	private List<SelectItem> transactionList;
+	private List<SelectItem> dataUpdateCategoryList;
+	private List<SelectItem> reasonInquiryList;
+	private List<SelectItem> retroactiveClassificationList;
+	private List<SelectItem> customerReqConfirmList;
 
 	private String unitPriceDataRef;
 	private String priceDataRef;
@@ -146,28 +149,19 @@ public class UMB01Bean implements Serializable {
 
 		if ("1".equals(mode)) {
 			modeNewApply();
-
-			// check appRecpNo
-			Long appRecpNo = umb01Dto.getAppRecpNo();
-			ApplicationForm form = flowService.findApplicationFormByRecpNo(appRecpNo);
-			
-			if (form == null) {
-				return StringUtils.EMPTY;
-			}
-
-			if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(form.getStatus())
-					|| ConstStatus.STATUS_APPROVED.equals(form.getStatus())
-					|| ConstStatus.STATUS_COMPLETED.equals(form.getStatus())) {
-				LogUtils.writeLog(logFileFullPath, "UMB01", " Error: No Apply");
-				throw new Exception("Error: No Apply");
-			}
-		} else if ("2".equals(mode)) {
-			// modeModifyApply()
-		} else {
+			return StringUtils.EMPTY;
+		}	
+		if ("2".equals(mode)) {
+			modeModifyApply();
+			return StringUtils.EMPTY;
+		} 
+		
+		if ("3".equals(mode)) {
 			// modeDeleteApply()
 		}
-
-		return StringUtils.EMPTY;
+		
+		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
+		throw new Exception("This mode doesn't exist");
 	}
 
 	private void modeNewApply() throws Exception {
@@ -186,21 +180,41 @@ public class UMB01Bean implements Serializable {
 		usageRef = "";
 
 		// TODO Instance transactionList, dataUpdateCategoryList
-
-		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo);
-		
+		// get value from WebDB Temp
+		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, 1);
 		if (umb01Dto == null) {
-			LogUtils.writeLog(logFileFullPath, "UMB01", "Error:" + dataNo + "not exist");
-//			throw new Exception(String.format(messages.getString("Error: No Apply"), C0000001Constants.WEBDB_CMN_NO));
+			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
 			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
 		}
 		
-		// Set AppRecpNo for new record
-		if (umb01Dto.getAppRecpNo() == null) {
-			umb01Dto.setAppRecpNo(NumberUtils.toLong(ConstStatus.STATUS_BEFORE_APPLY));
+		// make XML table price
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
+	}
+	
+	private void modeModifyApply() throws Exception {
+		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
+		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
+		
+		selectEmp = "0";
+		emp = loginUser.getCurrentLoginInfo().getEmployee();
+		applyDate = new Date();
+		titleApply = "";
+		priority = PRIORITY_USUAL;
+		paperDocument = "";
+		attachFileList = null;
+		unitPriceDataRef = "";
+		priceDataRef = "";
+		usageRef = "";
+		
+		// get value from WebDB Master
+		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, 2);
+		if (umb01Dto == null) {
+			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
+			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
 		}
 		
-		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), "umb01.xsl");
+		// make XML table price
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 	}
 
 	/**
@@ -232,8 +246,12 @@ public class UMB01Bean implements Serializable {
 	 * 
 	 * 
 	 * @return "apply"
+	 * @throws Exception 
 	 **/
-	public String apply() {
+	public String apply() throws Exception {
+		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
+		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
+		
 		try {
 			// 申請確定
 			dataflowHelper.apply();
@@ -241,6 +259,14 @@ public class UMB01Bean implements Serializable {
 			ApplicationForm appForm = flowService.findApplicationFormByRecpNo(appRecepNo);
 			String recordNo = umb01Dto.getId();
 
+			if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(umb01Dto.getStatusCD())
+					|| ConstStatus.STATUS_APPROVED.equals(umb01Dto.getStatusCD())
+					|| ConstStatus.STATUS_COMPLETED.equals(umb01Dto.getStatusCD())) {
+				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
+				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+				return "";
+			}
+			
 			try {
 				mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus());
 			} catch (Exception e) {
@@ -961,47 +987,12 @@ public class UMB01Bean implements Serializable {
 		this.attachFileList = attachFileList;
 	}
 
-	/**
-	 * @return the transactionList
-	 */
-	public List<String> getTransactionList() {
-		return transactionList;
-	}
-
-	/**
-	 * @param transactionList the transactionList to set
-	 */
-	public void setTransactionList(List<String> transactionList) {
-		this.transactionList = transactionList;
-	}
-
-	/**
-	 * @return the dataUpdateCategoryList
-	 */
-	public List<String> getDataUpdateCategoryList() {
-		return dataUpdateCategoryList;
-	}
-
-	/**
-	 * @param dataUpdateCategoryList the dataUpdateCategoryList to set
-	 */
-	public void setDataUpdateCategoryList(List<String> dataUpdateCategoryList) {
-		this.dataUpdateCategoryList = dataUpdateCategoryList;
-	}
-
 	public String getFileUrlPath() {
 		return fileUrlPath;
 	}
 
 	public void setFileUrlPath(String fileUrlPath) {
 		this.fileUrlPath = fileUrlPath;
-	}
-
-	/**
-	 * @return the reasonInquiryList
-	 */
-	public List<String> getReasonInquiryList() {
-		return reasonInquiryList;
 	}
 
 	/**
@@ -1047,41 +1038,6 @@ public class UMB01Bean implements Serializable {
 	}
 
 	/**
-	 * @param reasonInquiryList the reasonInquiryList to set
-	 */
-	public void setReasonInquiryList(List<String> reasonInquiryList) {
-		this.reasonInquiryList = reasonInquiryList;
-	}
-
-	/**
-	 * @return the retroactiveClassificationList
-	 */
-	public List<String> getRetroactiveClassificationList() {
-		return retroactiveClassificationList;
-	}
-
-	/**
-	 * @param retroactiveClassificationList the retroactiveClassificationList to set
-	 */
-	public void setRetroactiveClassificationList(List<String> retroactiveClassificationList) {
-		this.retroactiveClassificationList = retroactiveClassificationList;
-	}
-
-	/**
-	 * @return the customerReqConfirmList
-	 */
-	public List<String> getCustomerReqConfirmList() {
-		return customerReqConfirmList;
-	}
-
-	/**
-	 * @param customerReqConfirmList the customerReqConfirmList to set
-	 */
-	public void setCustomerReqConfirmList(List<String> customerReqConfirmList) {
-		this.customerReqConfirmList = customerReqConfirmList;
-	}
-
-	/**
 	 * @return the outputHtml
 	 */
 	public String getOutputHtml() {
@@ -1093,5 +1049,75 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setOutputHtml(String outputHtml) {
 		this.outputHtml = outputHtml;
+	}
+
+	/**
+	 * @return the transactionList
+	 */
+	public List<SelectItem> getTransactionList() {
+		return transactionList;
+	}
+
+	/**
+	 * @param transactionList the transactionList to set
+	 */
+	public void setTransactionList(List<SelectItem> transactionList) {
+		this.transactionList = transactionList;
+	}
+
+	/**
+	 * @return the dataUpdateCategoryList
+	 */
+	public List<SelectItem> getDataUpdateCategoryList() {
+		return dataUpdateCategoryList;
+	}
+
+	/**
+	 * @param dataUpdateCategoryList the dataUpdateCategoryList to set
+	 */
+	public void setDataUpdateCategoryList(List<SelectItem> dataUpdateCategoryList) {
+		this.dataUpdateCategoryList = dataUpdateCategoryList;
+	}
+
+	/**
+	 * @return the reasonInquiryList
+	 */
+	public List<SelectItem> getReasonInquiryList() {
+		return reasonInquiryList;
+	}
+
+	/**
+	 * @param reasonInquiryList the reasonInquiryList to set
+	 */
+	public void setReasonInquiryList(List<SelectItem> reasonInquiryList) {
+		this.reasonInquiryList = reasonInquiryList;
+	}
+
+	/**
+	 * @return the retroactiveClassificationList
+	 */
+	public List<SelectItem> getRetroactiveClassificationList() {
+		return retroactiveClassificationList;
+	}
+
+	/**
+	 * @param retroactiveClassificationList the retroactiveClassificationList to set
+	 */
+	public void setRetroactiveClassificationList(List<SelectItem> retroactiveClassificationList) {
+		this.retroactiveClassificationList = retroactiveClassificationList;
+	}
+
+	/**
+	 * @return the customerReqConfirmList
+	 */
+	public List<SelectItem> getCustomerReqConfirmList() {
+		return customerReqConfirmList;
+	}
+
+	/**
+	 * @param customerReqConfirmList the customerReqConfirmList to set
+	 */
+	public void setCustomerReqConfirmList(List<SelectItem> customerReqConfirmList) {
+		this.customerReqConfirmList = customerReqConfirmList;
 	}
 }

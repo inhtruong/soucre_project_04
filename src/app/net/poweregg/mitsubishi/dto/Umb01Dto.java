@@ -72,14 +72,14 @@ public class Umb01Dto implements Serializable {
 	private PriceCalParam priceCalParam;
 	
 	/**
-	 * appRecpNo
+	 * 申請受付番号
 	 */
-	private Long appRecpNo;
+	private String appRecepNo;
 
 	/**
-	 * state
+	 * 状態CD
 	 */
-	private String state;
+	private String statusCD;
 
 	/**
 	 * @return the id
@@ -208,30 +208,30 @@ public class Umb01Dto implements Serializable {
 	}
 
 	/**
-	 * @return the appRecpNo
+	 * @return the appRecepNo
 	 */
-	public Long getAppRecpNo() {
-		return appRecpNo;
+	public String getAppRecepNo() {
+		return appRecepNo;
 	}
 
 	/**
-	 * @param appRecpNo the appRecpNo to set
+	 * @param appRecepNo the appRecepNo to set
 	 */
-	public void setAppRecpNo(Long appRecpNo) {
-		this.appRecpNo = appRecpNo;
+	public void setAppRecepNo(String appRecepNo) {
+		this.appRecepNo = appRecepNo;
 	}
 
 	/**
-	 * @return the state
+	 * @return the statusCD
 	 */
-	public String getState() {
-		return state;
+	public String getStatusCD() {
+		return statusCD;
 	}
 
 	/**
-	 * @param state the state to set
+	 * @param statusCD the statusCD to set
 	 */
-	public void setState(String state) {
-		this.state = state;
+	public void setStatusCD(String statusCD) {
+		this.statusCD = statusCD;
 	}
 }

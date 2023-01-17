@@ -108,7 +108,7 @@
         </TR>
         <TR>
             <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
-            <TD class="labelUmb"></TD>
+            <TD class="labelUmb">率(%)</TD>
             <TD class="itemUmb"></TD>
             <TD class="itemUmb"></TD>
             <TD class="itemUmb"></TD>
