@@ -24,6 +24,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.InitialContext;
 import javax.transaction.UserTransaction;
+import javax.xml.transform.TransformerException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +72,7 @@ public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PRIORITY_USUAL = "0001";
-	public static final String FILE_XML = "umb01.xsl";
+	public static final String FILE_E_XML = "umb01.xsl";
 
 	@EJB
 	private ClassificationService classificationService;
@@ -161,7 +162,8 @@ public class UMB01Bean implements Serializable {
 		}
 		
 		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
-		throw new Exception("This mode doesn't exist");
+		facesMessages.add(FacesMessage.SEVERITY_ERROR, "このモードは存在しません。", "");
+		return StringUtils.EMPTY;
 	}
 
 	private void modeNewApply() throws Exception {
@@ -188,7 +190,7 @@ public class UMB01Bean implements Serializable {
 		}
 		
 		// make XML table price
-		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_E_XML);
 	}
 	
 	private void modeModifyApply() throws Exception {
@@ -214,7 +216,7 @@ public class UMB01Bean implements Serializable {
 		}
 		
 		// make XML table price
-		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_E_XML);
 	}
 
 	/**
@@ -238,7 +240,7 @@ public class UMB01Bean implements Serializable {
 			facesMessages.add("申請してよろしいですか？");
 			return "confirm";
 		} catch (ApplyException e) {
-			return "";
+			return StringUtils.EMPTY;
 		}
 	}
 
@@ -264,7 +266,7 @@ public class UMB01Bean implements Serializable {
 					|| ConstStatus.STATUS_COMPLETED.equals(umb01Dto.getStatusCD())) {
 				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
 				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
-				return "";
+				return StringUtils.EMPTY;
 			}
 			
 			try {
@@ -278,8 +280,7 @@ public class UMB01Bean implements Serializable {
 
 			return "apply";
 		} catch (ApplyException ex) {
-			// コード変換 : nullと空文字の違い 処理日付 20211215 移行ツール ver1
-			return "";
+			return StringUtils.EMPTY;
 		}
 	}
 
@@ -289,6 +290,7 @@ public class UMB01Bean implements Serializable {
 	 * @return "return"
 	 **/
 	public String page0102eReturn() {
+		FacesContextUtils.putToFlash("return", true);
 		return "return";
 	}
 	
@@ -699,18 +701,27 @@ public class UMB01Bean implements Serializable {
 	}
 
 	/**
+	 * @throws TransformerException 
 	 *
 	 *
 	 *
 	 */
-	public void calculateValue() {
+	public void calculateValue() throws TransformerException {
+		// 末端価格
 		BigDecimal retailPrice = umb01Dto.getPriceRefDto().getRetailPrice();
+		// 小口配送単価
 		BigDecimal unitPriceSmallParcel = umb01Dto.getPriceRefDto().getUnitPriceSmallParcel();
+		// 小口着色単価
 		BigDecimal unitPriceForeheadColor = umb01Dto.getPriceRefDto().getUnitPriceForeheadColor();
+		// 一次店口銭率
 		BigDecimal primaryStoreOpenRate = umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate();
+		// 一次店口銭金額
 		BigDecimal primaryStoreCommissionAmount = umb01Dto.getPriceRefDto().getPrimaryStoreCommissionAmount();
+		// 二次店口銭率
 		BigDecimal secondStoreOpenRate = umb01Dto.getSecondStoreOpenRate();
+		// 二次店口銭額
 		BigDecimal secondStoreOpenAmount = umb01Dto.getSecondStoreOpenAmount();
+		// ロット数量
 		BigDecimal lotQuantity = umb01Dto.getPriceRefDto().getLotQuantity();
 		BigDecimal tempValue = new BigDecimal("0");
 		BigDecimal valueLotSmall = new BigDecimal("100");
@@ -725,6 +736,7 @@ public class UMB01Bean implements Serializable {
 					.subtract(secondStoreOpenRate.multiply(retailPrice));
 
 			// set data
+			umb01Dto.getPriceCalParam().setPattern("1");
 			umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
