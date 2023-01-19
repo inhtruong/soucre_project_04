@@ -17,7 +17,7 @@ import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
-import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
+import net.poweregg.mitsubishi.dto.UMB01MasterDto;
 import net.poweregg.mitsubishi.webdb.utils.Operand;
 import net.poweregg.mitsubishi.webdb.utils.QueryConj;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
@@ -49,7 +49,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 */
 	@Override
 	public Umb01Dto getDataMitsubishi(String dataNo, int dbType) throws Exception {
-		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0);
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, 0);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_LINE_NO, dataNo);
 
 		// Khong tim duoc thi return
@@ -75,19 +75,19 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 * @throws Exception
 	 */
 	@Override
-	public List<UmitsubishiMasterDto> getDataPriceMaster() throws Exception {
+	public List<UMB01MasterDto> getDataPriceMaster() throws Exception {
 		Long offset = 0L;
 		Long limit = null;
 		// get classInfo by commonNo: UMB01
 		List<ClassInfo> webDBClassInfos = classificationService.getClassInfoList(WebDbConstant.ALL_CORP,
 				COMMON_NO.COMMON_NO_UMB01.getValue());
-		List<UmitsubishiMasterDto> umbResults = new ArrayList<>();
+		List<UMB01MasterDto> umbResults = new ArrayList<>();
 
 		if (webDBClassInfos == null) {
 			return null;
 		}
 
-		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0);
+		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, 1);
 
 		// call API
 		JSONObject jsonObj = webdbUtils.getDataFormAPI(null, null, offset, limit);
@@ -101,7 +101,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 		// parse json to dto
 		for (int i = 0; i < resultJson.length(); i++) {
-			UmitsubishiMasterDto umbTempDto = new UmitsubishiMasterDto();
+			UMB01MasterDto umbTempDto = new UMB01MasterDto();
 			JSONObject recordObj = resultJson.getJSONObject(i);
 			for (int j = 0; j < recordObj.length(); j++) {
 				/** データ行NO */
@@ -245,7 +245,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// 登録担当者
 		umb01Dto.getPriceUnitRefDto().setRegistrar(WebDbUtils.getValue(resultJson, MitsubishiConst.REGISTRAR));
 
-		umb01Dto.setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPRECPNO));
+		umb01Dto.setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPRECP_NO));
 
 		umb01Dto.setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
 
@@ -654,7 +654,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 */
 	@Override
 	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd) throws Exception {
-		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0);
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, 0);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, WebDbConstant.JSON_NO, recordNo);
 
 		// Khong tim duoc thi record no return luon
@@ -665,8 +665,8 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 		// chuan bi du lieu jsonobject
 		JSONObject updateRecord = new JSONObject();
-		updateRecord.put("申請受付番号", WebDbUtils.createRecordItem(appRecepNo));
-		updateRecord.put("状態CD", WebDbUtils.createRecordItem(statusCd));
+		updateRecord.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(appRecepNo));
+		updateRecord.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(statusCd));
 		// update thông qua rest api
 		webdbUtils.putJsonObject(updateRecord, recordNo, false, false, false);
 	}

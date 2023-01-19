@@ -413,7 +413,6 @@
       <value>pwa89p01-resource</value>
       <!--EX-KEIHI END RESOURCE-->
       <!--EX-KEIHI START RESOURCE-->
-	  <value>utsr-resource</value>
 	  <value>umb-resource</value>
       <!--EX-KEIHI END RESOURCE-->
     </bundle-names>

@@ -1,9 +1,7 @@
 package net.poweregg.mitsubishi.action;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
@@ -44,9 +42,8 @@ import net.poweregg.dataflow.entity.ApplicationForm;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
+import net.poweregg.mitsubishi.dto.UMB01TempDto;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
-import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
-import net.poweregg.mitsubishi.dto.UmitsubishiTempDto;
 import net.poweregg.mitsubishi.service.MitsubishiService;
 import net.poweregg.mitsubishi.webdb.utils.CSVUtils;
 import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
@@ -56,12 +53,11 @@ import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.organization.entity.Employee;
 import net.poweregg.seam.faces.FacesMessages;
 import net.poweregg.ui.param.AttachFile;
+import net.poweregg.ui.param.DateRange;
+import net.poweregg.util.DateUtils;
 import net.poweregg.util.FacesContextUtils;
-import net.poweregg.util.JSFUtil;
 import net.poweregg.util.NumberUtils;
-import net.poweregg.util.PESystemProperties;
 import net.poweregg.util.StringUtils;
-import net.poweregg.util.dataexport.DataExportRuntimeException;
 import net.poweregg.web.engine.navigation.LoginUser;
 import net.poweregg.webdb.util.ArrayCollectionUtil;
 
@@ -138,6 +134,7 @@ public class UMB01Bean implements Serializable {
 	private String usageRef;
 
 	private String outputHtml;
+	private DateRange dateRange;
 
 	public String initUMB0102e() throws Exception {
 		//
@@ -148,17 +145,17 @@ public class UMB01Bean implements Serializable {
 			return "login";
 		}
 
-		if ("1".equals(mode)) {
-			modeNewApply();
+		if (MitsubishiConst.MODE_NEW.equals(mode)) {
+			modeNewApply(0);
 			return StringUtils.EMPTY;
 		}	
-		if ("2".equals(mode)) {
-			modeModifyApply();
+		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
+			modeModifyApply(1);
 			return StringUtils.EMPTY;
 		} 
 		
-		if ("3".equals(mode)) {
-			// modeDeleteApply()
+		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
+			// modeCancelApply(2)
 		}
 		
 		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
@@ -166,7 +163,7 @@ public class UMB01Bean implements Serializable {
 		return StringUtils.EMPTY;
 	}
 
-	private void modeNewApply() throws Exception {
+	private void modeNewApply(int mode) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
@@ -183,17 +180,29 @@ public class UMB01Bean implements Serializable {
 
 		// TODO Instance transactionList, dataUpdateCategoryList
 		// get value from WebDB Temp
-		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, 1);
+		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, mode);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
 			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
+		}
+		
+		Date nowDate = new Date();
+		dateRange = new DateRange();
+		dateRange.setStartDate(DateUtils.addDate(nowDate, "MONTH", -1));
+		dateRange.setEndDate(nowDate);
+		
+		if (umb01Dto.getPriceRefDto().getApplicationStartDate() != null) {
+			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationStartDate());
+		}
+		if (umb01Dto.getPriceRefDto().getApplicationEndDate() != null) {
+			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationEndDate());
 		}
 		
 		// make XML table price
 		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_E_XML);
 	}
 	
-	private void modeModifyApply() throws Exception {
+	private void modeModifyApply(int mode) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
@@ -209,7 +218,7 @@ public class UMB01Bean implements Serializable {
 		usageRef = "";
 		
 		// get value from WebDB Master
-		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, 2);
+		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, mode);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
 			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
@@ -225,6 +234,9 @@ public class UMB01Bean implements Serializable {
 	 * @return "confirm"
 	 */
 	public String toConfirm() {
+		umb01Dto.getPriceRefDto().setApplicationStartDate(dateRange.getStartDate());
+		umb01Dto.getPriceRefDto().setApplicationEndDate(dateRange.getEndDate());
+		
 		// ワークフローパラメタ編集
 		dataflowHelper.setApplyDate(getToday());
 		dataflowHelper.setTitle(titleApply);
@@ -293,7 +305,7 @@ public class UMB01Bean implements Serializable {
 		FacesContextUtils.putToFlash("return", true);
 		return "return";
 	}
-	
+
 	/**
 	 * 
 	 * 
@@ -301,7 +313,7 @@ public class UMB01Bean implements Serializable {
 	 **/
 	public String page0102cReturn() {
 		FacesContextUtils.putToFlash("fromScreen", "UMB0102c");
-        FacesContextUtils.putToFlash("return", true);
+		FacesContextUtils.putToFlash("return", true);
 		return "return";
 
 	}
@@ -344,22 +356,22 @@ public class UMB01Bean implements Serializable {
 						MitsubishiConst.MS_932, true);
 				InitialContext icx = new InitialContext();
 				UserTransaction utx = (UserTransaction) icx.lookup("java:comp/UserTransaction");
-				List<UmitsubishiTempDto> dataList = new ArrayList<>();
+				List<UMB01TempDto> dataList = new ArrayList<>();
 
 				if (ArrayCollectionUtil.isCollectionNotNullOrEmpty(contentFile)) {
 					for (int i = 0; i < contentFile.size(); i++) {
 						String[] content = contentFile.get(i);
-						UmitsubishiTempDto umitsubishiTemp = createUmitsubishiTemp(content);
+						UMB01TempDto umitsubishiTemp = createUmitsubishiTemp(content);
 						dataList.add(umitsubishiTemp);
 					}
 				}
 
 				for (int i = 0; i < dataList.size(); i++) {
-					UmitsubishiTempDto recordData = dataList.get(i);
+					UMB01TempDto recordData = dataList.get(i);
 					// b.1. Insert 前払勧奨情報 get classInfo by commonNo: UMB01
-					WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0);
+					WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, 0);
 					String result = webdbUtils.registJsonObject(
-							putDataUmitsubishiTemp(webDBClassInfos, recordData), true);
+							putDataUmitsubishiTemp(webDBClassInfos, recordData, logFileFullPath), true);
 					if (!ConvertUtils.isNullOrEmpty(result)) {
 						System.out.println(result);
 						LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), result);
@@ -394,10 +406,18 @@ public class UMB01Bean implements Serializable {
 	 * @throws Exception
 	 * @throws JSONException
 	 */
-	private JSONObject putDataUmitsubishiTemp(List<ClassInfo> webDBClassInfos, UmitsubishiTempDto umbItem)
-			throws JSONException, Exception {
+	private JSONObject putDataUmitsubishiTemp(List<ClassInfo> webDBClassInfos, UMB01TempDto umbItem,
+			String logFileFullPath) throws JSONException, Exception {
 
 		JSONObject regDataJson = new JSONObject();
+
+		StringBuilder getLog = new StringBuilder();
+		getLog.append(MitsubishiConst.DATA_NO).append(MitsubishiConst.COLON);
+
+		// log: start data no
+		LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(),
+				getLog.append(umbItem.getDataNo()).append(MitsubishiConst.HYPHEN).append(MitsubishiConst.START_LOG)
+						.toString());
 
 		/** データ行NO */
 		regDataJson.put(MitsubishiConst.DATA_LINE_NO,
@@ -405,21 +425,26 @@ public class UMB01Bean implements Serializable {
 		/** データNO */
 		regDataJson.put(MitsubishiConst.DATA_NO,
 				WebDbUtils.createRecordItemNumber(NumberUtils.toLong(umbItem.getDataNo())));
+		/** 管理NO */
+		regDataJson.put(MitsubishiConst.MANAGER_NO,
+				WebDbUtils.createRecordItemNumber(NumberUtils.toLong(umbItem.getManagerNo())));
 		/** 送信元レコード作成日時 */
 		regDataJson.put(MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME,
 				WebDbUtils.createRecordItem(umbItem.getSrcCreateDate()));
 		/** 会社CD */
 		regDataJson.put(MitsubishiConst.COMPANY_CD, WebDbUtils.createRecordItem(umbItem.getCompanyCD()));
 		/** 取引CD */
-		regDataJson.put(MitsubishiConst.COMPANY_CD, WebDbUtils.createRecordItem(umbItem.getTransactionCD()));
+		regDataJson.put(MitsubishiConst.TRANSACTION_CD, WebDbUtils.createRecordItem(umbItem.getTransactionCD()));
 		/** 売上部門CD */
-		regDataJson.put(MitsubishiConst.COMPANY_CD, WebDbUtils.createRecordItem(umbItem.getSalesDepartmentCD()));
+		regDataJson.put(MitsubishiConst.SALES_DEPARTMENT_CD,
+				WebDbUtils.createRecordItem(umbItem.getSalesDepartmentCD()));
 		/** 上位部門CD */
-		regDataJson.put(MitsubishiConst.COMPANY_CD, WebDbUtils.createRecordItem(umbItem.getUpperCategoryCD()));
+		regDataJson.put(MitsubishiConst.UPPER_CATEGORY_CD, WebDbUtils.createRecordItem(umbItem.getUpperCategoryCD()));
 		/** 会計部門CD */
-		regDataJson.put(MitsubishiConst.COMPANY_CD, WebDbUtils.createRecordItem(umbItem.getAccountDepartmentCD()));
+		regDataJson.put(MitsubishiConst.ACCOUNT_DEPARTMENT_CD,
+				WebDbUtils.createRecordItem(umbItem.getAccountDepartmentCD()));
 		/** 受注NO */
-		regDataJson.put(MitsubishiConst.SALES_ORDER_NO, WebDbUtils.createRecordItem(umbItem.getOrderNo()));
+		regDataJson.put(MitsubishiConst.ORDER_NO, WebDbUtils.createRecordItem(umbItem.getOrderNo()));
 		/** 受注明細NO */
 		regDataJson.put(MitsubishiConst.SALES_ORDER_NO, WebDbUtils.createRecordItem(umbItem.getSalesOrderNo()));
 		/** 得意先CD */
@@ -474,13 +499,16 @@ public class UMB01Bean implements Serializable {
 		regDataJson.put(MitsubishiConst.SALESPERSON_CD, WebDbUtils.createRecordItem(umbItem.getSalespersonCD()));
 		/** 売上担当者名 */
 		regDataJson.put(MitsubishiConst.SALESPERSON_NAME, WebDbUtils.createRecordItem(umbItem.getSalespersonName()));
-		/** 状態 */
-		regDataJson.put(MitsubishiConst.STATUS, WebDbUtils.createRecordItem(umbItem.getState()));
-		/** 新規申請URL */
+		/** 価格伺いマスタ申請(新規) */
 		StringBuilder url = new StringBuilder();
-		url.append(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue()))
-				.append(MessageFormat.format(messages.get("umb_l_url"), umbItem.getDataNo()));
-		regDataJson.put(MitsubishiConst.NEW_APPLICATION_URL, WebDbUtils.createRecordURL(url.toString()));
+		url.append(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue())).append(MessageFormat
+				.format(messages.get(MitsubishiConst.URL_PROPERTIES), umbItem.getDataNo(), MitsubishiConst.MODE_NEW));
+		regDataJson.put(MitsubishiConst.NEW_PRICE_INQUIRY_MASTER_APPLICATION,
+				WebDbUtils.createRecordURL(url.toString()));
+
+		// log: end data no
+		LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), getLog
+				.append(umbItem.getDataNo()).append(MitsubishiConst.HYPHEN).append(MitsubishiConst.END_LOG).toString());
 
 		return regDataJson;
 	}
@@ -492,15 +520,17 @@ public class UMB01Bean implements Serializable {
 	 * @return
 	 * @throws ParseException
 	 */
-	private UmitsubishiTempDto createUmitsubishiTemp(String[] content) throws ParseException {
+	private UMB01TempDto createUmitsubishiTemp(String[] content) throws ParseException {
 
 		int j = 0;
-		UmitsubishiTempDto umitsubishiTempDto = new UmitsubishiTempDto();
+		UMB01TempDto umitsubishiTempDto = new UMB01TempDto();
 
 		/** データ行NO */
 		umitsubishiTempDto.setDataLineNo(content[j++]);
 		/** データNO */
 		umitsubishiTempDto.setDataNo(content[j++]);
+		/** 管理NO */
+		umitsubishiTempDto.setManagerNo(content[j++]);
 		/** 送信元レコード作成日時 */
 		umitsubishiTempDto.setSrcCreateDate(content[j++]);
 		/** 会社CD */
@@ -565,123 +595,9 @@ public class UMB01Bean implements Serializable {
 		umitsubishiTempDto.setSalespersonCD(content[j++]);
 		/** 売上担当者名 */
 		umitsubishiTempDto.setSalespersonName(content[j++]);
-		/** 状態 */
-		umitsubishiTempDto.setState(content[j++]);
 
 		return umitsubishiTempDto;
 
-	}
-
-	/**
-	 * function for export table master of price to CSV
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	public String exportCSV() throws Exception {
-
-		List<UmitsubishiMasterDto> umbResults = new ArrayList<>();
-
-		umbResults = mitsubishiService.getDataPriceMaster();
-
-		String csvFile = getExportDir() + MitsubishiConst.PRICE_MASTER + ".csv";
-
-		try {
-			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(csvFile, false), "windows-31j");
-			writer.write(createHeaderCSV());
-			StringBuilder strBuilder = new StringBuilder();
-
-			for (UmitsubishiMasterDto umbItem : umbResults) {
-
-				strBuilder.append(MitsubishiConst.NEW_LINE);
-				writer.write(strBuilder.toString());
-			}
-
-			writer.close();
-		} catch (Exception e) {
-			throw new DataExportRuntimeException(e.getMessage(), e);
-		}
-
-		fileUrlPath = JSFUtil.createCsvFileUrl(MitsubishiConst.PRICE_MASTER + ".csv");
-
-		return null;
-	}
-
-	/**
-	 * function create header for file CSV
-	 * 
-	 * @return
-	 */
-	private String createHeaderCSV() {
-
-		StringBuilder strBuilder = new StringBuilder();
-		/** データ行NO */
-		strBuilder.append(MitsubishiConst.DATA_LINE_NO);
-		/** データNO */
-		strBuilder.append(MitsubishiConst.DATA_NO);
-		/** 送信元レコード作成日時 */
-		strBuilder.append(MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME);
-		/** データ更新区分 */
-		strBuilder.append(MitsubishiConst.DATE_UPDATE_CATEGORY);
-		/** 得意先CD */
-		strBuilder.append(MitsubishiConst.CUSTOMER_CD);
-		/** 仕向先CD1 */
-		strBuilder.append(MitsubishiConst.DESTINATION_CD1);
-		/** 仕向先CD2 */
-		strBuilder.append(MitsubishiConst.DESTINATION_CD2);
-		/** 品名略号 */
-		strBuilder.append(MitsubishiConst.PRODUCT_NAME_ABBREVIATION);
-		/** カラーNo */
-		strBuilder.append(MitsubishiConst.COLOR_NO);
-		/** グレード1 */
-		strBuilder.append(MitsubishiConst.GRADE_1);
-		/** 適用開始日 */
-		strBuilder.append(MitsubishiConst.APPLICATION_START_DATE);
-		/** ロット数量 */
-		strBuilder.append(MitsubishiConst.LOT_QUANTITY);
-		/** 通貨CD */
-		strBuilder.append(MitsubishiConst.DATE_UPDATE_CATEGORY);
-		/** 取引先枝番 */
-		strBuilder.append(MitsubishiConst.CLIENT_BRANCH_NUMBER);
-		/** 価格形態 */
-		strBuilder.append(MitsubishiConst.PRICE_FORM);
-		/** 仕切単価 */
-		strBuilder.append(MitsubishiConst.PARTITION_UNIT_PRICE);
-		/** 改定前単価 */
-		strBuilder.append(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION);
-		/** 小口配送単価 */
-		strBuilder.append(MitsubishiConst.UNIT_PRICE_SMALL_PARCEL);
-		/** 小口着色単価 */
-		strBuilder.append(MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR);
-		/** 末端価格 */
-		strBuilder.append(MitsubishiConst.PARTITION_UNIT_PRICE);
-		/** 契約番号 */
-		strBuilder.append(MitsubishiConst.CONTRACT_NUMBER);
-		/** 用途参照 */
-		strBuilder.append(MitsubishiConst.USAGE_REF);
-
-		strBuilder.append(MitsubishiConst.NEW_LINE);
-
-		return StringUtils.joining(strBuilder.toString(), StringUtils.DEFAULT_DELIMITER);
-	}
-
-	/**
-	 * create path for csv file
-	 * 
-	 * @return path
-	 */
-	private String getExportDir() {
-		String dir = PESystemProperties.getInstance().getProperty("TENPU_DIR");
-		String fileSep = System.getProperty("file.separator");
-		if (dir != null && !dir.endsWith(fileSep)) {
-			dir += fileSep;
-		}
-		dir += "CSV";
-		File file = new File(dir.substring(0, dir.length() - 1));
-		if (file.exists() == false) {
-			file.mkdirs();
-		}
-		return dir;
 	}
 
 	/**
@@ -1131,5 +1047,19 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setCustomerReqConfirmList(List<SelectItem> customerReqConfirmList) {
 		this.customerReqConfirmList = customerReqConfirmList;
+	}
+
+	/**
+	 * @return the dateRange
+	 */
+	public DateRange getDateRange() {
+		return dateRange;
+	}
+
+	/**
+	 * @param dateRange the dateRange to set
+	 */
+	public void setDateRange(DateRange dateRange) {
+		this.dateRange = dateRange;
 	}
 }

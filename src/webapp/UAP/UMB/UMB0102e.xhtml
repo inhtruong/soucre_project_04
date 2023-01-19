@@ -141,14 +141,9 @@
 							<p:outputLabel value="#{messages.umb_tab1_dateApply}"
 								for="tab1_dateApply" />
 							<h:panelGroup>
-								<p:inputDate id="tab1_dateApplyStartDate"
-									value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}">
-									<f:converter converterId="net.poweregg.faces.DateConverter" />
-								</p:inputDate>&#160;&#160;~&#160;&#160;
-								<p:inputDate id="tab1_dateApplyEndDate"
-									value="#{UMB01Bean.umb01Dto.priceRefDto.applicationEndDate}">
-									<f:converter converterId="net.poweregg.faces.TimeConverter" />
-								</p:inputDate>
+								<p:inputDateRange id="tab1_dateApply" inputMode="date" required="true" value="#{UMB01Bean.dateRange}">
+ 						<f:validator validatorId="net.poweregg.faces.InputDateRangeValidator" />
+ 					</p:inputDateRange>
 							</h:panelGroup>
 
 							<p:outputLabel rendered="#{UMB01.mode == '1'}"

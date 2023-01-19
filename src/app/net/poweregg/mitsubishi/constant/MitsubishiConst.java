@@ -43,8 +43,11 @@ public class MitsubishiConst {
 	// public static final String SHIFT_JIS_ENCODING = "Shift-JIS";
 	public static final String WINDOWS_31J = "windows-31j";
 	public static final String CSV_EXTENSION = ".csv";
-	// public static final String UTF_8 = "UTF-8";
+	public static final String UTF_8 = "UTF-8";
+    // FEFF because this is the Unicode char represented by the UTF-8 byte order mark (EF BB BF).
+    public static final String UTF8_BOM = "\uFEFF";
 	public static final String YYYYMMDD = "yyyyMMdd";
+	public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
 	public static final String HHMMSS = "hhmmss";
 	public static final String URL_KOUJI_LIST = "/UMK/UMK0102l.jsf";
 	public static final String ASSIT_MSG_TYPE = "9100";
@@ -99,6 +102,7 @@ public class MitsubishiConst {
 	public static final String COLOR_NO = "カラーNO";
 	public static final String GRADE_1 = "グレード1";
 	public static final String USER_ITEM = "ユーザー品目";
+	public static final String USER_PRODUCT_NAME = "ユーザー品名";
 	public static final String APPLICATION_START_DATE = "適用開始日";
 	public static final String APPLICATION_END_DATE = "適用終了日";
 	public static final String LOT_QUANTITY = "ロット数量";
@@ -107,11 +111,12 @@ public class MitsubishiConst {
 	public static final String PACKING = "荷姿";
 	public static final String CLIENT_BRANCH_NUMBER = "取引先枝番";
 	public static final String PRICE_FORM = "価格形態";
-	public static final String PARTITION_UNIT_PRICE = "仕切単価(決定値)";
+	public static final String PARTITION_UNIT_PRICE = "仕切単価（決定値）";
 	public static final String UNIT_PRICE_BEFORE_REVISION = "改定前単価";
 	public static final String UNIT_PRICE_SMALL_PARCEL = "小口配送単価";
 	public static final String UNIT_PRICE_FOREHEAD_COLOR = "小口着色単価";
-	public static final String RETAIL_PRICE = "末端価格、エンドユーザー単価";
+	public static final String PRIMARY_STORE_OPENING_RATE = "一次店口銭率";
+	public static final String RETAIL_PRICE = "末端価格";
 	public static final String WARNING = "警告";
 	public static final String PRIMARY_STORE_COMMISSION_AMOUNT = "一次店口銭金額";
 	public static final String PRIMARY_STORE_OPEN_RATE = "一次店口銭率";
@@ -119,6 +124,8 @@ public class MitsubishiConst {
 	public static final String REASON_INQUIRY = "伺い理由";
 	public static final String RETROACTIVE_CLASSIFICATION = "遡及区分";
 	public static final String CONTRACT_NUMBER = "契約番号";
+	public static final String REASON_FOR_INQUIRY = "伺い理由";
+	public static final String CONFIRM_OF_CUSTOMER_REQUIREMENTS = "顧客要求事項確認";
 	public static final String USAGE_CD = "用途CD";
 	public static final String USAGE_REF = "用途参照";
 	public static final String SCHEDULED_DELIVERY_DATE = "納品予定日時";
@@ -128,15 +135,24 @@ public class MitsubishiConst {
 	public static final String SALESPERSON_CD = "売上担当者CD";
 	public static final String SALESPERSON_NAME = "売上担当者名";
 	public static final String PRICE_MASTER = "価格マスタ";
-	public static final String STATUS = "状態";
-	public static final String NEW_APPLICATION_URL = "価格伺いマスタ申請(新規)";
-	public static final String EDIT_REQUEST_URL = "価格伺いマスタ申請(編集)";
-	public static final String DEPRECATION_REQUEST_URL = "価格伺いマスタ申請(廃止)";
+	public static final String STATUS_CD = "状態CD";
+	public static final String APPRECP_NO = "申請受付番号";
+	public static final String NEW_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(新規)";
+	public static final String EDIT_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(編集)";
+	public static final String DEPRECATION_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(廃止)";
+	public static final String APPLICATION_REC_NO = "申請受付番号";
 	public static final String NOT_APPLIED = "未申請";
 	public static final String START_LOG = "処理開始";
 	public static final String END_LOG = "処理終了";
-	public static final String STATUS_CD = "状態CD";
-	public static final String APPRECPNO = "申請受付番号";
+	public static final String NEW_APPLICATION_URL = "新規申請URL";
+	public static final String EDIT_REQUEST_URL = "編集申請URL";
+	public static final String CANCEL_REQUEST_URL = "廃止申請URL";
+	public static final String MANAGER_NO = "管理NO";
+	public static final String MODE_NEW = "0";
+	public static final String MODE_EDIT = "1";
+	public static final String MODE_CANCEL = "2";
+	public static final String URL_PROPERTIES = "umb_l_url";
+	public static final String NO = "No";
 
 	public enum EVENT {
 		MODIFY("U"), CONFIRM("C");
@@ -182,8 +198,6 @@ public class MitsubishiConst {
 
 	public enum COMMON_NO {
 		/** SEARCH WEBDB */
-		COMMON_NO_UTSR01("TSR01"),
-		COMMON_NO_UTSR02("TSR02"),
 		COMMON_NO_UMB01("UMB01");
 
 		private final String value;

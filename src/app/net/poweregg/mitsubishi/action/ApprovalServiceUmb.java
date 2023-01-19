@@ -9,6 +9,11 @@ import javax.ejb.Local;
 @Local
 public interface ApprovalServiceUmb {
 
-	// ビルメンテ稟議事後処理
-	public void commitApproval(Long appRecepNo, String status);
+	/**
+	 * 
+	 * @param appRecepNo
+	 * @param status
+	 * @param mode 0-new, 1-edit, 2-cancel
+	 */
+	public void commitApproval(Long appRecepNo, String status, int mode);
 }

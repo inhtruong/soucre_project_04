@@ -275,7 +275,6 @@
 			/WEB-INF/navigations/SSO06Bean.xml,			
 			/WEB-INF/navigations/RRD05Bean.xml,
 			/WEB-INF/navigations/FAP31Bean.xml,/WEB-INF/navigations/exkeihiPagesFaces.xml,/WEB-INF/navigations/PWA01Bean.xml,/WEB-INF/navigations/PWA02Bean.xml,/WEB-INF/navigations/PWA03Bean.xml,/WEB-INF/navigations/PWA04Bean.xml,/WEB-INF/navigations/PWA05Bean.xml,/WEB-INF/navigations/PWA16Bean.xml,/WEB-INF/navigations/PWA20Bean.xml,/WEB-INF/navigations/PWA50Bean.xml,/WEB-INF/navigations/PWA51Bean.xml,/WEB-INF/navigations/PWA52Bean.xml,/WEB-INF/navigations/PWA53Bean.xml,/WEB-INF/navigations/PWA54Bean.xml,/WEB-INF/navigations/PWA55Bean.xml,/WEB-INF/navigations/PWA56Bean.xml,/WEB-INF/navigations/PWA57Bean.xml,/WEB-INF/navigations/PWA61Bean.xml,/WEB-INF/navigations/PWA62Bean.xml,/WEB-INF/navigations/PWA63Bean.xml,/WEB-INF/navigations/PWA64Bean.xml,/WEB-INF/navigations/PWA80Bean.xml,/WEB-INF/navigations/PWA81Bean.xml,/WEB-INF/navigations/PWA82Bean.xml,/WEB-INF/navigations/PWA82PBean.xml,/WEB-INF/navigations/PWA85Bean.xml,/WEB-INF/navigations/PWA85P01Bean.xml,/WEB-INF/navigations/PWA86Bean.xml,/WEB-INF/navigations/PWA86P01Bean.xml,/WEB-INF/navigations/PWA86P02Bean.xml,/WEB-INF/navigations/PWA87Bean.xml,/WEB-INF/navigations/PWA87P01Bean.xml,/WEB-INF/navigations/PWA88Bean.xml,/WEB-INF/navigations/PWA88P01Bean.xml,/WEB-INF/navigations/PWA89Bean.xml,/WEB-INF/navigations/PWA89P01Bean.xml,/WEB-INF/navigations/PWAA0Bean.xml,/WEB-INF/navigations/PWAA3Bean.xml,/WEB-INF/navigations/PWAA3P01Bean.xml,/WEB-INF/navigations/PWAA5Bean.xml,/WEB-INF/navigations/PWAA9Bean.xml,/WEB-INF/navigations/PWAAST01Bean.xml,/WEB-INF/navigations/PWAAST02Bean.xml,/WEB-INF/navigations/PWAB1Bean.xml,/WEB-INF/navigations/PWAB2Bean.xml,/WEB-INF/navigations/PWAB3Bean.xml,/WEB-INF/navigations/PWAB3P01Bean.xml,/WEB-INF/navigations/PWAB4Bean.xml,/WEB-INF/navigations/PWAB4P01Bean.xml,/WEB-INF/navigations/PWAB5Bean.xml,/WEB-INF/navigations/PWAB9Bean.xml,/WEB-INF/navigations/PWAB9P01Bean.xml,/WEB-INF/navigations/PWAC1Bean.xml,/WEB-INF/navigations/PWAD1Bean.xml,/WEB-INF/navigations/PWAD3Bean.xml,/WEB-INF/navigations/PWAD5Bean.xml,/WEB-INF/navigations/PWAD6Bean.xml,/WEB-INF/navigations/PWAE0Bean.xml,/WEB-INF/navigations/PWAE1Bean.xml,/WEB-INF/navigations/PWAE2Bean.xml,/WEB-INF/navigations/PWAE3Bean.xml,/WEB-INF/navigations/PWAE5Bean.xml,/WEB-INF/navigations/PWAE6Bean.xml,/WEB-INF/navigations/PWE10Bean.xml,/WEB-INF/navigations/PWE13Bean.xml,/WEB-INF/navigations/PWE15Bean.xml,/WEB-INF/navigations/PWE16Bean.xml,/WEB-INF/navigations/PWS01Bean.xml,/WEB-INF/navigations/PWS99Bean.xml,/WEB-INF/navigations/PWSA1P01Bean.xml,/WEB-INF/navigations/PWSA2P01Bean.xml,
-			/WEB-INF/navigations/UTSR01Bean.xml,			
 			/WEB-INF/navigations/UMB01Bean.xml
 			</param-value>
 	</context-param>
@@ -1589,6 +1588,15 @@
 		<local>net.poweregg.organization.imp.service.OrgImportService</local>
 		<ejb-link>OrgImportServiceBean</ejb-link>
 	</ejb-local-ref>
+	
+	<!-- Addon -->
+	<ejb-local-ref>
+		<ejb-ref-name>pe4j-ear/ApprovalServiceUmb/local</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>net.poweregg.mitsubishi.action.ApprovalServiceUmb</local>
+		<ejb-link>ApprovalServiceUmbBean</ejb-link>
+	</ejb-local-ref>
+	
 	<error-page>
 	    <exception-type>org.jboss.weld.context.NonexistentConversationException</exception-type>
 	    <location>/operationTimeout.jsf?nocid=true</location>

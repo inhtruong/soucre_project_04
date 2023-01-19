@@ -11,28 +11,4 @@
  </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#UAP#UMB#UMB0102l.xhtml"
   PATH="/UAP/UMB/UMB0102l.xhtml" SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
- <PROCESS-ITEM NAME="rules:#UAP#UMB#UMB0102e.xhtml"
-  PATH="/UAP/UMB/UMB0102e.xhtml" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:#UAP#UMB#UMB0102e.xhtml:0" NAME="item"
-   PATH="/UAP/UMB/UMB0102e.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="confirm::#UAP#UMB#UMB0102c.xhtml"
-    NAME="output" PATH="/UAP/UMB/UMB0102c.xhtml"
-    TARGET="rules:#UAP#UMB#UMB0102c.xhtml" TITLE="confirm" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="return::#UAP#UMB#UMB0102l.xhtml"
-    NAME="output1" PATH="/UAP/UMB/UMB0102l.xhtml"
-    TARGET="rules:#UAP#UMB#UMB0102l.xhtml" TITLE="return" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#UAP#UMB#UMB0102c.xhtml"
-  PATH="/UAP/UMB/UMB0102c.xhtml" SHAPE="32,241,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:#UAP#UMB#UMB0102c.xhtml:0" NAME="item"
-   PATH="/UAP/UMB/UMB0102c.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="return::#UAP#UMB#UMB0102e.xhtml"
-    NAME="output" PATH="/UAP/UMB/UMB0102e.xhtml"
-    TARGET="rules:#UAP#UMB#UMB0102e.xhtml" TITLE="return" model-entity="JSFProcessItemOutput"/>
-   <PROCESS-ITEM-OUTPUT ID="apply::#UAP#UMB#UMB0102l.xhtml"
-    NAME="output1" PATH="/UAP/UMB/UMB0102l.xhtml"
-    TARGET="rules:#UAP#UMB#UMB0102l.xhtml" TITLE="apply" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
 </PROCESS>

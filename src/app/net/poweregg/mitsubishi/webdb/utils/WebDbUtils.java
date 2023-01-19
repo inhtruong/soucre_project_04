@@ -43,16 +43,31 @@ public class WebDbUtils {
 	public WebDbUtils() {
 	}
 
-	public WebDbUtils(List<ClassInfo> webDBClassInfos, int systemType) {
-		
+	/**
+	 * 
+	 * @param webDBClassInfos
+	 * @param systemType
+	 * @param dbType: default-db_temp, 1-db_master, 2-db_ref
+	 */
+	public WebDbUtils(List<ClassInfo> webDBClassInfos, int systemType, int dbType) {
+
 		webDBConnectParam = new WebDBConnectParam();
 		webDBConnectParam.setPe4jUrl(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue()));
 		webDBConnectParam.setApiKey(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_2.getValue()));
 		webDBConnectParam.setUri(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_3.getValue()));
 		webDBConnectParam.setModifyUri(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_4.getValue()));
-		webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_5.getValue()));
 		webDBConnectParam.setSystem(systemType);
 		webDBConnectParam.setEncode(ENCODE);
+		switch (dbType) {
+		case 1:
+			webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_6.getValue()));
+			break;
+		case 2:
+			webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_7.getValue()));
+			break;
+		default:
+			webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_5.getValue()));
+		}
 	}
 
 	public WebDbUtils(WebDBConnectParam webDBConnectParam) {
@@ -409,7 +424,7 @@ public class WebDbUtils {
 		}
 		return new BigDecimal(json.getString(WebDbConstant.JSON_RECORD_VALUE));
 	}
-	
+
 	/**
 	 * レコード情報から指定したフィールド名の値を取得する
 	 *
@@ -494,6 +509,64 @@ public class WebDbUtils {
 			}
 			if (limit != null) {
 				url_string += "&limit=" + limit;
+			}
+			URL url = new URL(url_string);
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-Type", WebDbConstant.APPLICATION_JSON_CONTENT_TYPE);
+			conn.setRequestProperty("X-API-Key", webDBConnectParam.getApiKey());
+			conn.setRequestProperty("system", webDBConnectParam.getSystem().toString());
+			conn.setConnectTimeout(10000);
+			conn.setReadTimeout(10000);
+			conn.connect();
+			int status = conn.getResponseCode();
+
+			if (status == HttpURLConnection.HTTP_OK) {
+				String sb = IOUtils.toString(conn.getInputStream(), webDBConnectParam.getEncode());
+				jsonObj = new JSONObject(sb);
+			} else {
+				Reader in = new BufferedReader(
+						new InputStreamReader(conn.getErrorStream(), webDBConnectParam.getEncode()));
+				StringBuilder sb = new StringBuilder();
+				for (int c; (c = in.read()) >= 0;) {
+					sb.append((char) c);
+				}
+				String response = sb.toString();
+				throw new Exception(url_string + "|" + response);
+			}
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
+		}
+		return jsonObj;
+	}
+	
+
+	/**
+	 * delete record webDB
+	 * 
+	 * @param conn
+	 * @param query
+	 * @param order
+	 * @param databaseName
+	 * @param offset
+	 * @param limit
+	 * @return
+	 * @throws Exception
+	 */
+	public JSONObject delJsonObject(String recordNo) throws Exception {
+
+		HttpURLConnection conn = null;
+		JSONObject jsonObj = new JSONObject();
+		try {
+			String url_string = webDBConnectParam.getPe4jUrl() + webDBConnectParam.getUri();
+			url_string += "?";
+			url_string += "database="
+					+ URLEncoder.encode(webDBConnectParam.getDatabase(), webDBConnectParam.getEncode());
+			if (!StringUtils.nullOrBlank(recordNo)) {
+				url_string += "&";
+				url_string += "No=" + URLEncoder.encode(recordNo, webDBConnectParam.getEncode());
 			}
 			URL url = new URL(url_string);
 			conn = (HttpURLConnection) url.openConnection();

@@ -8,7 +8,7 @@ import org.json.JSONArray;
 
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
-import net.poweregg.mitsubishi.dto.UmitsubishiMasterDto;
+import net.poweregg.mitsubishi.dto.UMB01MasterDto;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 
 @Local
@@ -28,7 +28,7 @@ public interface MitsubishiService {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<UmitsubishiMasterDto> getDataPriceMaster() throws Exception;
+	public List<UMB01MasterDto> getDataPriceMaster() throws Exception;
 	
 	/**
 	 * create XML table price
