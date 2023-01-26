@@ -68,7 +68,9 @@ public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PRIORITY_USUAL = "0001";
-	public static final String FILE_E_XML = "umb01.xsl";
+	private static final String FILE_NEW_XML = "umb01.xsl";
+	private static final String FILE_EDIT_XML = "umb02.xsl";
+	private static final String FILE_CANCEL_XML = "umb03.xsl";
 
 	@EJB
 	private ClassificationService classificationService;
@@ -137,7 +139,7 @@ public class UMB01Bean implements Serializable {
 	private DateRange dateRange;
 
 	public String initUMB0102e() throws Exception {
-		//
+		
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
@@ -146,24 +148,25 @@ public class UMB01Bean implements Serializable {
 		}
 
 		if (MitsubishiConst.MODE_NEW.equals(mode)) {
-			modeNewApply(0);
+			initApplyScreenByMode(0, FILE_NEW_XML);
 			return StringUtils.EMPTY;
-		}	
+		}
 		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
-			modeModifyApply(1);
+			initApplyScreenByMode(1, FILE_EDIT_XML);
 			return StringUtils.EMPTY;
-		} 
-		
+		}
+
 		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
-			// modeCancelApply(2)
+			initApplyScreenByMode(1, FILE_CANCEL_XML);
+			return StringUtils.EMPTY;
 		}
 		
 		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
 		facesMessages.add(FacesMessage.SEVERITY_ERROR, "このモードは存在しません。", "");
 		return StringUtils.EMPTY;
 	}
-
-	private void modeNewApply(int mode) throws Exception {
+	
+	private void initApplyScreenByMode(int mode, String fileXML) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
@@ -177,8 +180,7 @@ public class UMB01Bean implements Serializable {
 		unitPriceDataRef = "";
 		priceDataRef = "";
 		usageRef = "";
-
-		// TODO Instance transactionList, dataUpdateCategoryList
+		
 		// get value from WebDB Temp
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, mode);
 		if (umb01Dto == null) {
@@ -199,33 +201,7 @@ public class UMB01Bean implements Serializable {
 		}
 		
 		// make XML table price
-		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_E_XML);
-	}
-	
-	private void modeModifyApply(int mode) throws Exception {
-		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
-		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
-		
-		selectEmp = "0";
-		emp = loginUser.getCurrentLoginInfo().getEmployee();
-		applyDate = new Date();
-		titleApply = "";
-		priority = PRIORITY_USUAL;
-		paperDocument = "";
-		attachFileList = null;
-		unitPriceDataRef = "";
-		priceDataRef = "";
-		usageRef = "";
-		
-		// get value from WebDB Master
-		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, mode);
-		if (umb01Dto == null) {
-			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
-			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
-		}
-		
-		// make XML table price
-		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_E_XML);
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), fileXML);
 	}
 
 	/**
@@ -240,12 +216,23 @@ public class UMB01Bean implements Serializable {
 		// ワークフローパラメタ編集
 		dataflowHelper.setApplyDate(getToday());
 		dataflowHelper.setTitle(titleApply);
-		dataflowHelper.setBaseForm("U901");
 		dataflowHelper.setApplicant(loginUser.getCorpID(), loginUser.getDeptID(), loginUser.getEmpID());
 		dataflowHelper.setApplyCondition("a");
 		dataflowHelper.setRouteEdit(true); // ルート変更可能に設定
 		dataflowHelper.setApplyContent(mitsubishiService.createXMLTablePrice(umb01Dto));
-		dataflowHelper.setXslFileName("umb02.xsl");
+		if (MitsubishiConst.MODE_NEW.equals(mode)) {
+			dataflowHelper.setBaseForm("U901");
+			dataflowHelper.setXslFileName("umb02.xsl");
+		}
+		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
+			dataflowHelper.setBaseForm("U902");
+			dataflowHelper.setXslFileName("umb03.xsl");
+		}
+
+		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
+			dataflowHelper.setBaseForm("U903");
+			dataflowHelper.setXslFileName("umb03.xsl");
+		}
 
 		try {
 			appRecepNo = dataflowHelper.prepareApply();

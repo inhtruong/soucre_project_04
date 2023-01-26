@@ -49,7 +49,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 */
 	@Override
 	public Umb01Dto getDataMitsubishi(String dataNo, int dbType) throws Exception {
-		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, 0);
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_LINE_NO, dataNo);
 
 		// Khong tim duoc thi return
