@@ -653,8 +653,8 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 * @throws Exception
 	 */
 	@Override
-	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd) throws Exception {
-		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, 0);
+	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception {
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, WebDbConstant.JSON_NO, recordNo);
 
 		// Khong tim duoc thi record no return luon

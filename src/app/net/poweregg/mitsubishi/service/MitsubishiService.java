@@ -44,7 +44,7 @@ public interface MitsubishiService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd) throws Exception;
+	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception;
 
 	/**
 	 * Find Data UMB By Condition

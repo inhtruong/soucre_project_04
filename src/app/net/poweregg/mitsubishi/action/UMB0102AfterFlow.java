@@ -31,7 +31,7 @@ public class UMB0102AfterFlow implements IProcAfterFlow {
         try {
             InitialContext icx = new InitialContext();
             ApprovalServiceUmb service = (ApprovalServiceUmb)icx.lookup("java:global/pe4j-ear/wf-mitsubishi/ApprovalServiceUmbBean");
-	        service.commitApproval(appRecepNo, status, 1);
+	        service.commitApproval(appRecepNo, status, 2);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

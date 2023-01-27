@@ -148,9 +148,9 @@ public class MitsubishiConst {
 	public static final String EDIT_REQUEST_URL = "編集申請URL";
 	public static final String CANCEL_REQUEST_URL = "廃止申請URL";
 	public static final String MANAGER_NO = "管理NO";
-	public static final String MODE_NEW = "0";
-	public static final String MODE_EDIT = "1";
-	public static final String MODE_CANCEL = "2";
+	public static final String MODE_NEW = "1";
+	public static final String MODE_EDIT = "2";
+	public static final String MODE_CANCEL = "3";
 	public static final String URL_PROPERTIES = "umb_l_url";
 	public static final String NO = "No";
 

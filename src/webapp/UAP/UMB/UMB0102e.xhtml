@@ -141,19 +141,17 @@
 							<p:outputLabel value="#{messages.umb_tab1_dateApply}"
 								for="tab1_dateApply" />
 							<h:panelGroup>
-								<p:inputDateRange id="tab1_dateApply" inputMode="date" required="true" value="#{UMB01Bean.dateRange}">
+								<p:inputDateRange id="tab1_dateApply" inputMode="date" nowrap="true" value="#{UMB01Bean.dateRange}">
  						<f:validator validatorId="net.poweregg.faces.InputDateRangeValidator" />
  					</p:inputDateRange>
 							</h:panelGroup>
-
-							<p:outputLabel rendered="#{UMB01.mode == '1'}"
-								for="tab1_retroactiveClassification"
-								value="#{messages.umb_tab1_retroactiveClassification}" />
-							<p:inputText rendered="#{UMB01.mode == '1'}" id="tab1_retroactiveClassification"
-								styleClass="short text_off" maxlength="20"
-								value="#{UMB01Bean.umb01Dto.priceUnitRefDto.retroactiveClassification}" />
-
-						</h:panelGrid>
+								<p:outputLabel rendered="#{UMB01.mode == '1'}"
+									for="tab1_retroactiveClassification"
+									value="#{messages.umb_tab1_retroactiveClassification}" />
+								<p:inputText rendered="#{UMB01.mode == '1'}" id="tab1_retroactiveClassification"
+									styleClass="short text_off" maxlength="20"
+									value="#{UMB01Bean.umb01Dto.priceUnitRefDto.retroactiveClassification}" />
+							</h:panelGrid>
 					</p:div>
 				</p:div>
 

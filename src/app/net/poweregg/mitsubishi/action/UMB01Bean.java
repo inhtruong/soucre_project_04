@@ -68,9 +68,7 @@ public class UMB01Bean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final String PRIORITY_USUAL = "0001";
-	private static final String FILE_NEW_XML = "umb01.xsl";
-	private static final String FILE_EDIT_XML = "umb02.xsl";
-	private static final String FILE_CANCEL_XML = "umb03.xsl";
+	private static final String FILE_XML = "umb01.xsl";
 
 	@EJB
 	private ClassificationService classificationService;
@@ -89,6 +87,7 @@ public class UMB01Bean implements Serializable {
 
 	@RequestParameter(value = "datano")
 	private String dataNo;
+	
 	@RequestParameter(value = "mode")
 	private String mode;
 
@@ -137,6 +136,7 @@ public class UMB01Bean implements Serializable {
 
 	private String outputHtml;
 	private DateRange dateRange;
+	private String currentMode;
 
 	public String initUMB0102e() throws Exception {
 		
@@ -146,29 +146,6 @@ public class UMB01Bean implements Serializable {
 		if (loginUser == null) {
 			return "login";
 		}
-
-		if (MitsubishiConst.MODE_NEW.equals(mode)) {
-			initApplyScreenByMode(0, FILE_NEW_XML);
-			return StringUtils.EMPTY;
-		}
-		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
-			initApplyScreenByMode(1, FILE_EDIT_XML);
-			return StringUtils.EMPTY;
-		}
-
-		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
-			initApplyScreenByMode(1, FILE_CANCEL_XML);
-			return StringUtils.EMPTY;
-		}
-		
-		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
-		facesMessages.add(FacesMessage.SEVERITY_ERROR, "このモードは存在しません。", "");
-		return StringUtils.EMPTY;
-	}
-	
-	private void initApplyScreenByMode(int mode, String fileXML) throws Exception {
-		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
-		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
 		selectEmp = "0";
 		emp = loginUser.getCurrentLoginInfo().getEmployee();
@@ -180,12 +157,35 @@ public class UMB01Bean implements Serializable {
 		unitPriceDataRef = "";
 		priceDataRef = "";
 		usageRef = "";
+		currentMode = mode;
+
+		if (MitsubishiConst.MODE_NEW.equals(mode)) {
+			initApplyScreenByMode(1);
+			return StringUtils.EMPTY;
+		}
+		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
+			initApplyScreenByMode(2);
+			return StringUtils.EMPTY;
+		}
+
+		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
+			initApplyScreenByMode(2);
+			return StringUtils.EMPTY;
+		}
+		
+		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
+		throw new Exception("This mode doesn't exist");
+	}
+	
+	private void initApplyScreenByMode(int mode) throws Exception {
+		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
+		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
 		// get value from WebDB Temp
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, mode);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
-			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
+			throw new Exception("Error: " + MitsubishiConst.DATA_LINE_NO + " " + dataNo + " not exist");
 		}
 		
 		Date nowDate = new Date();
@@ -201,7 +201,7 @@ public class UMB01Bean implements Serializable {
 		}
 		
 		// make XML table price
-		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), fileXML);
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 	}
 
 	/**
@@ -216,23 +216,25 @@ public class UMB01Bean implements Serializable {
 		// ワークフローパラメタ編集
 		dataflowHelper.setApplyDate(getToday());
 		dataflowHelper.setTitle(titleApply);
-		dataflowHelper.setApplicant(loginUser.getCorpID(), loginUser.getDeptID(), loginUser.getEmpID());
-		dataflowHelper.setApplyCondition("a");
-		dataflowHelper.setRouteEdit(true); // ルート変更可能に設定
-		dataflowHelper.setApplyContent(mitsubishiService.createXMLTablePrice(umb01Dto));
-		if (MitsubishiConst.MODE_NEW.equals(mode)) {
+		if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
 			dataflowHelper.setBaseForm("U901");
 			dataflowHelper.setXslFileName("umb02.xsl");
 		}
-		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
+		if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
 			dataflowHelper.setBaseForm("U902");
 			dataflowHelper.setXslFileName("umb03.xsl");
 		}
 
-		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
+		if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
 			dataflowHelper.setBaseForm("U903");
 			dataflowHelper.setXslFileName("umb03.xsl");
 		}
+		dataflowHelper.setApplicant(loginUser.getCorpID(), loginUser.getDeptID(), loginUser.getEmpID());
+		
+		dataflowHelper.setApplyCondition("a");
+		dataflowHelper.setRouteEdit(true); // ルート変更可能に設定
+		dataflowHelper.setApplyContent(mitsubishiService.createXMLTablePrice(umb01Dto));
+		
 
 		try {
 			appRecepNo = dataflowHelper.prepareApply();
@@ -269,7 +271,16 @@ public class UMB01Bean implements Serializable {
 			}
 			
 			try {
-				mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus());
+				
+				if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
+					mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus(), 1);
+				}
+				if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
+					mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
+				}
+				if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
+					mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1048,5 +1059,33 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setDateRange(DateRange dateRange) {
 		this.dateRange = dateRange;
+	}
+
+	/**
+	 * @return the currentMode
+	 */
+	public String getCurrentMode() {
+		return currentMode;
+	}
+
+	/**
+	 * @param currentMode the currentMode to set
+	 */
+	public void setCurrentMode(String currentMode) {
+		this.currentMode = currentMode;
+	}
+
+	/**
+	 * @return the mode
+	 */
+	public String getMode() {
+		return mode;
+	}
+
+	/**
+	 * @param mode the mode to set
+	 */
+	public void setMode(String mode) {
+		this.mode = mode;
 	}
 }

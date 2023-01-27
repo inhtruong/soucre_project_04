@@ -59,10 +59,10 @@ public class WebDbUtils {
 		webDBConnectParam.setSystem(systemType);
 		webDBConnectParam.setEncode(ENCODE);
 		switch (dbType) {
-		case 1:
+		case 2:
 			webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_6.getValue()));
 			break;
-		case 2:
+		case 3:
 			webDBConnectParam.setDatabase(WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_7.getValue()));
 			break;
 		default:
