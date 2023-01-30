@@ -163,11 +163,7 @@ public class UMB01Bean implements Serializable {
 			initApplyScreenByDbType(1);
 			return StringUtils.EMPTY;
 		}
-		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
-			initApplyScreenByDbType(2);
-			return StringUtils.EMPTY;
-		}
-		if (MitsubishiConst.MODE_CANCEL.equals(mode) && mitsubishiService.checkRecordDbRef(dataNo)) {
+		if (MitsubishiConst.MODE_EDIT.equals(mode) || MitsubishiConst.MODE_CANCEL.equals(mode)) {
 			initApplyScreenByDbType(2);
 			return StringUtils.EMPTY;
 		}
@@ -179,26 +175,26 @@ public class UMB01Bean implements Serializable {
 	private void initApplyScreenByDbType(int dbType) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
-		
+
 		// get value from WebDB Temp
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, dbType);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
 			throw new Exception("Error: " + MitsubishiConst.DATA_LINE_NO + " " + dataNo + " not exist");
 		}
-		
+
 		Date nowDate = new Date();
 		dateRange = new DateRange();
 		dateRange.setStartDate(DateUtils.addDate(nowDate, "MONTH", -1));
 		dateRange.setEndDate(nowDate);
-		
+
 		if (umb01Dto.getPriceRefDto().getApplicationStartDate() != null) {
 			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationStartDate());
 		}
 		if (umb01Dto.getPriceRefDto().getApplicationEndDate() != null) {
 			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationEndDate());
 		}
-		
+
 		// make XML table price
 		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 	}
@@ -223,7 +219,6 @@ public class UMB01Bean implements Serializable {
 			dataflowHelper.setBaseForm("U902");
 			dataflowHelper.setXslFileName("umb03.xsl");
 		}
-
 		if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
 			dataflowHelper.setBaseForm("U903");
 			dataflowHelper.setXslFileName("umb03.xsl");
@@ -254,34 +249,26 @@ public class UMB01Bean implements Serializable {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
+		if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(umb01Dto.getStatusCD())
+				|| ConstStatus.STATUS_APPROVED.equals(umb01Dto.getStatusCD())
+				|| ConstStatus.STATUS_COMPLETED.equals(umb01Dto.getStatusCD())) {
+			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
+			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+			return StringUtils.EMPTY;
+		}
+		
 		try {
 			// 申請確定
 			dataflowHelper.apply();
 			// 自分のデータを保存する.
 			ApplicationForm appForm = flowService.findApplicationFormByRecpNo(appRecepNo);
 			String recordNo = umb01Dto.getId();
-
-			if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(umb01Dto.getStatusCD())
-					|| ConstStatus.STATUS_APPROVED.equals(umb01Dto.getStatusCD())
-					|| ConstStatus.STATUS_COMPLETED.equals(umb01Dto.getStatusCD())) {
-				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
-				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
-				return StringUtils.EMPTY;
-			}
 			
-			try {
-				
-				if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
-					mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus(), 1);
-				}
-				if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
-					mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
-				}
-				if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
-					mitsubishiService.updateRecordDbTemp(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
+				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 1);
+			}
+			if (MitsubishiConst.MODE_EDIT.equals(currentMode) || MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
+				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
 			}
 
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
@@ -366,7 +353,7 @@ public class UMB01Bean implements Serializable {
 				for (int i = 0; i < dataList.size(); i++) {
 					UMB01TempDto recordData = dataList.get(i);
 					// b.1. Insert 前払勧奨情報 get classInfo by commonNo: UMB01
-					WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, 0);
+					WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, 1);
 					String result = webdbUtils.registJsonObject(
 							putDataUmitsubishiTemp(webDBClassInfos, recordData, logFileFullPath), true);
 					if (!ConvertUtils.isNullOrEmpty(result)) {

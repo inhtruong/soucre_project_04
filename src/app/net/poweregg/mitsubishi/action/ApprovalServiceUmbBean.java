@@ -53,7 +53,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 
 		List<ClassInfo> webDBClassInfos = classificationService.getClassInfoList(WebDbConstant.ALL_CORP,
 				MitsubishiConst.COMMON_NO.COMMON_NO_UMB01.getValue());
-		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, 0);
+		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, 1);
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 
 		LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), MitsubishiConst.LOG_BEGIN);
@@ -162,7 +162,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 
 		JSONObject queryBlocks = new JSONObject();
 		// mode new
-		if (0 == mode) {
+		if (1 == mode) {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION, WebDbUtils
 					.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION)));
@@ -174,7 +174,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 					.createRecordURL(getUrlStringByMode(webDBClassInfos, recordObj, MitsubishiConst.MODE_NEW)));
 		}
 		// mode edit
-		if (1 == mode) {
+		if (2 == mode) {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
 					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE)));

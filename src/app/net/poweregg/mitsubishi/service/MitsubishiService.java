@@ -44,7 +44,7 @@ public interface MitsubishiService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception;
+	public void updateRecordDbPrice(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception;
 
 	/**
 	 * Find Data UMB By Condition
@@ -62,13 +62,5 @@ public interface MitsubishiService {
 	 * @return
 	 */
 	public List<ClassInfo> getInfoWebDb();
-	
-	/**
-	 * Check if data exists in DB Ref
-	 * @param dataNo
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean checkRecordDbRef(String dataNo) throws Exception;
 	
 }

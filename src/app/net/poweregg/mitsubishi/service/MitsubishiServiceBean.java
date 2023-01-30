@@ -50,7 +50,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	@Override
 	public Umb01Dto getDataMitsubishi(String dataNo, int dbType) throws Exception {
 		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
-		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_LINE_NO, dataNo);
+		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo);
 
 		// Khong tim duoc thi return
 		if (rsJson == null || rsJson.length() == 0) {
@@ -653,7 +653,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 * @throws Exception
 	 */
 	@Override
-	public void updateRecordDbTemp(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception {
+	public void updateRecordDbPrice(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception {
 		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, WebDbConstant.JSON_NO, recordNo);
 
@@ -707,14 +707,5 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				MitsubishiConst.COMMON_NO.COMMON_NO_UMB01.getValue());
 
 		return webDBClassInfos;
-	}
-
-	@Override
-	public boolean checkRecordDbRef(String dataNo) throws Exception {
-		Umb01Dto umb01Dto = getDataMitsubishi(dataNo, 3);
-		if (umb01Dto == null) {
-			return false;
-		}
-		return true;
 	}
 }
