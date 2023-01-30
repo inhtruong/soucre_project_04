@@ -560,7 +560,8 @@ public class WebDbUtils {
 		HttpURLConnection conn = null;
 		JSONObject jsonObj = new JSONObject();
 		try {
-			String url_string = webDBConnectParam.getPe4jUrl() + webDBConnectParam.getUri();
+//			String url_string = webDBConnectParam.getPe4jUrl() + webDBConnectParam.getUri();
+			String url_string = "http://localhost:8080/pe4j" + webDBConnectParam.getUri();
 			url_string += "?";
 			url_string += "database="
 					+ URLEncoder.encode(webDBConnectParam.getDatabase(), webDBConnectParam.getEncode());

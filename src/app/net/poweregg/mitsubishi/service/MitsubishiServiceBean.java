@@ -61,7 +61,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// get data Umb01Dto form JSON
 		parseJSONtoUMB01Temp(umb01Dto, rsJson.getJSONObject(0));
 
-		if (dbType == 2 || dbType == 3) {
+		if (dbType == 2) {
 			parseJSONtoUMB01Master(umb01Dto, rsJson.getJSONObject(0));
 		}
 
@@ -707,5 +707,14 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				MitsubishiConst.COMMON_NO.COMMON_NO_UMB01.getValue());
 
 		return webDBClassInfos;
+	}
+
+	@Override
+	public boolean checkRecordDbRef(String dataNo) throws Exception {
+		Umb01Dto umb01Dto = getDataMitsubishi(dataNo, 3);
+		if (umb01Dto == null) {
+			return false;
+		}
+		return true;
 	}
 }

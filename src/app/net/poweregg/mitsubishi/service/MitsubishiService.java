@@ -63,4 +63,12 @@ public interface MitsubishiService {
 	 */
 	public List<ClassInfo> getInfoWebDb();
 	
+	/**
+	 * Check if data exists in DB Ref
+	 * @param dataNo
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean checkRecordDbRef(String dataNo) throws Exception;
+	
 }

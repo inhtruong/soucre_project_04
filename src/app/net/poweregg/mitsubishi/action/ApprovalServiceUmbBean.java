@@ -71,18 +71,18 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 			if (ConstStatus.STATUS_BACKED_AWAY.equals(status)) {
 
 				// mode new
-				if (0 == mode) {
+				if (1 == mode) {
 					updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), status,
-							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 0);
+							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 1);
 				}
 				// mode edit
-				if (1 == mode) {
+				if (2 == mode) {
 					// update 申請受付番号 in temp webDB: apply
 					updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), status,
-							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 0);
+							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 1);
 					// update 申請受付番号 in master webDB: withraw
 					updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), ConstStatus.STATUS_BACKED_AWAY,
-							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 1);
+							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 2);
 				}
 			}
 
@@ -91,15 +91,15 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 
 				JSONObject queryBlocks = createJsonQuery(webDBClassInfos, recordObj, mode, status);
 				// insert at master webDB
-				webdbUtils = new WebDbUtils(webDBClassInfos, 0, 1);
+				webdbUtils = new WebDbUtils(webDBClassInfos, 0, 2);
 
 				// mode edit
-				if (1 == mode) {
+				if (2 == mode) {
 
 					// delete old record
 					webdbUtils.delJsonObject(WebDbUtils.getValue(recordObj, MitsubishiConst.NO));
 					// insert at history webDB
-					webdbUtils = new WebDbUtils(webDBClassInfos, 0, 2);
+					webdbUtils = new WebDbUtils(webDBClassInfos, 0, 3);
 
 				}
 				String result = webdbUtils.registJsonObject(queryBlocks, true);

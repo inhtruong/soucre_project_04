@@ -160,16 +160,15 @@ public class UMB01Bean implements Serializable {
 		currentMode = mode;
 
 		if (MitsubishiConst.MODE_NEW.equals(mode)) {
-			initApplyScreenByMode(1);
+			initApplyScreenByDbType(1);
 			return StringUtils.EMPTY;
 		}
 		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
-			initApplyScreenByMode(2);
+			initApplyScreenByDbType(2);
 			return StringUtils.EMPTY;
 		}
-
-		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
-			initApplyScreenByMode(2);
+		if (MitsubishiConst.MODE_CANCEL.equals(mode) && mitsubishiService.checkRecordDbRef(dataNo)) {
+			initApplyScreenByDbType(2);
 			return StringUtils.EMPTY;
 		}
 		
@@ -177,12 +176,12 @@ public class UMB01Bean implements Serializable {
 		throw new Exception("This mode doesn't exist");
 	}
 	
-	private void initApplyScreenByMode(int mode) throws Exception {
+	private void initApplyScreenByDbType(int dbType) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
 		// get value from WebDB Temp
-		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, mode);
+		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, dbType);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
 			throw new Exception("Error: " + MitsubishiConst.DATA_LINE_NO + " " + dataNo + " not exist");
