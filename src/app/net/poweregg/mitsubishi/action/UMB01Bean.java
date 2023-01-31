@@ -161,10 +161,24 @@ public class UMB01Bean implements Serializable {
 
 		if (MitsubishiConst.MODE_NEW.equals(mode)) {
 			initApplyScreenByDbType(1);
+			
+			if (checkStatusCdApplyed(umb01Dto.getStatusCD())) {
+				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
+				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+				return StringUtils.EMPTY;
+			}
+			
 			return StringUtils.EMPTY;
 		}
 		if (MitsubishiConst.MODE_EDIT.equals(mode) || MitsubishiConst.MODE_CANCEL.equals(mode)) {
 			initApplyScreenByDbType(2);
+			
+			if (checkStatusCdApplyed(umb01Dto.getStatusCD()) || checkStatusCdApplyed(umb01Dto.getStatusCD())) {
+				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
+				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+				return StringUtils.EMPTY;
+			}
+			
 			return StringUtils.EMPTY;
 		}
 		
@@ -176,11 +190,11 @@ public class UMB01Bean implements Serializable {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 
-		// get value from WebDB Temp
+		// get value from WebDB
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, dbType);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
-			throw new Exception("Error: " + MitsubishiConst.DATA_LINE_NO + " " + dataNo + " not exist");
+			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
 		}
 
 		Date nowDate = new Date();
@@ -224,11 +238,9 @@ public class UMB01Bean implements Serializable {
 			dataflowHelper.setXslFileName("umb03.xsl");
 		}
 		dataflowHelper.setApplicant(loginUser.getCorpID(), loginUser.getDeptID(), loginUser.getEmpID());
-		
 		dataflowHelper.setApplyCondition("a");
 		dataflowHelper.setRouteEdit(true); // ルート変更可能に設定
 		dataflowHelper.setApplyContent(mitsubishiService.createXMLTablePrice(umb01Dto));
-		
 
 		try {
 			appRecepNo = dataflowHelper.prepareApply();
@@ -249,9 +261,7 @@ public class UMB01Bean implements Serializable {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
-		if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(umb01Dto.getStatusCD())
-				|| ConstStatus.STATUS_APPROVED.equals(umb01Dto.getStatusCD())
-				|| ConstStatus.STATUS_COMPLETED.equals(umb01Dto.getStatusCD())) {
+		if (checkStatusCdApplyed(umb01Dto.getStatusCD())) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
 			return StringUtils.EMPTY;
@@ -755,6 +765,12 @@ public class UMB01Bean implements Serializable {
 			}
 		}
 
+	}
+	
+	private boolean checkStatusCdApplyed(String statusCd) {
+		return ConstStatus.STATUS_UNDER_DELIBERATION.equals(umb01Dto.getStatusCD())
+				|| ConstStatus.STATUS_APPROVED.equals(umb01Dto.getStatusCD())
+				|| ConstStatus.STATUS_COMPLETED.equals(umb01Dto.getStatusCD());
 	}
 
 	public String getCsvFilePath() {
