@@ -195,6 +195,11 @@ public class PriceUnitRefDto implements Serializable {
 	 * 登録担当者
 	 */
 	private String registrar;
+	
+	/**
+	 * 状態CD
+	 */
+	private String statusCD;
 
 	/**
 	 * @return the customerReqConfirm
@@ -670,6 +675,20 @@ public class PriceUnitRefDto implements Serializable {
 	 */
 	public void setRegistrar(String registrar) {
 		this.registrar = registrar;
+	}
+
+	/**
+	 * @return the statusCD
+	 */
+	public String getStatusCD() {
+		return statusCD;
+	}
+
+	/**
+	 * @param statusCD the statusCD to set
+	 */
+	public void setStatusCD(String statusCD) {
+		this.statusCD = statusCD;
 	}
 
 

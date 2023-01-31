@@ -59,10 +59,10 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 		Umb01Dto umb01Dto = new Umb01Dto();
 		// get data Umb01Dto form JSON
-		parseJSONtoUMB01Temp(umb01Dto, rsJson.getJSONObject(0));
+		parseJSONtoUMB01Temp(umb01Dto, rsJson.getJSONObject(0), dbType);
 
-		if (dbType == 2) {
-			parseJSONtoUMB01Master(umb01Dto, rsJson.getJSONObject(0));
+		if (2 == dbType) {
+			parseJSONtoUMB01Master(umb01Dto, rsJson.getJSONObject(0), dbType);
 		}
 
 		return umb01Dto;
@@ -161,7 +161,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		return umbResults;
 	}
 
-	private void parseJSONtoUMB01Temp(Umb01Dto umb01Dto, JSONObject resultJson) throws JSONException {
+	private void parseJSONtoUMB01Temp(Umb01Dto umb01Dto, JSONObject resultJson, int dbType) throws JSONException {
 		// id
 		umb01Dto.setId(WebDbUtils.getValue(resultJson, "No"));
 		// データ移行NO
@@ -247,11 +247,13 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 		umb01Dto.setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPRECP_NO));
 
-		umb01Dto.setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
+		if (1 == dbType) {
+			umb01Dto.getPriceUnitRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
+		}
 
 	}
 
-	private void parseJSONtoUMB01Master(Umb01Dto umb01Dto, JSONObject resultJson) throws JSONException {
+	private void parseJSONtoUMB01Master(Umb01Dto umb01Dto, JSONObject resultJson, int dbType) throws JSONException {
 		// 警告
 		umb01Dto.getPriceRefDto().setWarning(WebDbUtils.getValue(resultJson, MitsubishiConst.WARNING));
 		// ロット数量
@@ -294,6 +296,10 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// 遡及区分
 		umb01Dto.getPriceRefDto().setRetroactiveClassification(
 				WebDbUtils.getValue(resultJson, MitsubishiConst.RETROACTIVE_CLASSIFICATION));
+		
+		if (2 == dbType) {
+			umb01Dto.getPriceRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
+		}
 	}
 
 	/**

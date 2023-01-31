@@ -75,12 +75,7 @@ public class Umb01Dto implements Serializable {
 	 * 申請受付番号
 	 */
 	private String appRecepNo;
-
-	/**
-	 * 状態CD
-	 */
-	private String statusCD;
-
+	
 	/**
 	 * @return the id
 	 */
@@ -219,19 +214,5 @@ public class Umb01Dto implements Serializable {
 	 */
 	public void setAppRecepNo(String appRecepNo) {
 		this.appRecepNo = appRecepNo;
-	}
-
-	/**
-	 * @return the statusCD
-	 */
-	public String getStatusCD() {
-		return statusCD;
-	}
-
-	/**
-	 * @param statusCD the statusCD to set
-	 */
-	public void setStatusCD(String statusCD) {
-		this.statusCD = statusCD;
 	}
 }

@@ -101,6 +101,11 @@ public class PriceRefDto implements Serializable {
 	 * 遡及区分
 	 */
 	private String retroactiveClassification;
+	
+	/**
+	 * 状態CD
+	 */
+	private String statusCD;
 
 	/**
 	 * @return the warning
@@ -310,5 +315,19 @@ public class PriceRefDto implements Serializable {
 	 */
 	public void setUnitPriceBefRevision(BigDecimal unitPriceBefRevision) {
 		this.unitPriceBefRevision = unitPriceBefRevision;
+	}
+
+	/**
+	 * @return the statusCD
+	 */
+	public String getStatusCD() {
+		return statusCD;
+	}
+
+	/**
+	 * @param statusCD the statusCD to set
+	 */
+	public void setStatusCD(String statusCD) {
+		this.statusCD = statusCD;
 	}
 }
