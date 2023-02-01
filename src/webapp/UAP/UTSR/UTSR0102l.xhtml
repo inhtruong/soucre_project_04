@@ -1,0 +1,252 @@
+<!DOCTYPE html
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://www.poweregg.net/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<p:head title="#{messages.utsr_l_title_result_screen}">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+</p:head>
+<f:metadata>
+	<f:viewAction action="#{UTSR01Bean.initPageList}" />
+</f:metadata>
+
+<p:body>
+	<h:form id="frm">
+		<p:panelTabs>
+			<p:tab disabled="true" immediate="true"
+				label="#{messages.utsr_list_screen}" selected="true" />
+		</p:panelTabs>
+		<!-- PANEL CONTROLER -->
+		<p:panelController collapse="true" id="controller">
+		</p:panelController>
+		<!-- MAIN FRAME  -->
+		<p:panelMain id="main">
+			<f:facet name="title">
+				<h:panelGroup>
+					<h1>
+						<h:outputText
+							value="#{messages.utsr_system_screen_title}#{messages.utsr_list_screen}" />
+					</h1>
+				</h:panelGroup>
+			</f:facet>
+			<!--  上部ナビ左領域 -->
+			<f:facet name="navi-upper-left">
+				<h:panelGroup>
+					<p:commandButton buttonClass="normal" img="/img/b_return.png"
+						label="#{messages.utsr_back_btn}"
+						action="#{UTSR01Bean.actionBack}" />
+				</h:panelGroup>
+			</f:facet>
+			<!--  下部ナビ左領域 -->
+			<f:facet name="navi-bottom-left">
+				<h:panelGroup>
+					<p:commandButton buttonClass="normal" img="/img/b_return.png"
+						label="#{messages.utsr_back_btn}"
+						action="#{UTSR01Bean.actionBack}" />
+				</h:panelGroup>
+			</f:facet>
+			<!-- 上部ナビ右領域 -->
+			<f:facet name="navi-upper-right">
+				<h:panelGroup>
+					<p:commandLink linkClass="#{pageBean.previousPageStyleClass}"
+						spanClass="iconLeft iconPadLeft1" action="#{UTSR01Bean.firstPage}"
+						img="/img/d_first.png" value="#{messages.utsr_l_first}"
+						disabled="#{!pageBean.hasPreviousPage}" />&#160;
+                        <p:commandLink
+						linkClass="#{pageBean.previousPageStyleClass}"
+						spanClass="iconLeft iconPadLeft1" action="#{UTSR01Bean.prevPage}"
+						img="/img/d_prev.png" value="#{messages.utsr_l_previous}"
+						disabled="#{!pageBean.hasPreviousPage}" />&#160;
+                        <h:outputText value="#{pageBean.title}" />&#160;
+                        <p:commandLink
+						linkClass="#{pageBean.nextPageStyleClass}"
+						spanClass="iconRight iconPadRight1"
+						action="#{UTSR01Bean.nextPage}" img="/img/d_next.png"
+						value="#{messages.utsr_l_next}"
+						disabled="#{!pageBean.hasNextPage}" />&#160;
+                        <p:commandLink
+						linkClass="#{pageBean.nextPageStyleClass}"
+						spanClass="iconRight iconPadRight1"
+						action="#{UTSR01Bean.lastPage}" img="/img/d_last.png"
+						value="#{messages.utsr_l_last}"
+						disabled="#{!pageBean.hasNextPage}" />&#160;
+                    </h:panelGroup>
+			</f:facet>
+			<!-- 下部ナビ左領域 -->
+			<f:facet name="navi-bottom-right">
+				<h:panelGroup>
+					<p:commandLink linkClass="#{pageBean.previousPageStyleClass}"
+						spanClass="iconLeft iconPadLeft1" action="#{UTSR01Bean.firstPage}"
+						img="/img/d_first.png" value="#{messages.utsr_l_first}"
+						disabled="#{!pageBean.hasPreviousPage}" />&#160;
+                        <p:commandLink
+						linkClass="#{pageBean.previousPageStyleClass}"
+						spanClass="iconLeft iconPadLeft1" action="#{UTSR01Bean.prevPage}"
+						img="/img/d_prev.png" value="#{messages.utsr_l_previous}"
+						disabled="#{!pageBean.hasPreviousPage}" />&#160;
+                        <h:outputText value="#{pageBean.title}" />&#160;
+                        <p:commandLink
+						linkClass="#{pageBean.nextPageStyleClass}"
+						spanClass="iconRight iconPadRight1"
+						action="#{UTSR01Bean.nextPage}" img="/img/d_next.png"
+						value="#{messages.utsr_l_next}"
+						disabled="#{!pageBean.hasNextPage}" />&#160;
+                        <p:commandLink
+						linkClass="#{pageBean.nextPageStyleClass}"
+						spanClass="iconRight iconPadRight1"
+						action="#{UTSR01Bean.lastPage}" img="/img/d_last.png"
+						value="#{messages.utsr_l_last}"
+						disabled="#{!pageBean.hasNextPage}" />&#160;
+                    </h:panelGroup>
+			</f:facet>
+
+			<!-- バッチジョブ情報表示領域 -->
+			<p:div styleClass="contents margin">
+				<rich:dataTable styleClass="listHighlight" border="0"
+					cellpadding="0" cellspacing="0" id="richDataTable1"
+					rowClasses="oddRow, evenRow"
+					value="#{UTSR01Bean.tsr01ListDataModel}" var="varlist1"
+					rowKeyVar="rowIndex1">
+
+					<!-- タイトル -->
+					<f:facet name="header">
+						<rich:columnGroup>
+							<rich:column styleClass="headBorderRight">
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'COMPANYCODE' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByCompanyCode}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'COMPANYCODE'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_company_code}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'COMPANYNAMEKANJI' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByCompanyNameKanji}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'COMPANYNAMEKANJI'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_comp_name}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'PHONENUMBER' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByTelPhoneNumber}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'PHONENUMBER'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_corp_phone_number}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'LATESTGRADE' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByLatestGrade}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'LATESTGRADE'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_grade}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'FOUNDED' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByFounded}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'FOUNDED'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_founded}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'DATEESTABLISH' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByDateEstablish}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'DATEESTABLISH'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_date_establishment}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'CLASSIFICATION' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByClassification}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'CLASSIFICATION'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_classification}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'SALESAMOUNT' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortBySalesAmount}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'SALESAMOUNT'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_amount_sales}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'CAPITAL' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByCapital}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'CAPITAL'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_capital}" />
+							</rich:column>
+							<rich:column
+								styleClass="#{UTSR01Bean.utsrSearchCond.sortItem == 'EMPLOYEESCOUNT' ? 'currentCell' : ''} headBorderRight">
+								<p:commandLink action="#{UTSR01Bean.sortByEmployeesCount}"
+									img="#{UTSR01Bean.utsrSearchCond.sortOrder == 'ASC' ? '/img/sort_asc.png' : '/img/sort_desc.png'}"
+									imgRendered="#{UTSR01Bean.utsrSearchCond.sortItem == 'EMPLOYEESCOUNT'}"
+									linkClass="noline" spanClass="iconRight iconPadRight1 noline"
+									value="#{messages.utsr_number_emp}" />
+							</rich:column>
+						</rich:columnGroup>
+					</f:facet>
+					<!-- 表示一覧有り -->
+					<rich:column styleClass="borderRight">
+						<h:panelGroup>
+							<button type="button" name="closeWindowBtn"
+								onclick="openWithNewWindow('#{varlist1.detailView}');return false;">
+								#{messages.utsr_detail_view_btn}</button>
+						</h:panelGroup>
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.tsrCompanyCode}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.companyNameKanji}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.telNumberText}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.grade}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.founded}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.dateEstablishment}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.classification}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.amountSales}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.capital}" />
+					</rich:column>
+					<rich:column styleClass="borderRight">
+						<h:outputText value="#{varlist1.numberEmp}" />
+					</rich:column>
+					<h:inputHidden id="id" value="varlist1.id"></h:inputHidden>
+				</rich:dataTable>
+				<!-- 表示一覧無し -->
+				<h:outputText style="color:red"
+					value="#{messages.utsr_no_data_result}"
+					rendered="#{UTSR01Bean.tsr01ListDataModel.rowCount lt 1}" />
+			</p:div>
+		</p:panelMain>
+	</h:form>
+</p:body>
+
+</html>
