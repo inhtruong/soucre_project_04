@@ -59,13 +59,13 @@
 
 	<p:outputLabel for="tab1_dataNO" value="#{messages.umb_tab1_dataNO}" />
 	<p:inputNumber id="tab1_dataNO" styleClass="middle text_off"
-		required="true" digitsBeforePoint="15" digitsAfterPoint="0"
+		required="#{UMB01Bean.mode == '1'}" digitsBeforePoint="15" digitsAfterPoint="0"
 		onchange="" minus="true" dec="true"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.dataNo}" />
 
 	<p:outputLabel for="tab1_sourceRecordCreationDatetime"
 		value="#{messages.umb_tab1_sourceRecordCreationDatetime}" />
-	<p:inputDateTime id="tab1_sourceRecordCreationDatetime" required="true"
+	<p:inputDateTime id="tab1_sourceRecordCreationDatetime" required="#{UMB01Bean.mode == '1'}"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.srcCreateDate}">
 		<f:converter converterId="net.poweregg.faces.DateConverter" />
 	</p:inputDateTime>
@@ -107,7 +107,7 @@
 	<p:outputLabel for="tab1_customerCD"
 		value="#{messages.umb_tab1_customerCD}" />
 	<p:inputText id="tab1_customerCD" styleClass="middle text_off"
-		maxlength="20" required="true"
+		maxlength="20" required="#{UMB01Bean.mode == '1'}"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerCD}" />
 
 	<p:outputLabel for="tab1_customerName"
@@ -119,7 +119,7 @@
 	<p:outputLabel for="tab1_destinationCD1"
 		value="#{messages.umb_tab1_destinationCD1}" />
 	<p:inputText id="tab1_destinationCD1" styleClass="middle text_off"
-		maxlength="20" required="true"
+		maxlength="20" required="#{UMB01Bean.mode == '1'}"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationCD1}" />
 
 	<p:outputLabel for="tab1_destinationName1"
@@ -131,7 +131,7 @@
 	<p:outputLabel for="tab1_destinationCD2"
 		value="#{messages.umb_tab1_destinationCD2}" />
 	<p:inputText id="tab1_destinationCD2" styleClass="middle text_off"
-		maxlength="20" required="true"
+		maxlength="20" required="#{UMB01Bean.mode == '1'}"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationCD2}" />
 
 	<p:outputLabel for="tab1_destinationName2"
@@ -155,17 +155,17 @@
 	<p:outputLabel for="tab1_productNameAbbreviation"
 		value="#{messages.umb_tab1_productNameAbbreviation}" />
 	<p:inputText id="tab1_productNameAbbreviation"
-		styleClass="long text_off" maxlength="40" required="true"
+		styleClass="long text_off" maxlength="40" required="#{UMB01Bean.mode == '1'}"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.productNameAbbreviation}" />
 
 	<p:outputLabel for="tab1_colorNo" value="#{messages.umb_tab1_colorNo}" />
 	<p:inputText id="tab1_colorNo" styleClass="middle text_off"
-		required="true" maxlength="5"
+		required="#{UMB01Bean.mode == '1'}" maxlength="5"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.colorNo}" />
 
 	<p:outputLabel for="tab1_grade1" value="#{messages.umb_tab1_grade1}" />
 	<p:inputText id="tab1_grade1" styleClass="long text_off" maxlength="5"
-		required="true" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.grade1}" />
+		required="#{UMB01Bean.mode == '1'}" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.grade1}" />
 
 	<p:outputLabel for="tab1_userItem"
 		value="#{messages.umb_tab1_userItem}" />
@@ -175,7 +175,7 @@
 	<p:outputLabel for="tab1_currencyCD"
 		value="#{messages.umb_tab1_currencyCD}" />
 	<p:inputText id="tab1_currencyCD" styleClass="middle text_off"
-		required="true" maxlength="3"
+		required="#{UMB01Bean.mode == '1'}" maxlength="3"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.currencyCD}" />
 
 	<p:outputLabel for="tab1_transactionUnitCD"
@@ -191,13 +191,13 @@
 	<p:outputLabel for="tab1_clientBranchNumber"
 		value="#{messages.umb_tab1_clientBranchNumber}" />
 	<p:inputText id="tab1_clientBranchNumber" styleClass="middle text_off"
-		maxlength="2" required="true"
+		maxlength="2" required="#{UMB01Bean.mode == '1'}"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.clientBranchNumber}" />
 
 	<p:outputLabel for="tab1_priceForm"
 		value="#{messages.umb_tab1_priceForm}" />
 	<p:inputText id="tab1_priceForm" styleClass="middle text_off"
-		required="true" maxlength="2"
+		required="#{UMB01Bean.mode == '1'}" maxlength="2"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.priceForm}" />
 
 	<p:outputLabel for="tab1_usageReference"
@@ -231,10 +231,10 @@
 		maxlength="100"
 		value="#{UMB01Bean.umb01Dto.priceUnitRefDto.registrar}" />
 
-	<p:outputLabel rendered="#{UMB01Bean.mode != '1'}"
+	<p:outputLabel rendered="#{UMB01Bean.mode == '1'}"
 		for="tab1_unitPriceBefRevision"
 		value="#{messages.umb_tab1_unitPriceBefRevision}" />
-	<p:inputNumber rendered="#{UMB01Bean.mode != '1'}"
+	<p:inputNumber rendered="#{UMB01Bean.mode == '1'}"
 		id="tab1_unitPriceBefRevision" styleClass="short text_off"
 		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 		dec="true"

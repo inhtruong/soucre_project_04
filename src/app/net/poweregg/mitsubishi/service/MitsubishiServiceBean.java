@@ -245,9 +245,8 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// 登録担当者
 		umb01Dto.getPriceUnitRefDto().setRegistrar(WebDbUtils.getValue(resultJson, MitsubishiConst.REGISTRAR));
 
-		umb01Dto.setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPRECP_NO));
-
 		if (1 == dbType) {
+			umb01Dto.getPriceUnitRefDto().setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPLICATION_REC_NO));
 			umb01Dto.getPriceUnitRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
 		}
 
@@ -297,6 +296,10 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		umb01Dto.getPriceRefDto().setRetroactiveClassification(
 				WebDbUtils.getValue(resultJson, MitsubishiConst.RETROACTIVE_CLASSIFICATION));
 		
+		umb01Dto.getPriceRefDto().setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPLICATION_REC_NO));
+		
+		umb01Dto.getPriceRefDto().setAppRecepNoCancel(WebDbUtils.getValue(resultJson, MitsubishiConst.CANCEL_APPLICATION_REC_NO));
+
 		if (2 == dbType) {
 			umb01Dto.getPriceRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
 		}
@@ -659,7 +662,8 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 * @throws Exception
 	 */
 	@Override
-	public void updateRecordDbPrice(String recordNo, String appRecepNo, String statusCd, int dbType) throws Exception {
+	public void updateRecordDbPrice(String recordNo, String appRecepNo, String statusCd, int dbType, String mode)
+			throws Exception {
 		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
 		JSONArray rsJson = findDataUmbByCondition(webdbUtils, WebDbConstant.JSON_NO, recordNo);
 
@@ -671,8 +675,20 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 		// chuan bi du lieu jsonobject
 		JSONObject updateRecord = new JSONObject();
-		updateRecord.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(appRecepNo));
-		updateRecord.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(statusCd));
+		
+		if (MitsubishiConst.MODE_NEW.equals(mode)) {
+			updateRecord.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(appRecepNo));
+			updateRecord.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(statusCd));
+		}
+		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
+			updateRecord.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(appRecepNo));
+			updateRecord.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(statusCd));
+		}
+		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
+			updateRecord.put(MitsubishiConst.CANCEL_APPLICATION_REC_NO, WebDbUtils.createRecordItem(appRecepNo));
+			updateRecord.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(statusCd));
+		}
+		
 		// update thông qua rest api
 		webdbUtils.putJsonObject(updateRecord, recordNo, false, false, false);
 	}

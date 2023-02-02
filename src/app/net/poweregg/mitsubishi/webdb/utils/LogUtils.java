@@ -85,14 +85,14 @@ public class LogUtils {
 	 * @param settingInfoList
 	 */
 	public static String generateLogFileFullPath(List<ClassInfo> settingInfoList) {
-		String folderLog = net.poweregg.mitsubishi.webdb.utils.LogUtils.getCharData1(settingInfoList,
-				MitsubishiConst.CLASS_NO.CLASSNO_6.getValue());
+		String folderLog = LogUtils.getCharData1(settingInfoList,
+				MitsubishiConst.CLASS_NO.CLASSNO_8.getValue());
 		if (!folderLog.endsWith(MitsubishiConst.SEPARATOR)) {
 			folderLog = folderLog + MitsubishiConst.SEPARATOR;
 		}
 		LogUtils.mkDir(folderLog);
 		String logFileName = LogUtils.getCharData1(settingInfoList,
-				MitsubishiConst.CLASS_NO.CLASSNO_7.getValue());
+				MitsubishiConst.CLASS_NO.CLASSNO_9.getValue());
 		return folderLog + logFileName;
 	}
 }

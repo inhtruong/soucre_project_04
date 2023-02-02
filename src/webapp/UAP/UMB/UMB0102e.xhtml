@@ -42,7 +42,12 @@
 				<f:facet name="title">
 					<h:panelGroup>
 						<h1>
-							<h:outputText value="価格伺い申請（入力）"></h:outputText>
+							<h:outputText rendered="#{UMB01Bean.mode == '1'}"
+								value="価格伺い申請(新規)（入力）"></h:outputText>
+							<h:outputText rendered="#{UMB01Bean.mode == '2'}"
+								value="価格伺い申請(編集)（入力）"></h:outputText>
+							<h:outputText rendered="#{UMB01Bean.mode == '3'}"
+								value="価格伺い申請(廃止)（入力）"></h:outputText>
 						</h1>
 					</h:panelGroup>
 				</f:facet>
@@ -50,7 +55,9 @@
 				<f:facet name="navi-upper-left">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmFlag="true" confirmMessage="#{messages.umb_m_toConfirm}" action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
+							label="確認" confirmFlag="true"
+							confirmMessage="#{messages.umb_m_toConfirm}"
+							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
 							immediate="true" label="キャンセル" cancelButton="true"
 							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
@@ -59,7 +66,9 @@
 				<f:facet name="navi-bottom-left">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmFlag="true" confirmMessage="#{messages.umb_m_toConfirm}" action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
+							label="確認" confirmFlag="true"
+							confirmMessage="#{messages.umb_m_toConfirm}"
+							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
 							immediate="true" label="キャンセル" cancelButton="true"
 							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
@@ -141,17 +150,20 @@
 							<p:outputLabel value="#{messages.umb_tab1_dateApply}"
 								for="tab1_dateApply" />
 							<h:panelGroup>
-								<p:inputDateRange id="tab1_dateApply" inputMode="date" nowrap="true" value="#{UMB01Bean.dateRange}">
- 						<f:validator validatorId="net.poweregg.faces.InputDateRangeValidator" />
- 					</p:inputDateRange>
+								<p:inputDateRange id="tab1_dateApply" inputMode="date"
+									nowrap="true" value="#{UMB01Bean.dateRange}">
+									<f:validator
+										validatorId="net.poweregg.faces.InputDateRangeValidator" />
+								</p:inputDateRange>
 							</h:panelGroup>
-								<p:outputLabel rendered="#{UMB01.mode == '1'}"
-									for="tab1_retroactiveClassification"
-									value="#{messages.umb_tab1_retroactiveClassification}" />
-								<p:inputText rendered="#{UMB01.mode == '1'}" id="tab1_retroactiveClassification"
-									styleClass="short text_off" maxlength="20"
-									value="#{UMB01Bean.umb01Dto.priceUnitRefDto.retroactiveClassification}" />
-							</h:panelGrid>
+							<p:outputLabel rendered="#{UMB01Bean.currentMode == '1'}"
+								for="tab1_retroactiveClassification"
+								value="#{messages.umb_tab1_retroactiveClassification}" />
+							<p:inputText rendered="#{UMB01Bean.currentMode == '1'}"
+								id="tab1_retroactiveClassification" styleClass="short text_off"
+								maxlength="20"
+								value="#{UMB01Bean.umb01Dto.priceRefDto.retroactiveClassification}" />
+						</h:panelGrid>
 					</p:div>
 				</p:div>
 

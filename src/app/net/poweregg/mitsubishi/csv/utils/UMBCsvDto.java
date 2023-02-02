@@ -5,8 +5,11 @@ package net.poweregg.mitsubishi.csv.utils;
 
 import java.util.ResourceBundle;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
-import net.poweregg.mitsubishi.dto.UMB01MasterDto;
+import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.util.StringUtils;
 
 /**
@@ -25,52 +28,52 @@ public class UMBCsvDto {
 		return bundle.getString("umb_l_csvHeader");
 	}
 
-	public static void addRowData(StringBuilder builder, UMB01MasterDto data) {
+	public static void addRowData(StringBuilder builder, JSONObject data) throws JSONException {
 
 		// データ行NO
-		addColumnData(builder, data.getDataLineNo());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.DATA_LINE_NO));
 		// データNO
-		addColumnData(builder, data.getDataNo());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.DATA_NO));
 		// 送信元レコード作成日時
-		addColumnData(builder, data.getSrcCreateDate());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME));
 		// データ更新区分
-		addColumnData(builder, data.getUpdateCategory());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.DATE_UPDATE_CATEGORY));
 		// 得意先CD
-		addColumnData(builder, data.getCustomerCD());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.CUSTOMER_CD));
 		// 仕向先CD1
-		addColumnData(builder, data.getDestinationCD1());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.DESTINATION_CD1));
 		// 仕向先CD2
-		addColumnData(builder, data.getDestinationCD2());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.DESTINATION_CD2));
 		// 品名略号
-		addColumnData(builder, data.getProductNameAbbreviation());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PRODUCT_NAME_ABBREVIATION));
 		// カラーNo
-		addColumnData(builder, data.getColorNo());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.COLOR_NO));
 		// グレード1
-		addColumnData(builder, data.getGrade1());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.GRADE_1));
 		// 適用開始日
-		addColumnData(builder, data.getStartDateApplication());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.APPLICATION_START_DATE));
 		// ロット数量
-		addColumnData(builder, data.getLotQuantity());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.LOT_QUANTITY));
 		// 通貨CD
-		addColumnData(builder, data.getCurrencyCD());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.CURRENCY_CD));
 		// 取引先枝番
-		addColumnData(builder, data.getClientBranchNumber());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.CLIENT_BRANCH_NUMBER));
 		// 価格形態
-		addColumnData(builder, data.getPriceForm());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PRICE_FORM));
 		// 仕切単価(決定値)
-		addColumnData(builder, data.getUnitPricePartition());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PARTITION_UNIT_PRICE));
 		// 改定前単価
-		addColumnData(builder, data.getUnitPriceBefRevision());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION));
 		// 小口配送単価
-		addColumnData(builder, data.getUnitPriceSmallParcel());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
 		// 小口着色単価
-		addColumnData(builder, data.getUnitPriceForeheadColor());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
 		// 末端価格、エンドユーザー単価
-		addColumnData(builder, data.getRetailPrice());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.RETAIL_PRICE));
 		// 契約番号
-		addColumnData(builder, data.getContractNumber());
+		addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.CONTRACT_NUMBER));
 		// 用途CD
-		addLastColumnData(builder, data.getUsageRef());
+		addLastColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.USAGE_REF));
 	}
 
 	private static void addColumnData(StringBuilder builder, String data) {

@@ -72,11 +72,6 @@ public class Umb01Dto implements Serializable {
 	private PriceCalParam priceCalParam;
 	
 	/**
-	 * 申請受付番号
-	 */
-	private String appRecepNo;
-	
-	/**
 	 * @return the id
 	 */
 	public String getId() {
@@ -200,19 +195,5 @@ public class Umb01Dto implements Serializable {
 	 */
 	public void setPriceCalParam(PriceCalParam priceCalParam) {
 		this.priceCalParam = priceCalParam;
-	}
-
-	/**
-	 * @return the appRecepNo
-	 */
-	public String getAppRecepNo() {
-		return appRecepNo;
-	}
-
-	/**
-	 * @param appRecepNo the appRecepNo to set
-	 */
-	public void setAppRecepNo(String appRecepNo) {
-		this.appRecepNo = appRecepNo;
 	}
 }

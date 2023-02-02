@@ -148,6 +148,11 @@ public class UMB01Bean implements Serializable {
 			return "login";
 		}
 		
+		if (StringUtils.EMPTY.equals(mode) || StringUtils.EMPTY.equals(dataNo)) {
+			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error: モードまたはデータ番号が空です");
+			throw new Exception("Error: モードまたはデータ番号が空です");
+		}
+		
 		selectEmp = "0";
 		emp = loginUser.getCurrentLoginInfo().getEmployee();
 		applyDate = new Date();
@@ -162,14 +167,10 @@ public class UMB01Bean implements Serializable {
 
 		if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
 			initApplyScreenByDbType(1);
-			// check apply
-			checkStatusCdApplyed(logFileFullPath, umb01Dto.getPriceUnitRefDto().getStatusCD());
 			return StringUtils.EMPTY;
 		}
 		if (MitsubishiConst.MODE_EDIT.equals(currentMode) || MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
 			initApplyScreenByDbType(2);
-			// check apply
-			checkStatusCdApplyed(logFileFullPath, umb01Dto.getPriceRefDto().getStatusCD());
 			return StringUtils.EMPTY;
 		}
 		
@@ -184,16 +185,20 @@ public class UMB01Bean implements Serializable {
 		// get value from WebDB
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, dbType);
 		if (umb01Dto == null) {
-			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "not exist");
-			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " not exist");
+			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "は存在しません");
+			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " は存在しません");
 		}
 		
 		// set status apply
 		if (1 == dbType) {
-			currentStatus = umb01Dto.getPriceUnitRefDto().getStatusCD();
+			setCurrentStatus(umb01Dto.getPriceUnitRefDto().getStatusCD());
 		}
 		if (2 == dbType) {
-			currentStatus = umb01Dto.getPriceRefDto().getStatusCD();
+			if (umb01Dto.getPriceRefDto().getStatusCD() == null) {
+				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error: ステータスが空です");
+				throw new Exception("Error: ステータスが空です");
+			}
+			setCurrentStatus(umb01Dto.getPriceRefDto().getStatusCD());
 		}
 
 		Date nowDate = new Date();
@@ -260,30 +265,32 @@ public class UMB01Bean implements Serializable {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
-		if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
-			// check apply
-			checkStatusCdApplyed(logFileFullPath, umb01Dto.getPriceUnitRefDto().getStatusCD());
-		}
-		if (MitsubishiConst.MODE_EDIT.equals(currentMode) || MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
-			// check apply
-			checkStatusCdApplyed(logFileFullPath, umb01Dto.getPriceRefDto().getStatusCD());
-		}
-		
 		try {
 			// 申請確定
 			dataflowHelper.apply();
 			// 自分のデータを保存する.
 			ApplicationForm appForm = flowService.findApplicationFormByRecpNo(appRecepNo);
 			String recordNo = umb01Dto.getId();
-			
+
 			if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
-				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 1);
+				// check apply
+				if (checkStatusCdApplyed(umb01Dto.getPriceUnitRefDto().getStatusCD())) {
+					LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
+					facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+					return StringUtils.EMPTY;
+				}
+				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 1,
+						currentMode);
 			}
-			if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
-				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
-			}
-			if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
-				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 2);
+			if (MitsubishiConst.MODE_EDIT.equals(currentMode) || MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
+				// check apply
+				if (checkStatusCdApplyed(umb01Dto.getPriceUnitRefDto().getStatusCD())) {
+					LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
+					facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+					return StringUtils.EMPTY;
+				}
+				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 2,
+						currentMode);
 			}
 
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
@@ -772,13 +779,10 @@ public class UMB01Bean implements Serializable {
 
 	}
 
-	private void checkStatusCdApplyed(String logFileFullPath, String statusCd) {
-		if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(statusCd)
+	private boolean checkStatusCdApplyed(String statusCd) {
+		return ConstStatus.STATUS_UNDER_DELIBERATION.equals(statusCd)
 				|| ConstStatus.STATUS_APPROVED.equals(statusCd)
-				|| ConstStatus.STATUS_COMPLETED.equals(statusCd)) {
-			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: This data has been applied");
-			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
-		}
+				|| ConstStatus.STATUS_COMPLETED.equals(statusCd);
 	}
 	
 	public String getCsvFilePath() {
@@ -1097,5 +1101,19 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setMode(String mode) {
 		this.mode = mode;
+	}
+
+	/**
+	 * @return the currentStatus
+	 */
+	public String getCurrentStatus() {
+		return currentStatus;
+	}
+
+	/**
+	 * @param currentStatus the currentStatus to set
+	 */
+	public void setCurrentStatus(String currentStatus) {
+		this.currentStatus = currentStatus;
 	}
 }

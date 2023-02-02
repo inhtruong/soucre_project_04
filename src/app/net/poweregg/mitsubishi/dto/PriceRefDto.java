@@ -106,6 +106,16 @@ public class PriceRefDto implements Serializable {
 	 * 状態CD
 	 */
 	private String statusCD;
+	
+	/**
+	 * 申請受付番号
+	 */
+	private String appRecepNo;
+	
+	/**
+	 * Cancel申請受付番号
+	 */
+	private String appRecepNoCancel;
 
 	/**
 	 * @return the warning
@@ -329,5 +339,33 @@ public class PriceRefDto implements Serializable {
 	 */
 	public void setStatusCD(String statusCD) {
 		this.statusCD = statusCD;
+	}
+
+	/**
+	 * @return the appRecepNo
+	 */
+	public String getAppRecepNo() {
+		return appRecepNo;
+	}
+
+	/**
+	 * @param appRecepNo the appRecepNo to set
+	 */
+	public void setAppRecepNo(String appRecepNo) {
+		this.appRecepNo = appRecepNo;
+	}
+
+	/**
+	 * @return the appRecepNoCancel
+	 */
+	public String getAppRecepNoCancel() {
+		return appRecepNoCancel;
+	}
+
+	/**
+	 * @param appRecepNoCancel the appRecepNoCancel to set
+	 */
+	public void setAppRecepNoCancel(String appRecepNoCancel) {
+		this.appRecepNoCancel = appRecepNoCancel;
 	}
 }

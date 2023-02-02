@@ -200,6 +200,11 @@ public class PriceUnitRefDto implements Serializable {
 	 * 状態CD
 	 */
 	private String statusCD;
+	
+	/**
+	 * 申請受付番号
+	 */
+	private String appRecepNo;
 
 	/**
 	 * @return the customerReqConfirm
@@ -691,5 +696,17 @@ public class PriceUnitRefDto implements Serializable {
 		this.statusCD = statusCD;
 	}
 
+	/**
+	 * @return the appRecepNo
+	 */
+	public String getAppRecepNo() {
+		return appRecepNo;
+	}
 
+	/**
+	 * @param appRecepNo the appRecepNo to set
+	 */
+	public void setAppRecepNo(String appRecepNo) {
+		this.appRecepNo = appRecepNo;
+	}
 }
