@@ -39,12 +39,11 @@ public interface MitsubishiService {
 	/**
 	 * Update Record DB Temp
 	 * @param recordNo
-	 * @param appRecepNo
-	 * @param statusCd
+	 * @param umb01Dto
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateRecordDbPrice(String recordNo, String appRecepNo, String statusCd, int dbType, String mode) throws Exception;
+	public void updateRecordDbPrice(String recordNo, Umb01Dto umb01Dto, int dbType, String mode) throws Exception;
 
 	/**
 	 * Find Data UMB By Condition

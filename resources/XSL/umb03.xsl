@@ -1,216 +1,225 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" version="1.0">
 
-<xsl:strip-space elements=""/>
-<xsl:output method="html" encoding="utf-8"/>
+<xsl:output method="xml" encoding="utf-8" />
 
-<!--
-Author : AIT_Trinhhtd
-System : UMB:GeneralAffair management system
-Process : toConfirm(Price master)  
-Creation Date : 2023/01/12
-Modification date :
--->
-<!-- ***** Route ***** -->
-<xsl:template match="CONFIRMDATA">
-		<LINK rel="stylesheet" href="../css/default.css" type="text/css"></LINK>
-		<LINK rel="stylesheet" href="../UMB/css/UMBCommon.css" type="text/css"></LINK>
-		<STYLE type="text/css">
-			TD.rrdtitle{font-size:10pt;color:black;background-color:#BCDCFF;}
-			TD.rrddata{font-size:10pt;color:black;background-color:#E0E0E0;}
-			TD.rfm-title{font-size:10pt;color:black;background-color:#BCDCFF;}
-			TD.rfm-data{font-size:10pt;color:black;background-color:#E0E0E0;}
-			TD.modifyItem{border-bottom: 1px solid #cccccc; border-top: 1px solid #cccccc; background-color:#FFFFCC;}
-		</STYLE>
-		<SCRIPT src="../script/CommonFunction.js"></SCRIPT>
-<!--<BODY>-->
+<xsl:template match="/">
+    <xsl:apply-templates select="U_MITSUBISHI" />
+    <style type="text/css">
+		.itemUmb, .labelUmb {
+            border-collapse: collapse;
+            border: 1px solid #AAAAAA;
+        }
 
-<div class="contents"> <!-- Confirm Price master detail -->
+        .detailUmb {
+        	width:100%;
+        	border-collapse: collapse;
+            text-align: center;
+        }
+
+        .labelUmb {
+            background-color: #E0E0E0;
+        }
+        
+        .unSelectTb {
+        	background-color: #E0E0E0;
+        }
+    </style>
+</xsl:template>
+
+<xsl:template match="U_MITSUBISHI">
+	<div class="contents">
+		<xsl:apply-templates select="./TB_DEFAULT" />
+	</div>
+	<div>　</div>
+	
+</xsl:template>
+
+<xsl:template match="TB_DEFAULT">
 	<div class="detail">
 	
 		<!-- Confirm detail -->
-		<xsl:if test="">
 			<TABLE>
 				<TR>
 					<TD class="label">仮単価マスタデータ参照</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/UNITPRICEDATAREF"/>
+						<xsl:value-of select="./UNITPRICEDATAREF"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">単価マスタ参照</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/PRICEDATAREF"/>
+						<xsl:value-of select="./PRICEDATAREF"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">データ行NO</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/DATALINENO"/>
+						<xsl:value-of select="./DATAMIGRATIONNO"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">データNO</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/DATANO"/>
+						<xsl:value-of select="./DATANO"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">送信元レコード作成日時</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/SRCCREATEDATE"/>
+						<xsl:value-of select="./SRCCREATEDATE"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">データ更新区分</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/UPDATEXATEGORY"/>
+						<xsl:value-of select="./DATAUPDATECATEGORYCD"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">売上部門CD</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/SALEDEPARTMENTCD"/>
+						<xsl:value-of select="./SALESDEPARTMENTCD"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">受注明細NO</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/SALEORDERNO"/>
+						<xsl:value-of select="./SALESORDERNO"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">受注NO</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/ORDERNO"/>
+						<xsl:value-of select="./ORDERNO"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">得意先CD</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/CUSTOMERCD"/>
+						<xsl:value-of select="./CUSTOMERCD"/>
 					</TD>
 					<TD class="label">得意先名</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/CUSTOMERNAME"/>
+						<xsl:value-of select="./CUSTOMERNAME"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">仕向先CD1</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/DESTINATIONCD1"/>
+						<xsl:value-of select="./DESTINATIONCD1"/>
 					</TD>
 					<TD class="label">仕向先名1</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/DESTINATIONNAME1"/>
+						<xsl:value-of select="./DESTINATIONNAME1"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">仕向先CD2</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/DESTINATIONCD2"/>
+						<xsl:value-of select="./DESTINATIONCD2"/>
 					</TD>
 					<TD class="label">仕向先名2</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/DESTINATIONNAME2"/>
+						<xsl:value-of select="./DESTINATIONNAME2"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">納品先CD</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/DELIVERYDESTINATIONCD"/>
+						<xsl:value-of select="./DELIVERYDESTINATIONCD"/>
 					</TD>
 					<TD class="label">納品先名</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/DELIVERYDESTINATIONNAME"/>
+						<xsl:value-of select="./DELIVERYDESTINATIONNAME"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">品名略号</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/PRODUCTNAMEABBREVIATION"/>
+						<xsl:value-of select="./PRODUCTNAMEABBREVIATION"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">カラーNo</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/COLORNO"/>
+						<xsl:value-of select="./COLORNO"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">グレード1</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/GRATE1"/>
+						<xsl:value-of select="./GRATE1"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">ユーザー品目</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/USERITEM"/>
+						<xsl:value-of select="./USERITEM"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">通貨CD</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/CURENCYCD"/>
+						<xsl:value-of select="./CURENCYCD"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">取引単位CD</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/TRANSACTIONUNITCD"/>
+						<xsl:value-of select="./TRANSACTIONUNITCD"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">荷姿</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/PACKING"/>
+						<xsl:value-of select="./PACKING"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">取引先枝番</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/CLIENTBRACHNUMBER"/>
+						<xsl:value-of select="./CLIENTBRANCHNUMBER"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">用途CD</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/USAGECD"/>
+						<xsl:value-of select="./USAGECD"/>
 					</TD>
 					<TD class="label">用途参照</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEUNITREFDTO/USAGEDEF"/>
+						<xsl:value-of select="./USAGEDEF"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">納品予定日時</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/DELIVERYDATE"/>
+						<xsl:value-of select="./DELIVERYDATE"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">品目分類CD1</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/COMMODITYCLASSIFICATIONCD1"/>
+						<xsl:value-of select="./COMMODITYCLASSIFICATIONCD1"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">受注日</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/ORDERDATE"/>
+						<xsl:value-of select="./ORDERDATE"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">登録担当者</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEUNITREFDTO/REGISTRAR"/>
+						<xsl:value-of select="./REGISTRAR"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">改定前単価</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEREFDTO/UNITPRICEBEFREVISION"/>
+						<xsl:value-of select="./UNITPRICEBEFREVISION"/>
 					</TD>
 				</TR>
 				<TR>
@@ -227,71 +236,71 @@ Modification date :
 						<TR>
 							<TH class="label" colspan="2">末端単価</TH>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./NOPRERETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./NOPRERETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./NOPRERETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./NOPRERETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./NOPRERETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-						</TR>
-						<TR>
-							<TH class="label" colspan="2">小口配送単価</TH>
-							<TD class="item"></TD>
-							<TD class="item"></TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-							<TD class="item"></TD>
-							<TD class="item"></TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./NOPRERETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">小口配送単価</TH>
 							<TD class="item"></TD>
 							<TD class="item"></TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+							<TD class="item"></TD>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+						</TR>
+						<TR>
+							<TH class="label" colspan="2">小口配送単価</TH>
+							<TD class="item"></TD>
+							<TD class="item"></TD>
+							<TD class="item"></TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">末端単価　合計</TH>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
@@ -299,38 +308,38 @@ Modification date :
 							<TH class="label">率(%)</TH>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label">金額</TH>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
@@ -338,38 +347,38 @@ Modification date :
 							<TH class="label">率(%)</TH>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label">金額</TH>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
@@ -377,129 +386,156 @@ Modification date :
 							<TH class="label">率(%)</TH>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label">金額</TH>
 							<TD class="item"></TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">仕切単価(計算値)</TH>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
-							<TH class="label" colspan="2">改定前単価</TH>
+							<TH class="label" colspan="2">小口配送単価(計算値)</TH>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+						</TR>
+						<TR>
+							<TH class="label" colspan="2">小口着色単価(計算値)</TH>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
+							</TD>
+							<TD class="item">
+								<xsl:value-of select="./SMALLRETAILPRICE1"/>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">仕切単価(決定値)</TH>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./PRICECALPARAM/TOTALTERMINALUNITPRICE"/>
-							</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+						</TR>
+						<TR>
+							<TH class="label" colspan="2">小口配送単価(決定値)</TH>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+						</TR>
+						<TR>
+							<TH class="label" colspan="2">小口着色単価(決定値)</TH>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
+							<TD class="item">手入力</TD>
 						</TR>
 					</TABLE>
 				</TR>
 				<TR>
 					<TD class="label">伺い理由</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEREFDTO/RESONINQUIRY"/>
+						<xsl:value-of select="./RESONINQUIRY"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">適用日</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEREFDTO/APPLICATIONSTARTDATE"/>
+						<xsl:value-of select="./APPLICATIONSTARTDATE"/>
 					</TD>
 					<TD class="label">~</TD>
 					<TD class="item">
-						<xsl:value-of select="./PRICEREFDTO/APPLICATIONENDDATE"/>
+						<xsl:value-of select="./APPLICATIONENDDATE"/>
 					</TD>
 				</TR>
 				<TR>
 					<TD class="label">遡及区分</TD>
 					<TD class="item" colspan="3">
-						<xsl:value-of select="./PRICEREFDTO/RETROACTIVECLASSIFICATION"/>
+						<xsl:value-of select="./RETROACTIVECLASSIFICATION"/>
 					</TD>
 				</TR>
 			</TABLE>
-		</xsl:if>
 	</div>
-</div>
+</xsl:template>
+
 </xsl:stylesheet>
