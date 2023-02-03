@@ -153,6 +153,8 @@ public class MitsubishiConst {
 	public static final String MODE_CANCEL = "3";
 	public static final String URL_PROPERTIES = "umb_l_url";
 	public static final String NO = "No";
+	public static final String CANCEL_APPRECP_NO = "廃止申請受付番号";
+	public static final String PE4J_PROPERTIES = "umb_l_pe4j";
 
 	public enum EVENT {
 		MODIFY("U"), CONFIRM("C");

@@ -43,7 +43,7 @@ public interface MitsubishiService {
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateRecordDbPrice(String recordNo, Umb01Dto umb01Dto, int dbType, String mode) throws Exception;
+	public void updateRecordDbPrice(String logFileFullPath, Umb01Dto umb01Dto, int dbType, String mode) throws Exception;
 
 	/**
 	 * Find Data UMB By Condition

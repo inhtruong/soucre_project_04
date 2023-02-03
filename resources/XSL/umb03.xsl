@@ -3,6 +3,13 @@
 
 <xsl:output method="xml" encoding="utf-8" />
 
+<!--
+Author : AIT_Trinhhtd
+System : UMB:GeneralAffair management system
+Process : toConfirm(Price master)  
+Creation Date : 2023/01/12
+Modification date :
+-->
 <xsl:template match="/">
     <xsl:apply-templates select="U_MITSUBISHI" />
     <style type="text/css">

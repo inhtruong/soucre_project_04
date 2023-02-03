@@ -545,21 +545,16 @@ public class WebDbUtils {
 	/**
 	 * delete record webDB
 	 * 
-	 * @param conn
-	 * @param query
-	 * @param order
-	 * @param databaseName
-	 * @param offset
-	 * @param limit
+	 * @param recordNo
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONObject delJsonObject(String recordNo) throws Exception {
+	public JSONObject delJsonObject(List<ClassInfo> webDBClassInfos, String recordNo) throws Exception {
 
 		HttpURLConnection conn = null;
 		JSONObject jsonObj = new JSONObject();
 		try {
-			String url_string = webDBConnectParam.getPe4jUrl() + webDBConnectParam.getUri();
+			String url_string = webDBConnectParam.getPe4jUrl() + WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_11.getValue());
 			url_string += "?";
 			url_string += "database="
 					+ URLEncoder.encode(webDBConnectParam.getDatabase(), webDBConnectParam.getEncode());
@@ -569,7 +564,7 @@ public class WebDbUtils {
 			}
 			URL url = new URL(url_string);
 			conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
+			conn.setRequestMethod("DELETE");
 			conn.setRequestProperty("Content-Type", WebDbConstant.APPLICATION_JSON_CONTENT_TYPE);
 			conn.setRequestProperty("X-API-Key", webDBConnectParam.getApiKey());
 			conn.setRequestProperty("system", webDBConnectParam.getSystem().toString());

@@ -11,7 +11,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +19,6 @@ import net.poweregg.common.ClassificationService;
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.dataflow.ConstStatus;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
-import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
 import net.poweregg.mitsubishi.csv.utils.ExportCsvUtils;
 import net.poweregg.mitsubishi.service.MitsubishiService;
 import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
@@ -55,33 +53,31 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 
 		List<ClassInfo> webDBClassInfos = classificationService.getClassInfoList(WebDbConstant.ALL_CORP,
 				MitsubishiConst.COMMON_NO.COMMON_NO_UMB01.getValue());
-		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, mode);
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
-
 		LogUtils.writeLog(logFileFullPath, MitsubishiConst.BATCH_ID.UMB01_BATCH.getValue(), MitsubishiConst.LOG_BEGIN);
-		// get list json records and find data of temp from appRecepNo
-		JSONArray resultJson = new JSONArray();
-
+		int dbType = 2;
+		if (1 == mode) {
+			dbType = 1;
+		}
+		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, dbType);
 		try {
-
 			// find record data at webDB price
-			resultJson = mitsubishiService.findDataUmbByCondition(webdbUtils, MitsubishiConst.APPLICATION_REC_NO,
-					StringUtils.toEmpty(appRecepNo));
-			JSONObject recordObj = resultJson.getJSONObject(0);
-
+			JSONObject recordObj = mitsubishiService.findDataUmbByCondition(webdbUtils,
+					MitsubishiConst.APPLICATION_REC_NO, StringUtils.toEmpty(appRecepNo)).getJSONObject(0);
 			// withdraw
 			if (ConstStatus.STATUS_BACKED_AWAY.equals(status)) {
-
 				// mode new
 				if (1 == mode) {
 					updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), status,
 							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 1);
 				}
-				// mode edit
-				if (2 == mode) {
-					// update 申請受付番号 in temp webDB: apply
-					updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), status,
-							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 1);
+				// mode edit & cancel
+				if (2 == mode && 3 == mode) {
+					if (2 == mode) {
+						// update 申請受付番号 in temp webDB: apply
+						updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), status,
+								WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 1);
+					}
 					// update 申請受付番号 in master webDB: withdraw
 					updateRecordDb(webDBClassInfos, StringUtils.toEmpty(appRecepNo), ConstStatus.STATUS_BACKED_AWAY,
 							WebDbUtils.getValue(recordObj, MitsubishiConst.NO), 2);
@@ -90,7 +86,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 
 			// approval
 			if (ConstStatus.STATUS_APPROVED.equals(status)) {
-				JSONObject queryBlocks = createJsonQuery(webDBClassInfos, recordObj, mode, status);
+				JSONObject queryBlocks = createJsonQuery(recordObj, mode);
 				// insert at master webDB
 				webdbUtils = new WebDbUtils(webDBClassInfos, 0, 2);
 
@@ -102,19 +98,24 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 					ExportCsvUtils.exportCsvUMB01(recordObj, filePath);
 				}
 				// mode edit
-				if (2 == mode) {
-
+				if (2 == mode || 3 == mode) {
 					// copy data from master to history webDB
 					webdbUtils = new WebDbUtils(webDBClassInfos, 0, 3);
 					webdbUtils.registJsonObject(queryBlocks, true);
 
 					// delete old record in master webDB
 					webdbUtils = new WebDbUtils(webDBClassInfos, 0, 2);
-					webdbUtils.delJsonObject(WebDbUtils.getValue(recordObj, MitsubishiConst.NO));
+					webdbUtils.delJsonObject(webDBClassInfos, WebDbUtils.getValue(recordObj, MitsubishiConst.NO));
 					// Thực hiện dữ liệu tham khảo +1 cho 「管理No」
 					int managerNO = Integer.parseInt(WebDbUtils.getValue(recordObj, MitsubishiConst.MANAGER_NO)) + 1;
+					/** 管理NO */
 					queryBlocks.put(MitsubishiConst.MANAGER_NO,
 							WebDbUtils.createRecordItem(StringUtils.toEmpty(managerNO)));
+					if (3 == mode) {
+						/** 廃止申請番号 */
+						queryBlocks.put(MitsubishiConst.CANCEL_APPRECP_NO,
+								WebDbUtils.createRecordItem(StringUtils.toEmpty(appRecepNo)));
+					}
 				}
 				String result = webdbUtils.registJsonObject(queryBlocks, true);
 				if (!ConvertUtils.isNullOrEmpty(result)) {
@@ -133,37 +134,6 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 	}
 
 	/**
-	 * get url by mode new,edit,cancel
-	 * 
-	 * @param webDBClassInfos
-	 * @param recordObj
-	 * @param mode
-	 * @return
-	 * @throws JSONException
-	 */
-	private String getUrlStringByMode(List<ClassInfo> webDBClassInfos, JSONObject recordObj, String modeConst)
-			throws JSONException {
-
-		StringBuilder url = new StringBuilder(
-				WebDbUtils.getColNameWebDb(webDBClassInfos, CLASS_NO.CLASSNO_1.getValue()));
-
-		if (MitsubishiConst.MODE_NEW.equals(modeConst)) {
-			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
-					WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO), MitsubishiConst.MODE_NEW));
-		}
-		if (MitsubishiConst.MODE_EDIT.equals(modeConst)) {
-			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
-					WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO), MitsubishiConst.MODE_EDIT));
-		}
-		if (MitsubishiConst.MODE_CANCEL.equals(modeConst)) {
-			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
-					WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO), MitsubishiConst.MODE_CANCEL));
-		}
-
-		return url.toString();
-	}
-
-	/**
 	 * create object query
 	 * 
 	 * @param recordObj
@@ -171,8 +141,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 	 * @throws JSONException
 	 * @throws Exception
 	 */
-	private JSONObject createJsonQuery(List<ClassInfo> webDBClassInfos, JSONObject recordObj, int mode, String status)
-			throws JSONException, Exception {
+	private JSONObject createJsonQuery(JSONObject recordObj, int mode) throws JSONException, Exception {
 
 		JSONObject queryBlocks = new JSONObject();
 		// mode new
@@ -183,29 +152,26 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 			/** 管理No */
 			queryBlocks.put(MitsubishiConst.MANAGER_NO,
 					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.MANAGER_NO)));
-			/** 申請受付番号 */
-			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO,
-					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, status)));
+		} else {
+			/** 新規申請URL */
+			queryBlocks.put(MitsubishiConst.NEW_APPLICATION_URL,
+					WebDbUtils.createRecordURL(getUrlStringByMode(recordObj, MitsubishiConst.MODE_NEW)));
 		}
 		// mode edit
 		if (2 == mode) {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
 					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE)));
-			/** 申請受付番号 */
-			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO,
-					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, status)));
 		}
-
+		/** 申請受付番号 */
+		queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO,
+				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.APPLICATION_REC_NO)));
 		/** 編集申請URL */
 		queryBlocks.put(MitsubishiConst.EDIT_REQUEST_URL,
-				WebDbUtils.createRecordURL(getUrlStringByMode(webDBClassInfos, recordObj, MitsubishiConst.MODE_EDIT)));
-		/** 新規申請URL */
-		queryBlocks.put(MitsubishiConst.NEW_APPLICATION_URL,
-				WebDbUtils.createRecordURL(getUrlStringByMode(webDBClassInfos, recordObj, MitsubishiConst.MODE_NEW)));
+				WebDbUtils.createRecordURL(getUrlStringByMode(recordObj, MitsubishiConst.MODE_EDIT)));
 		/** 廃止申請URL */
-		queryBlocks.put(MitsubishiConst.CANCEL_REQUEST_URL, WebDbUtils
-				.createRecordURL(getUrlStringByMode(webDBClassInfos, recordObj, MitsubishiConst.MODE_CANCEL)));
+		queryBlocks.put(MitsubishiConst.CANCEL_REQUEST_URL,
+				WebDbUtils.createRecordURL(getUrlStringByMode(recordObj, MitsubishiConst.MODE_CANCEL)));
 		/** 送信元レコード作成日時 */
 		queryBlocks.put(MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME, WebDbUtils
 				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME)));
@@ -352,6 +318,35 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 	}
 
 	/**
+	 * get url by mode new,edit,cancel
+	 * 
+	 * @param webDBClassInfos
+	 * @param recordObj
+	 * @param mode
+	 * @return
+	 * @throws JSONException
+	 */
+	private String getUrlStringByMode(JSONObject recordObj, String modeConst) throws JSONException {
+
+		StringBuilder url = new StringBuilder(messages.get(MitsubishiConst.PE4J_PROPERTIES));
+
+		if (MitsubishiConst.MODE_NEW.equals(modeConst)) {
+			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
+					WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO), MitsubishiConst.MODE_NEW));
+		}
+		if (MitsubishiConst.MODE_EDIT.equals(modeConst)) {
+			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
+					WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO), MitsubishiConst.MODE_EDIT));
+		}
+		if (MitsubishiConst.MODE_CANCEL.equals(modeConst)) {
+			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
+					WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO), MitsubishiConst.MODE_CANCEL));
+		}
+
+		return url.toString();
+	}
+
+	/**
 	 * update record by mode
 	 * 
 	 * @param webDBClassInfos
@@ -364,7 +359,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 	private void updateRecordDb(List<ClassInfo> webDBClassInfos, String appRecepNo, String statusCd, String recordNo,
 			int mode) throws Exception {
 		WebDbUtils webdbUtils = new WebDbUtils(webDBClassInfos, 0, mode);
-		// chuan bi du lieu jsonobject dể
+		// chuan bi du lieu jsonobject
 		JSONObject updateRecord = new JSONObject();
 		updateRecord.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(appRecepNo));
 		updateRecord.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(statusCd));
@@ -384,6 +379,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		StringBuffer buffer = new StringBuffer(tenPuDir);
 		buffer.append(MitsubishiConst.SEPARATOR);
 		buffer.append(LogUtils.getCharData1(webDBClassInfos, MitsubishiConst.CLASS_NO.CLASSNO_10.getValue()));
+		buffer.append(ext);
 		return buffer.toString();
 	}
 }

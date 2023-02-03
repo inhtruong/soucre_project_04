@@ -266,38 +266,34 @@ public class UMB01Bean implements Serializable {
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
 		try {
-			
-			if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
-				// check apply
-				if (checkStatusCdApplyed(currentStatus)) {
-					LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
-					facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
-					return StringUtils.EMPTY;
-				}
-			}
-			if (MitsubishiConst.MODE_EDIT.equals(currentMode) || MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
-				// check apply
-				if (checkStatusCdApplyed(currentStatus)) {
-					LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
-					facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
-					return StringUtils.EMPTY;
-				}
+			// check apply
+			if (checkStatusCdApplyed(currentStatus)) {
+				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
+				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
+				return StringUtils.EMPTY;
 			}
 			
 			// 申請確定
 			dataflowHelper.apply();
 			// 自分のデータを保存する.
 			ApplicationForm appForm = flowService.findApplicationFormByRecpNo(appRecepNo);
-			String recordNo = umb01Dto.getId();
 
 			if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
 				umb01Dto.getPriceUnitRefDto().setAppRecepNo(appRecepNo.toString());
 				umb01Dto.getPriceUnitRefDto().setStatusCD(appForm.getStatus());
-				mitsubishiService.updateRecordDbPrice(recordNo, umb01Dto, 1,
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1,
 						currentMode);
 			}
-			if (MitsubishiConst.MODE_EDIT.equals(currentMode) || MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
-				mitsubishiService.updateRecordDbPrice(recordNo, appRecepNo.toString(), appForm.getStatus(), 2,
+			if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
+				umb01Dto.getPriceRefDto().setAppRecepNo(appRecepNo.toString());
+				umb01Dto.getPriceRefDto().setStatusCD(appForm.getStatus());
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1,
+						currentMode);
+			}
+			if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
+				umb01Dto.getPriceRefDto().setAppRecepNoCancel(appRecepNo.toString());
+				umb01Dto.getPriceRefDto().setStatusCD(appForm.getStatus());
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1,
 						currentMode);
 			}
 
