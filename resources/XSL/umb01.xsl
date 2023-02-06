@@ -36,7 +36,7 @@
 </xsl:template>
 
 <xsl:template match="TB_DEFAULT">
-	<TABLE class="detail umb">
+	<TABLE class="detail umb" id="umb">
         <TR>
             <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
             <TH style="width: 12%" class="labelUmb">直販</TH>
@@ -49,10 +49,10 @@
         <TR>
             <TD class="labelUmb" colspan="2">末端単価</TD>
             <TD class="itemUmb">
-            	<xsl:value-of select="./TERMINALUNITPRICE"/>
+            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
             </TD>
             <TD class="itemUmb">
-            	<xsl:value-of select="./TERMINALUNITPRICE"/>
+            	<xsl:value-of select="./NOPRERETAILPRICE2"/>
             </TD>
             <TD class="itemUmb">
             	<xsl:value-of select="./TERMINALUNITPRICE"/>

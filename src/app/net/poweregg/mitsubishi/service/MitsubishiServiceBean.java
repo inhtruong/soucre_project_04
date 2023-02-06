@@ -743,52 +743,6 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
 			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNo()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
-			
-			/** 警告 */
-			queryBlocks.put(MitsubishiConst.WARNING,
-					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getWarning()));
-			/** ロット数量 */
-			queryBlocks.put(MitsubishiConst.LOT_QUANTITY,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getLotQuantity())));
-			/** 末端価格 */
-			queryBlocks.put(MitsubishiConst.RETAIL_PRICE,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getRetailPrice())));
-			/** 小口配送単価 */
-			queryBlocks.put(MitsubishiConst.UNIT_PRICE_SMALL_PARCEL,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceSmallParcel())));
-			/** 小口着色単価 */
-			queryBlocks.put(MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceForeheadColor())));
-			/** 一次店口銭金額 */
-			queryBlocks.put(MitsubishiConst.PRIMARY_STORE_COMMISSION_AMOUNT, WebDbUtils
-					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreCommissionAmount())));
-			/** 一次店口銭率 */
-			queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPENING_RATE, WebDbUtils
-					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate())));
-			/** 仕切単価（決定値） */
-			queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPartitionUnitPrice())));
-			/** データ更新区分 */
-			queryBlocks.put(MitsubishiConst.DATE_UPDATE_CATEGORY,
-					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getDataUpdateCategory()));
-			/** 適用開始日 */
-			queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getApplicationStartDate())));
-			/** 適用終了日 */
-			queryBlocks.put(MitsubishiConst.APPLICATION_END_DATE,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getApplicationEndDate())));
-			/** 契約番号 */
-			queryBlocks.put(MitsubishiConst.CONTRACT_NUMBER,
-					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getContractNumber()));
-			/** 伺い理由 */
-			queryBlocks.put(MitsubishiConst.REASON_FOR_INQUIRY,
-					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getReasonInquiry()));
-			/** 顧客要求事項確認 */
-			 queryBlocks.put(MitsubishiConst.CONFIRM_OF_CUSTOMER_REQUIREMENTS, 
-					 WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getCustomerReqConfirm()));
-			 /** 改定前単価 */
-				queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
-						WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceBefRevision())));
 		}
 		// mode edit
 		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {

@@ -240,5 +240,81 @@
 		dec="true"
 		value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceBefRevision}" />
 
+	<p:outputLabel 
+		for="tab1_retailPrice" value="末端価格" />
+	<p:inputNumber 
+		id="tab1_retailPrice" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true"
+		value="#{UMB01Bean.umb01Dto.priceRefDto.retailPrice}">
+		<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+			oncomplete="fncAfterCallAjax()"
+			onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+			render="umb" />
+	</p:inputNumber>
+	
+	<p:outputLabel 
+		for="tab1_unitPriceSmallParcel" value="小口配送" />
+	<p:inputNumber 
+		id="tab1_unitPriceSmallParcel" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true"
+		value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceSmallParcel}" />
+
+	<p:outputLabel 
+		for="tab1_unitPriceForeheadColor" value="小口着色" />
+	<p:inputNumber 
+		id="tab1_unitPriceForeheadColor" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true"
+		value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceForeheadColor}" />
+
+	<p:outputLabel for="tab1_selectRateOrAmount" value="" />
+	<h:selectOneRadio id="tab1_selectRateOrAmount"
+		styleClass="collapse-table-nopad"
+		value="#{UMB01Bean.selectRateOrAmount}">
+		<f:selectItem itemLabel="口銭率" itemValue="1" />
+		<f:selectItem itemLabel="口銭額" itemValue="2" />
+		<a4j:ajax event="change" immediate="false" execute="@this"
+			oncomplete="fncAfterCallAjax()"
+			onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+			render="tab1_selectRateOrAmount, tab1_primaryStoreCommissionAmountLabel, tab1_primaryStoreCommissionAmount, 
+					tab1_secondStoreOpenAmountLabel, tab1_secondStoreOpenAmount, 
+					tab1_primaryStoreOpenRateLabel, tab1_primaryStoreOpenRate,
+					tab1_secondStoreOpenRateLabel, tab1_secondStoreOpenRate" />
+	</h:selectOneRadio>
+
+	<p:outputLabel id="tab1_primaryStoreCommissionAmountLabel"
+		for="tab1_primaryStoreCommissionAmount" value="一次店口銭金額" />
+	<p:inputNumber 
+		id="tab1_primaryStoreCommissionAmount" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
+		value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreCommissionAmount}" />
+
+	<p:outputLabel id="tab1_secondStoreOpenAmountLabel" 
+		for="tab1_secondStoreOpenAmount" value="二次店口銭額" />
+	<p:inputNumber 
+		id="tab1_secondStoreOpenAmount" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
+		value="#{UMB01Bean.umb01Dto.secondStoreOpenAmount}" />
+
+	<p:outputLabel id="tab1_primaryStoreOpenRateLabel" 
+		for="tab1_primaryStoreOpenRate" value="一次店口銭率" />
+	<p:inputNumber 
+		id="tab1_primaryStoreOpenRate" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
+		value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreOpenRate}" />
+
+	<p:outputLabel id="tab1_secondStoreOpenRateLabel" 
+		for="tab1_secondStoreOpenRate" value="二次店口銭率" />
+	<p:inputNumber 
+		id="tab1_secondStoreOpenRate" styleClass="short text_off"
+		digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+		dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
+		value="#{UMB01Bean.umb01Dto.secondStoreOpenRate}" />
+
 </ui:composition>
 </html>

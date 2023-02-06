@@ -138,6 +138,8 @@ public class UMB01Bean implements Serializable {
 	private DateRange dateRange;
 	private String currentMode;
 	private String currentStatus;
+	
+	private int selectRateOrAmount;
 
 	public String initUMB0102e() throws Exception {
 		
@@ -218,7 +220,7 @@ public class UMB01Bean implements Serializable {
 	}
 
 	/**
-	 * 
+	 * ワークフロー アプリケーション用のデータを準備します。
 	 * 
 	 * @return "confirm"
 	 */
@@ -256,7 +258,7 @@ public class UMB01Bean implements Serializable {
 	}
 
 	/**
-	 * 
+	 * リクエストの申請に使用
 	 * 
 	 * @return "apply"
 	 * @throws Exception 
@@ -653,6 +655,14 @@ public class UMB01Bean implements Serializable {
 		BigDecimal valueLotSmall = new BigDecimal("100");
 		BigDecimal valueLotLarge = new BigDecimal("300");
 
+		// set data
+		umb01Dto.getPriceCalParam().setPattern("1");
+		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
+		
+		// make XML table price
+		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 		// pattern 1
 		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
@@ -667,6 +677,8 @@ public class UMB01Bean implements Serializable {
 			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(retailPrice.toString());
 			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
 
+			// make XML table price
+			outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 		}
 
 		// pattern 2
@@ -1119,5 +1131,19 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setCurrentStatus(String currentStatus) {
 		this.currentStatus = currentStatus;
+	}
+
+	/**
+	 * @return the selectRateOrAmount
+	 */
+	public int getSelectRateOrAmount() {
+		return selectRateOrAmount;
+	}
+
+	/**
+	 * @param selectRateOrAmount the selectRateOrAmount to set
+	 */
+	public void setSelectRateOrAmount(int selectRateOrAmount) {
+		this.selectRateOrAmount = selectRateOrAmount;
 	}
 }
