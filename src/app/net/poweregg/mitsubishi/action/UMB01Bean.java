@@ -289,13 +289,13 @@ public class UMB01Bean implements Serializable {
 			if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
 				umb01Dto.getPriceRefDto().setAppRecepNo(appRecepNo.toString());
 				umb01Dto.getPriceRefDto().setStatusCD(appForm.getStatus());
-				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1,
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 2,
 						currentMode);
 			}
 			if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
 				umb01Dto.getPriceRefDto().setAppRecepNoCancel(appRecepNo.toString());
 				umb01Dto.getPriceRefDto().setStatusCD(appForm.getStatus());
-				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1,
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 2,
 						currentMode);
 			}
 

@@ -744,9 +744,9 @@ public class MitsubishiServiceBean implements MitsubishiService {
 			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNo()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
 		}
-		// mode edit
+		// mode cancel
 		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
-			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
+			queryBlocks.put(MitsubishiConst.CANCEL_APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
 		}
 		/** 送信元レコード作成日時 */

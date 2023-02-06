@@ -140,7 +140,7 @@ public class MitsubishiConst {
 	public static final String EDIT_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(編集)";
 	public static final String DEPRECATION_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(廃止)";
 	public static final String APPLICATION_REC_NO = "申請受付番号";
-	public static final String CANCEL_APPLICATION_REC_NO = "Cancel_申請受付番号";
+	public static final String CANCEL_APPLICATION_REC_NO = "廃止申請受付番号";
 	public static final String NOT_APPLIED = "未申請";
 	public static final String START_LOG = "処理開始";
 	public static final String END_LOG = "処理終了";
