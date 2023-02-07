@@ -207,6 +207,8 @@ public class UMB01Bean implements Serializable {
 		dateRange = new DateRange();
 		dateRange.setStartDate(DateUtils.addDate(nowDate, "MONTH", -1));
 		dateRange.setEndDate(nowDate);
+		
+		umb01Dto.getPriceCalParam().setPattern("0");
 
 		if (umb01Dto.getPriceRefDto().getApplicationStartDate() != null) {
 			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationStartDate());
@@ -249,8 +251,8 @@ public class UMB01Bean implements Serializable {
 		dataflowHelper.setApplyContent(mitsubishiService.createXMLTablePrice(umb01Dto));
 
 		try {
-			appRecepNo = dataflowHelper.prepareApply();
 			facesMessages.add("申請してよろしいですか？");
+			appRecepNo = dataflowHelper.prepareApply();
 			return "confirm";
 		} catch (ApplyException e) {
 			return StringUtils.EMPTY;
@@ -269,7 +271,7 @@ public class UMB01Bean implements Serializable {
 		
 		try {
 			// check apply
-			if (checkStatusCdApplyed(currentStatus)) {
+			if (!checkStatusCdApplyed(currentStatus)) {
 				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
 				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
 				return StringUtils.EMPTY;
@@ -654,15 +656,10 @@ public class UMB01Bean implements Serializable {
 		BigDecimal tempValue = new BigDecimal("0");
 		BigDecimal valueLotSmall = new BigDecimal("100");
 		BigDecimal valueLotLarge = new BigDecimal("300");
-
-		// set data
-		umb01Dto.getPriceCalParam().setPattern("1");
-		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
-		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(retailPrice.toString());
-		umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
 		
 		// make XML table price
 		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
+
 		// pattern 1
 		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
@@ -796,9 +793,9 @@ public class UMB01Bean implements Serializable {
 	}
 
 	private boolean checkStatusCdApplyed(String statusCd) {
-		return ConstStatus.STATUS_UNDER_DELIBERATION.equals(statusCd)
-				|| ConstStatus.STATUS_APPROVED.equals(statusCd)
-				|| ConstStatus.STATUS_COMPLETED.equals(statusCd);
+		return ConstStatus.STATUS_BEFORE_APPLY.equals(statusCd)
+				|| ConstStatus.STATUS_BACKED_AWAY.equals(statusCd)
+				|| ConstStatus.STATUS_SENT_BACK.equals(statusCd);
 	}
 	
 	public String getCsvFilePath() {

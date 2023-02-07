@@ -323,6 +323,10 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<U_MITSUBISHI>" + CR_LF;
 		xmlString += "<TB_DEFAULT>" + CR_LF;
 
+		xmlString += "<PATTERN>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getPattern())
+				+ "</PATTERN>" + CR_LF;
+		
 		xmlString += "<UNITPRICEDATAREF>"
 //				+ StringUtils.toEmpty(param.getUnitPriceDataRef())
 				+ "UNITPRICEDATAREF" + "</UNITPRICEDATAREF>" + CR_LF;
