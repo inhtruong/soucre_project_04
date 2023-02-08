@@ -117,6 +117,7 @@ public class MitsubishiConst {
 	public static final String UNIT_PRICE_FOREHEAD_COLOR = "小口着色単価";
 	public static final String PRIMARY_STORE_OPENING_RATE = "一次店口銭率";
 	public static final String RETAIL_PRICE = "末端価格";
+	public static final String TOTAL_RETAIL_PRICE = "末端価格合計";
 	public static final String WARNING = "警告";
 	public static final String PRIMARY_STORE_COMMISSION_AMOUNT = "一次店口銭金額";
 	public static final String PRIMARY_STORE_OPEN_AMOUNT = "一次店口銭(金額)";

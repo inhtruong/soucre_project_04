@@ -42,19 +42,24 @@ public class Umb01Dto implements Serializable {
 	private WDBRefParam priceDataRef;
 	
 	/**
+	 * 末端価格合計
+	 */
+	private BigDecimal totalRetailPrice = new BigDecimal("0");
+	
+	/**
 	 * 二次店口銭率
 	 */
-	private BigDecimal secondStoreOpenRate  = new BigDecimal("0");
+	private BigDecimal secondStoreOpenRate = new BigDecimal("0");
 	
 	/**
 	 * 二次店口銭額
 	 */
-	private BigDecimal secondStoreOpenAmount  = new BigDecimal("0");
+	private BigDecimal secondStoreOpenAmount = new BigDecimal("0");
 	
 	/**
 	 * 仕切単価(決定値)
 	 */
-	private BigDecimal partitionUnitPrice  = new BigDecimal("0");
+	private BigDecimal partitionUnitPrice = new BigDecimal("0");
 	
 	/**
 	 * 仮単価マスタ・価格マスタより参照Dto
@@ -195,5 +200,19 @@ public class Umb01Dto implements Serializable {
 	 */
 	public void setPriceCalParam(PriceCalParam priceCalParam) {
 		this.priceCalParam = priceCalParam;
+	}
+
+	/**
+	 * @return the totalRetailPrice
+	 */
+	public BigDecimal getTotalRetailPrice() {
+		return totalRetailPrice;
+	}
+
+	/**
+	 * @param totalRetailPrice the totalRetailPrice to set
+	 */
+	public void setTotalRetailPrice(BigDecimal totalRetailPrice) {
+		this.totalRetailPrice = totalRetailPrice;
 	}
 }

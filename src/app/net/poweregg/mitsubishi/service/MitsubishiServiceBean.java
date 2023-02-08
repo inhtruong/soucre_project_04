@@ -284,9 +284,12 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// 二次店口銭額
 		umb01Dto.setSecondStoreOpenAmount(
 				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.SECOND_STORE_OPEN_AMOUNT));
-		// 二次店口銭額
+		// 仕切単価(決定値)
 		umb01Dto.setPartitionUnitPrice(
 				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PARTITION_UNIT_PRICE));
+		// 末端価格合計
+		umb01Dto.setTotalRetailPrice(
+				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.TOTAL_RETAIL_PRICE));
 		// 改定前単価
 		umb01Dto.getPriceRefDto().setUnitPriceBefRevision(
 				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION));

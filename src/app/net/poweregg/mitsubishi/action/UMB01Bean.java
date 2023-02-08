@@ -644,7 +644,7 @@ public class UMB01Bean implements Serializable {
 		// 小口着色単価
 		BigDecimal unitPriceForeheadColor = umb01Dto.getPriceRefDto().getUnitPriceForeheadColor();
 		// 
-		BigDecimal totalRetailPrice = umb01Dto.getPriceRefDto().getUnitPriceForeheadColor();
+		BigDecimal totalRetailPrice = umb01Dto.getTotalRetailPrice();
 		// 一次店口銭率
 		BigDecimal primaryStoreOpenRate = umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate();
 		// 一次店口銭金額
@@ -661,8 +661,9 @@ public class UMB01Bean implements Serializable {
 		BigDecimal valueLotSmall = new BigDecimal("100");
 		BigDecimal valueLotLarge = new BigDecimal("300");
 		
+		umb01Dto.getPriceCalParam().setPattern("1");
 		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
-		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
 		umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(partitionUnitPrice.toString());
 		// make XML table price
 		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);

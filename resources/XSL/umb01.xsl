@@ -36,8 +36,9 @@
 </xsl:template>
 
 <xsl:template match="TB_DEFAULT">
-	<TABLE class="detail umb" id="umb">
-		<!-- Pattern 1 -->
+<xsl:choose>
+	<xsl:when test="./PATTERN='0'">
+		<TABLE class="detail umb" id="umb">
 			<TR>
 	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
 	            <TH style="width: 12%" class="labelUmb">直販</TH>
@@ -194,8 +195,99 @@
 	            <TD class="itemUmb">手入力</TD>
 	            <TD class="itemUmb">手入力</TD>
 	        </TR>
-        
-    </TABLE>
+    	</TABLE>
+	</xsl:when>
+	<xsl:when test="./PATTERN='1'">
+		<TABLE class="detail umb" id="umb">
+			<TR>
+	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口配送単価</TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
+	        </TR>
+    	</TABLE>
+	</xsl:when>
+	<xsl:when test="./PATTERN='2'">
+		<TABLE class="detail umb" id="umb">
+			<TR>
+	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口配送単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	        </TR>
+    	</TABLE>
+	</xsl:when>
+</xsl:choose>
+	
 </xsl:template>
 
 </xsl:stylesheet>
