@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--
+    Process    : 価格マスタ伺い申請(新規)
+    Document   : UMB0102e
+    Created on : 
+    Author     : 
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://www.poweregg.net/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j">
+<p:head>
+	<f:metadata>
+		<f:viewAction action="#{UMB01Bean.initUMB0102e}" />
+	</f:metadata>
+	<script type="text/javascript">
+		//<![CDATA[
+ 			
+		//]]>
+	</script>
+	<p:body styleClass="settingPage">
+		<h:form id="frm" enctype="multipart/form-data">
+			<p:panelTabs>
+				<p:tab label="#{messages.umb_l_application}" selected="true"
+					disabled="true" />
+				<p:tab label="#{messages.umb_l_inquiry}" selected="false"
+					disabled="true" />
+				<p:tab label="#{messages.umb_l_temporarySaving}" selected="false"
+					disabled="true" />
+			</p:panelTabs>
+
+			<p:panelController id="controller" collapse="true">
+			</p:panelController>
+
+			<p:panelMain id="main" requiredGuidance="true">
+				<f:facet name="message">
+					<p:messages for="main" showDetail="true" showSummary="false"
+						globalOnly="true">
+					</p:messages>
+				</f:facet>
+
+				<f:facet name="title">
+					<h:panelGroup>
+						<h1>
+							<h:outputText rendered="#{UMB01Bean.mode == '1'}"
+								value="価格伺い申請(新規)（入力）"></h:outputText>
+							<h:outputText rendered="#{UMB01Bean.mode == '2'}"
+								value="価格伺い申請(編集)（入力）"></h:outputText>
+							<h:outputText rendered="#{UMB01Bean.mode == '3'}"
+								value="価格伺い申請(廃止)（入力）"></h:outputText>
+						</h1>
+					</h:panelGroup>
+				</f:facet>
+
+				<f:facet name="navi-upper-left">
+					<h:panelGroup>
+						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
+							label="確認" confirmMessage="#{messages.umb_m_toConfirm}"
+							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
+						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
+							immediate="true" label="キャンセル" cancelButton="true"
+							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
+					</h:panelGroup>
+				</f:facet>
+				<f:facet name="navi-bottom-left">
+					<h:panelGroup>
+						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
+							label="確認" confirmMessage="#{messages.umb_m_toConfirm}"
+							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
+						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
+							immediate="true" label="キャンセル" cancelButton="true"
+							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
+					</h:panelGroup>
+				</f:facet>
+
+				<p:div styleClass="contents" style="margin-bottom:10px;">
+					<h:panelGrid columns="2" styleClass="detail"
+						columnClasses="label, item">
+						<p:outputLabel value="#{messages.umb_l_applier}" for="i_emp"
+							rendered="#{UMB01Bean.selectEmp == '0'}" />
+						<p:outputEmp value="#{UMB01Bean.emp}" id="i_emp"
+							rendered="#{UMB01Bean.selectEmp == '0'}" />
+
+						<p:outputLabel value="#{messages.umb_l_applier}" for="i_emp2"
+							rendered="#{UMB01Bean.selectEmp == '1'}" />
+						<p:selectEmp id="i_emp2" value="#{UMB01Bean.inputEmpParam}"
+							corpId="#{UMB01Bean.empParam.corpId}" nowrap="true"
+							required="true" rendered="#{UMB01Bean.selectEmp == '1'}"
+							immediate="true">
+						</p:selectEmp>
+
+						<p:outputLabel value="#{messages.umb_l_applyDate}" for="i_appDate" />
+						<p:inputDate id="i_appDate" required="true"
+							value="#{UMB01Bean.applyDate}">
+							<f:converter converterId="net.poweregg.faces.DateConverter" />
+						</p:inputDate>
+
+						<p:outputLabel value="#{messages.umb_l_subjectName}"
+							for="i_subject" />
+						<p:inputText id="i_subject" required="true"
+							value="#{UMB01Bean.titleApply}" styleClass="long text_on"
+							validator="net.poweregg.faces.TextValidator" />
+
+						<p:outputLabel value="#{messages.umb_l_priority}" />
+						<h:selectOneRadio styleClass="collapse-table-nopad"
+							value="#{UMB01Bean.priority}">
+							<f:selectItem itemLabel="#{messages.umb_l_usual}"
+								itemValue="0001" />
+							<f:selectItem itemLabel="#{messages.umb_l_urgent}"
+								itemValue="0002" />
+						</h:selectOneRadio>
+					</h:panelGrid>
+				</p:div>
+
+				<p:div style="margin-left:15px">価格伺い申請（新規）</p:div>
+
+				<p:div id="divInput" styleClass="contents">
+					<p:div>
+						<h:panelGrid columnClasses="label, item" columns="2"
+							styleClass="detail xdb_stdlayout">
+
+							<ui:include src="UMB010201e.xhtml">
+								<ui:param name="renderDataOnly" value="false" />
+							</ui:include>
+
+						</h:panelGrid>
+					</p:div>
+					<p:outputText escape="false" value="#{UMB01Bean.outputHtml}" />
+
+					<p:div>
+						<h:panelGrid columnClasses="label, item" columns="2"
+							styleClass="detail xdb_stdlayout">
+
+							<p:outputLabel for="tab1_partitionUnitPrice"
+								value="#{messages.umb_tab1_partitionUnitPrice}" />
+							<p:inputNumber id="tab1_partitionUnitPrice"
+								styleClass="short text_off" digitsBeforePoint="21"
+								digitsAfterPoint="0" onchange="" minus="true" dec="true"
+								value="#{UMB01Bean.umb01Dto.partitionUnitPrice}" />
+
+							<p:outputLabel for="tab1_reasonInquiry"
+								value="#{messages.umb_tab1_reasonInquiry}" />
+							<h:selectOneMenu id="tab1_reasonInquiry"
+								value="#{UMB01Bean.umb01Dto.priceRefDto.reasonInquiry}">
+								<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
+							</h:selectOneMenu>
+
+							<p:outputLabel value="#{messages.umb_tab1_dateApply}"
+								for="tab1_dateApply" />
+							<h:panelGroup>
+								<p:inputDateRange id="tab1_dateApply" inputMode="date"
+									nowrap="true" value="#{UMB01Bean.dateRange}">
+									<f:validator
+										validatorId="net.poweregg.faces.InputDateRangeValidator" />
+								</p:inputDateRange>
+							</h:panelGroup>
+							<p:outputLabel rendered="#{UMB01Bean.currentMode == '1'}"
+								for="tab1_retroactiveClassification"
+								value="#{messages.umb_tab1_retroactiveClassification}" />
+							<p:inputText rendered="#{UMB01Bean.currentMode == '1'}"
+								id="tab1_retroactiveClassification" styleClass="short text_off"
+								maxlength="20"
+								value="#{UMB01Bean.umb01Dto.priceRefDto.retroactiveClassification}" />
+						</h:panelGrid>
+					</p:div>
+				</p:div>
+
+				<p:div styleClass="contents margin">
+					<h:panelGrid columns="2" styleClass="detail"
+						columnClasses="label, item">
+						<p:outputLabel value="#{messages.umb_l_paperAppending}"
+							for="i_paperAppending" />
+						<p:inputTextarea id="i_paperAppending" cols="30" rows="3"
+							maxlength="600" value="#{UMB01Bean.paperDocument}"
+							validator="net.poweregg.faces.TextValidator" />
+						<p:outputLabel value="#{messages.umb_l_attachFile}"
+							for="i_attachFile" />
+						<p:inputAttachFile id="i_attachFile"
+							value="#{UMB01Bean.attachFileList}" />
+					</h:panelGrid>
+				</p:div>
+			</p:panelMain>
+		</h:form>
+	</p:body>
+</p:head>
+</html>

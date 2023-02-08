@@ -44,17 +44,17 @@ public class Umb01Dto implements Serializable {
 	/**
 	 * 二次店口銭率
 	 */
-	private BigDecimal secondStoreOpenRate;
+	private BigDecimal secondStoreOpenRate  = new BigDecimal("0");
 	
 	/**
 	 * 二次店口銭額
 	 */
-	private BigDecimal secondStoreOpenAmount;
+	private BigDecimal secondStoreOpenAmount  = new BigDecimal("0");
 	
 	/**
 	 * 仕切単価(決定値)
 	 */
-	private BigDecimal partitionUnitPrice;
+	private BigDecimal partitionUnitPrice  = new BigDecimal("0");
 	
 	/**
 	 * 仮単価マスタ・価格マスタより参照Dto

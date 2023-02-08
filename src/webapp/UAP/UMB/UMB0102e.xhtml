@@ -18,6 +18,33 @@
 	<f:metadata>
 		<f:viewAction action="#{UMB01Bean.initUMB0102e}" />
 	</f:metadata>
+	<style>
+
+		.contents table.rf-dt{
+			width:40%;
+		}
+
+		.contents table.rf-dt th,.contents table.rf-dt td {
+			border-bottom: 1px solid #aaaaaa;
+    		border-top: 1px solid #aaaaaa;
+			border-left: 1px solid #aaaaaa;
+			border-right: 1px solid #aaaaaa !important;
+		}
+
+		.contents table.collapse-table-nopad th,.contents table.collapse-table-nopad td {
+			border: none !important;
+		}
+
+		.rowTable {
+			display: flex;
+			width: 98.5%;
+		}
+
+		.rowTable2 {
+			display: flex;
+			width: 100.5%;
+		}
+	</style>
 	<script type="text/javascript">
 		//<![CDATA[
  			
@@ -60,7 +87,8 @@
 				<f:facet name="navi-upper-left">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmMessage="#{messages.umb_m_toConfirm}"
+							label="確認"
+							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
 							immediate="true" label="キャンセル" cancelButton="true"
@@ -70,7 +98,8 @@
 				<f:facet name="navi-bottom-left">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmMessage="#{messages.umb_m_toConfirm}"
+							label="確認"
+							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
 							immediate="true" label="キャンセル" cancelButton="true"
@@ -119,73 +148,452 @@
 
 				<p:div style="margin-left:15px">価格伺い申請（新規）</p:div>
 
-				<p:div id="divInput" styleClass="contents">
-					<p:div>
-						<h:panelGrid columnClasses="label, item" columns="2"
-							styleClass="detail xdb_stdlayout">
+				<p:div styleClass="contents">
 
-							<ui:include src="UMB010201e.xhtml">
-								<ui:param name="renderDataOnly" value="false" />
-							</ui:include>
+					<rich:dataTable id="i_tableData0" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									ステータス
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<h:outputText id="tab1_dataNO" value="Apply"></h:outputText>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
 
-						</h:panelGrid>
-					</p:div>
+					<rich:dataTable id="i_tableData1" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									廃止区分
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<h:outputText id="tab1_cancel" value="廃止"></h:outputText>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData2" rowKeyVar="rowkey" style="margin-bottom:10px;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="headBorderRight" style="width:50px">
+									データNO
+								</rich:column>
+								<rich:column styleClass="headBorderRight" style="width:50px">
+									受注NO
+								</rich:column>
+								<rich:column styleClass="headBorderRight" style="width:50px">
+									受注明細NO
+								</rich:column>
+								<rich:column styleClass="noBorderRight" style="width:50px">
+									契約番号
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+
+						<rich:column styleClass="borderRight">
+							<h:outputText id="tab1_dataNO" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.dataNo}"></h:outputText>
+						</rich:column>
+						<rich:column styleClass="borderRight">
+							<h:outputText id="tab1_orderNO" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.orderNo}"></h:outputText>
+						</rich:column>
+						<rich:column styleClass="borderRight">
+							<h:outputText id="tab1_orderDetailNO" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.salesOrderNo}"></h:outputText>
+						</rich:column>
+						<rich:column styleClass="borderRight">
+							<h:outputText id="tab1_contractNumber" value="#{UMB01Bean.umb01Dto.priceRefDto.contractNumber}"></h:outputText>
+						</rich:column>
+					</rich:dataTable>
 					
+					<p:div styleClass="rowTable">
+						<rich:dataTable id="i_tableData3" rowKeyVar="rowkey" style="margin-bottom:10px; margin-right: 50px;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										ブランド名称
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										ユーザー品目コード
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										カラー
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_clientBranchNumber" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.clientBranchNumber}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_userItem" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.userItem}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_colorNo" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.colorNo}"></h:outputText>
+							</rich:column>
+						</rich:dataTable>
+						
+						<rich:dataTable id="i_tableData4" rowKeyVar="rowkey" style="margin-bottom:10px; margin-right: 50px;"
+							rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+							var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										類別
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										品目略号
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										グレード1
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_commodityClassificationCD1" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.commodityClassificationCD1}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_productNameAbbreviation" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.productNameAbbreviation}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_grade1" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.grade1}"></h:outputText>
+							</rich:column>
+						</rich:dataTable>
+						
+						<rich:dataTable id="i_tableData5" rowKeyVar="rowkey" style="margin-bottom:10px; margin-right: 50px;"
+							rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+							var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										原価品名
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										価格形態
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										通貨CD
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_costItem" value=""></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_priceForm" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.priceForm}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_currencyCD" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.currencyCD}"></h:outputText>
+							</rich:column>
+						</rich:dataTable>
+					</p:div>
+
+					<p:div styleClass="rowTable2">
+						<rich:dataTable id="i_tableData6" rowKeyVar="rowkey" style="margin-bottom:10px; margin-right: 50px;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										仕向先1
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										一次店CD
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										一次店：得意先
+									</rich:column>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										二次店：仕向先2
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_destinationCD1" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationCD1}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_customerCD" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerCD}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_customerName" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.customerName}"></h:outputText>
+							</rich:column>
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_destinationCD2" value="#{UMB01Bean.umb01Dto.priceUnitRefDto.destinationCD2}"></h:outputText>
+							</rich:column>
+						</rich:dataTable>
+						
+						<rich:dataTable id="i_tableData7" rowKeyVar="rowkey" style="margin-bottom:10px; width: 180px; margin-right: 50px;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										適用開始日
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_applicationStartDate" value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}"></h:outputText>
+							</rich:column>
+						</rich:dataTable>
+
+						<rich:dataTable styleClass="xdb_stdlayout" id="i_tableData8" rowKeyVar="rowkey" style="margin-bottom:10px; width: 180px; margin-right: 50px;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										単位
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight">
+								<h:outputText id="tab1_applicationStartDate" value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}"></h:outputText>
+							</rich:column>
+						</rich:dataTable>
+					</p:div>
+
+					<rich:dataTable id="i_tableData10" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									末端価格
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_retailPrice" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true"
+										value="#{UMB01Bean.umb01Dto.priceRefDto.retailPrice}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData11" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									小口配送
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_unitPriceSmallParcel" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true"
+										value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceSmallParcel}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData12" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									小口着色
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_unitPriceForeheadColor" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true"
+										value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceForeheadColor}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData13" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 56%;">
+									<h:selectOneRadio id="tab1_selectRateOrAmount"
+										styleClass="collapse-table-nopad"
+										value="#{UMB01Bean.selectRateOrAmount}">
+										<f:selectItem itemLabel="口銭率" itemValue="1" />
+										<f:selectItem itemLabel="口銭額" itemValue="2" />
+									</h:selectOneRadio>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData14" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									一次店口銭金額
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_primaryStoreCommissionAmount" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
+										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreCommissionAmount}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData15" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									二次店口銭額
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_secondStoreOpenAmount" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
+										value="#{UMB01Bean.umb01Dto.secondStoreOpenAmount}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData16" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									一次店口銭率
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_primaryStoreOpenRate" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
+										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreOpenRate}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData17" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									二次店口銭率
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:inputNumber 
+										id="tab1_secondStoreOpenRate" styleClass="short text_off"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
+										value="#{UMB01Bean.umb01Dto.secondStoreOpenRate}">
+										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="umb" />
+									</p:inputNumber>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
+
 					<p:div id="umb">
 						<p:outputText escape="false" value="#{UMB01Bean.outputHtml}" />
 					</p:div>
 
-					<p:div>
-						<h:panelGrid columnClasses="label, item" columns="2"
-							styleClass="detail xdb_stdlayout">
+					<rich:dataTable id="i_tableData18" rowKeyVar="rowkey" style="margin-bottom:10px; width: 25%"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									#{messages.umb_tab1_usageReference}
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 50%;">
+									<p:selectWebDBRef id="tab1_usageReference"
+										value="#{UMB01Bean.umb01Dto.priceUnitRefDto.usageRef}" required="true"
+										webdbRefID="#{UMB01Bean.usageRef}" dbType="webDb" />
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
 
-							<p:outputLabel for="tab1_partitionUnitPrice"
-								value="#{messages.umb_tab1_partitionUnitPrice}" />
-							<p:inputNumber id="tab1_partitionUnitPrice"
-								styleClass="short text_off" digitsBeforePoint="21"
-								digitsAfterPoint="0" onchange="" minus="true" dec="true"
-								value="#{UMB01Bean.umb01Dto.partitionUnitPrice}" />
-
-							<p:outputLabel for="tab1_reasonInquiry"
-								value="#{messages.umb_tab1_reasonInquiry}" />
-							<h:selectOneMenu id="tab1_reasonInquiry"
-								value="#{UMB01Bean.umb01Dto.priceRefDto.reasonInquiry}">
-								<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
-							</h:selectOneMenu>
-
-							<p:outputLabel value="#{messages.umb_tab1_dateApply}"
-								for="tab1_dateApply" />
-							<h:panelGroup>
-								<p:inputDateRange id="tab1_dateApply" inputMode="date"
-									nowrap="true" value="#{UMB01Bean.dateRange}">
-									<f:validator
-										validatorId="net.poweregg.faces.InputDateRangeValidator" />
-								</p:inputDateRange>
-							</h:panelGroup>
-							<p:outputLabel rendered="#{UMB01Bean.currentMode == '1'}"
-								for="tab1_retroactiveClassification"
-								value="#{messages.umb_tab1_retroactiveClassification}" />
-							<p:inputText rendered="#{UMB01Bean.currentMode == '1'}"
-								id="tab1_retroactiveClassification" styleClass="short text_off"
-								maxlength="20"
-								value="#{UMB01Bean.umb01Dto.priceRefDto.retroactiveClassification}" />
-						</h:panelGrid>
-					</p:div>
-				</p:div>
-
-				<p:div styleClass="contents margin">
-					<h:panelGrid columns="2" styleClass="detail"
-						columnClasses="label, item">
-						<p:outputLabel value="#{messages.umb_l_paperAppending}"
-							for="i_paperAppending" />
-						<p:inputTextarea id="i_paperAppending" cols="30" rows="3"
-							maxlength="600" value="#{UMB01Bean.paperDocument}"
-							validator="net.poweregg.faces.TextValidator" />
-						<p:outputLabel value="#{messages.umb_l_attachFile}"
-							for="i_attachFile" />
-						<p:inputAttachFile id="i_attachFile"
-							value="#{UMB01Bean.attachFileList}" />
-					</h:panelGrid>
+					<rich:dataTable id="i_tableData19" rowKeyVar="rowkey" style="margin-bottom:10px; width: 17.5%;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column styleClass="borderRight">
+									#{messages.umb_tab1_reasonInquiry}
+								</rich:column>
+								<rich:column style="background-color: #fff; width: 56%;">
+									<h:selectOneMenu id="tab1_reasonInquiry"
+										value="#{UMB01Bean.umb01Dto.priceRefDto.reasonInquiry}">
+										<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
+									</h:selectOneMenu>
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+					</rich:dataTable>
 				</p:div>
 			</p:panelMain>
 		</h:form>

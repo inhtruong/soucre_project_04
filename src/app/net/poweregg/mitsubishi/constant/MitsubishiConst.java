@@ -119,7 +119,9 @@ public class MitsubishiConst {
 	public static final String RETAIL_PRICE = "末端価格";
 	public static final String WARNING = "警告";
 	public static final String PRIMARY_STORE_COMMISSION_AMOUNT = "一次店口銭金額";
-	public static final String PRIMARY_STORE_OPEN_RATE = "一次店口銭率";
+	public static final String PRIMARY_STORE_OPEN_AMOUNT = "一次店口銭(金額)";
+	public static final String SECOND_STORE_OPEN_RATE = "二次店口銭率";
+	public static final String SECOND_STORE_OPEN_AMOUNT = "二次店口銭額";
 	public static final String DATA_UPDATE_CATEGORY_CD = "データ更新区分CD";
 	public static final String REASON_INQUIRY = "伺い理由";
 	public static final String RETROACTIVE_CLASSIFICATION = "遡及区分";
@@ -140,7 +142,6 @@ public class MitsubishiConst {
 	public static final String EDIT_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(編集)";
 	public static final String DEPRECATION_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(廃止)";
 	public static final String APPLICATION_REC_NO = "申請受付番号";
-	public static final String CANCEL_APPLICATION_REC_NO = "廃止申請受付番号";
 	public static final String NOT_APPLIED = "未申請";
 	public static final String START_LOG = "処理開始";
 	public static final String END_LOG = "処理終了";

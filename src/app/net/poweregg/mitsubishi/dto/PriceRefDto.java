@@ -39,28 +39,33 @@ public class PriceRefDto implements Serializable {
 	/**
 	 * 末端価格
 	 */
-	private BigDecimal retailPrice;
+	private BigDecimal retailPrice = new BigDecimal("0");
 
 	/**
 	 * 小口配送単価
 	 */
-	private BigDecimal unitPriceSmallParcel;
+	private BigDecimal unitPriceSmallParcel = new BigDecimal("0");
 	
 	/**
 	 * 小口着色単価
 	 */
-	private BigDecimal unitPriceForeheadColor;
+	private BigDecimal unitPriceForeheadColor = new BigDecimal("0");
 	
 	
 	/**
 	 * 一次店口銭金額
 	 */
-	private BigDecimal primaryStoreCommissionAmount;
+	private BigDecimal primaryStoreCommissionAmount = new BigDecimal("0");
 	
 	/**
 	 * 一次店口銭率
 	 */
-	private BigDecimal primaryStoreOpenRate;
+	private BigDecimal primaryStoreOpenRate = new BigDecimal("0");
+	
+	/**
+	 * 一次店口銭(金額)
+	 */
+	private BigDecimal primaryStoreOpenAmount = new BigDecimal("0");
 	
 	/**
 	 * 改定前単価
@@ -367,5 +372,19 @@ public class PriceRefDto implements Serializable {
 	 */
 	public void setAppRecepNoCancel(String appRecepNoCancel) {
 		this.appRecepNoCancel = appRecepNoCancel;
+	}
+
+	/**
+	 * @return the primaryStoreOpenAmount
+	 */
+	public BigDecimal getPrimaryStoreOpenAmount() {
+		return primaryStoreOpenAmount;
+	}
+
+	/**
+	 * @param primaryStoreOpenAmount the primaryStoreOpenAmount to set
+	 */
+	public void setPrimaryStoreOpenAmount(BigDecimal primaryStoreOpenAmount) {
+		this.primaryStoreOpenAmount = primaryStoreOpenAmount;
 	}
 }

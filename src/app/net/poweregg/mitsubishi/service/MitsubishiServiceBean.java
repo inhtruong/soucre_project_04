@@ -274,7 +274,19 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PRIMARY_STORE_COMMISSION_AMOUNT));
 		// 一次店口銭率
 		umb01Dto.getPriceRefDto().setPrimaryStoreOpenRate(
-				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PRIMARY_STORE_OPEN_RATE));
+				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PRIMARY_STORE_OPENING_RATE));
+		// 一次店口銭(金額)
+		umb01Dto.getPriceRefDto().setPrimaryStoreOpenAmount(
+				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PRIMARY_STORE_OPEN_AMOUNT));
+		// 二次店口銭率
+		umb01Dto.setSecondStoreOpenRate(
+				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.SECOND_STORE_OPEN_RATE));
+		// 二次店口銭額
+		umb01Dto.setSecondStoreOpenAmount(
+				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.SECOND_STORE_OPEN_AMOUNT));
+		// 二次店口銭額
+		umb01Dto.setPartitionUnitPrice(
+				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PARTITION_UNIT_PRICE));
 		// 改定前単価
 		umb01Dto.getPriceRefDto().setUnitPriceBefRevision(
 				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION));
@@ -300,7 +312,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		
 		umb01Dto.getPriceRefDto().setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPLICATION_REC_NO));
 		
-		umb01Dto.getPriceRefDto().setAppRecepNoCancel(WebDbUtils.getValue(resultJson, MitsubishiConst.CANCEL_APPLICATION_REC_NO));
+		umb01Dto.getPriceRefDto().setAppRecepNoCancel(WebDbUtils.getValue(resultJson, MitsubishiConst.CANCEL_APPRECP_NO));
 
 		if (2 == dbType) {
 			umb01Dto.getPriceRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
@@ -750,7 +762,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		}
 		// mode cancel
 		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
-			queryBlocks.put(MitsubishiConst.CANCEL_APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
+			queryBlocks.put(MitsubishiConst.CANCEL_APPRECP_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
 		}
 		/** 送信元レコード作成日時 */
@@ -846,6 +858,24 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		/** データNO */
 		queryBlocks.put(MitsubishiConst.DATA_NO,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo())));
+		/** 末端価格 */
+		queryBlocks.put(MitsubishiConst.RETAIL_PRICE,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getRetailPrice())));
+		/** 小口配送単価 */
+		queryBlocks.put(MitsubishiConst.UNIT_PRICE_SMALL_PARCEL,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceSmallParcel())));
+		/** 小口着色単価 */
+		queryBlocks.put(MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceForeheadColor())));
+		/** 一次店口銭金額 */
+		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_COMMISSION_AMOUNT, WebDbUtils
+				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreCommissionAmount())));
+		/** 一次店口銭率 */
+		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPENING_RATE, WebDbUtils
+				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate())));
+		/** 仕切単価（決定値） */
+		queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPartitionUnitPrice())));
 		
 		return queryBlocks;
 	}
