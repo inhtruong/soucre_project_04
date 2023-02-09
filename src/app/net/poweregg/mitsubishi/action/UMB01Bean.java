@@ -87,7 +87,7 @@ public class UMB01Bean implements Serializable {
 
 	@RequestParameter(value = "datano")
 	private String dataNo;
-	
+
 	@RequestParameter(value = "mode")
 	private String mode;
 
@@ -138,23 +138,23 @@ public class UMB01Bean implements Serializable {
 	private DateRange dateRange;
 	private String currentMode;
 	private String currentStatus;
-	
+
 	private int selectRateOrAmount;
 
 	public String initUMB0102e() throws Exception {
-		
+
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
-		
+
 		if (loginUser == null) {
 			return "login";
 		}
-		
+
 		if (StringUtils.EMPTY.equals(mode) || StringUtils.EMPTY.equals(dataNo)) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error: モードまたはデータ番号が空です");
 			throw new Exception("Error: モードまたはデータ番号が空です");
 		}
-		
+
 		selectEmp = "0";
 		emp = loginUser.getCurrentLoginInfo().getEmployee();
 		applyDate = new Date();
@@ -175,11 +175,11 @@ public class UMB01Bean implements Serializable {
 			initApplyScreenByDbType(2);
 			return StringUtils.EMPTY;
 		}
-		
+
 		LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "This mode doesn't exist");
 		throw new Exception("This mode doesn't exist");
 	}
-	
+
 	private void initApplyScreenByDbType(int dbType) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
@@ -190,7 +190,7 @@ public class UMB01Bean implements Serializable {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "は存在しません");
 			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " は存在しません");
 		}
-		
+
 		// set status apply
 		if (1 == dbType) {
 			setCurrentStatus(umb01Dto.getPriceUnitRefDto().getStatusCD());
@@ -207,7 +207,7 @@ public class UMB01Bean implements Serializable {
 		dateRange = new DateRange();
 		dateRange.setStartDate(DateUtils.addDate(nowDate, "MONTH", -1));
 		dateRange.setEndDate(nowDate);
-		
+
 		umb01Dto.getPriceCalParam().setPattern("0");
 
 		if (umb01Dto.getPriceRefDto().getApplicationStartDate() != null) {
@@ -229,7 +229,7 @@ public class UMB01Bean implements Serializable {
 	public String toConfirm() {
 		umb01Dto.getPriceRefDto().setApplicationStartDate(dateRange.getStartDate());
 		umb01Dto.getPriceRefDto().setApplicationEndDate(dateRange.getEndDate());
-		
+
 		// ワークフローパラメタ編集
 		dataflowHelper.setApplyDate(getToday());
 		dataflowHelper.setTitle(titleApply);
@@ -263,12 +263,12 @@ public class UMB01Bean implements Serializable {
 	 * リクエストの申請に使用
 	 * 
 	 * @return "apply"
-	 * @throws Exception 
+	 * @throws Exception
 	 **/
 	public String apply() throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
-		
+
 		try {
 			// check apply
 			if (!checkStatusCdApplyed(currentStatus)) {
@@ -276,7 +276,7 @@ public class UMB01Bean implements Serializable {
 				facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
 				return StringUtils.EMPTY;
 			}
-			
+
 			// 申請確定
 			dataflowHelper.apply();
 			// 自分のデータを保存する.
@@ -285,20 +285,17 @@ public class UMB01Bean implements Serializable {
 			if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
 				umb01Dto.getPriceUnitRefDto().setAppRecepNo(appRecepNo.toString());
 				umb01Dto.getPriceUnitRefDto().setStatusCD(appForm.getStatus());
-				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1,
-						currentMode);
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1, currentMode);
 			}
 			if (MitsubishiConst.MODE_EDIT.equals(currentMode)) {
 				umb01Dto.getPriceRefDto().setAppRecepNo(appRecepNo.toString());
 				umb01Dto.getPriceRefDto().setStatusCD(appForm.getStatus());
-				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 2,
-						currentMode);
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 2, currentMode);
 			}
 			if (MitsubishiConst.MODE_CANCEL.equals(currentMode)) {
 				umb01Dto.getPriceRefDto().setAppRecepNoCancel(appRecepNo.toString());
 				umb01Dto.getPriceRefDto().setStatusCD(appForm.getStatus());
-				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 2,
-						currentMode);
+				mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 2, currentMode);
 			}
 
 			facesMessages.add(FacesMessage.SEVERITY_ERROR, "申請しました。", "");
@@ -631,19 +628,19 @@ public class UMB01Bean implements Serializable {
 	}
 
 	/**
-	 * @throws TransformerException 
+	 * @throws Exception
 	 *
 	 *
 	 *
 	 */
-	public void calculateValue() throws TransformerException {
+	public void calculateValue() throws Exception {
 		// 末端価格
 		BigDecimal retailPrice = umb01Dto.getPriceRefDto().getRetailPrice();
 		// 小口配送単価
 		BigDecimal unitPriceSmallParcel = umb01Dto.getPriceRefDto().getUnitPriceSmallParcel();
 		// 小口着色単価
 		BigDecimal unitPriceForeheadColor = umb01Dto.getPriceRefDto().getUnitPriceForeheadColor();
-		// 
+		//
 		BigDecimal totalRetailPrice = umb01Dto.getTotalRetailPrice();
 		// 一次店口銭率
 		BigDecimal primaryStoreOpenRate = umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate();
@@ -660,7 +657,7 @@ public class UMB01Bean implements Serializable {
 		BigDecimal tempValue = new BigDecimal("0");
 		BigDecimal valueLotSmall = new BigDecimal("100");
 		BigDecimal valueLotLarge = new BigDecimal("300");
-		
+
 		umb01Dto.getPriceCalParam().setPattern("1");
 		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
 		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
@@ -668,16 +665,140 @@ public class UMB01Bean implements Serializable {
 		// make XML table price
 		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 
-		
+		// pattern 1
+		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
+					.subtract(secondStoreOpenRate.multiply(retailPrice));
+
+			// set data
+
+			// make XML table price
+			outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto),
+					FILE_XML);
+		}
+
+		// pattern 2
+		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+
+			// set data
+			umb01Dto.getPriceCalParam().setNoPreRetailPrice2(retailPrice.toString());
+			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice2(retailPrice.toString());
+			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice2(tempValue.toString());
+		}
+
+		// pattern 3
+		if (!BigDecimal.ZERO.equals(retailPrice) && !BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceSmallParcel)
+						.subtract(primaryStoreOpenRate.multiply(retailPrice.add(unitPriceSmallParcel)))
+						.subtract(secondStoreOpenRate.multiply(retailPrice.add(unitPriceSmallParcel)));
+			} else {
+				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
+						.subtract(secondStoreOpenRate.multiply(retailPrice));
+			}
+
+			// set data
+			umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
+			umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(retailPrice.add(unitPriceSmallParcel).toString());
+			umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
+		}
+
+		// pattern 4
+		if (!BigDecimal.ZERO.equals(retailPrice) && !BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceSmallParcel).subtract(primaryStoreCommissionAmount)
+						.subtract(secondStoreOpenAmount);
+			} else {
+				tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+			}
+		}
+
+		// pattern 5
+		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			if (valueLotLarge.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceForeheadColor)
+						.subtract(primaryStoreOpenRate.multiply(retailPrice.add(unitPriceForeheadColor)))
+						.subtract(secondStoreOpenRate.multiply(retailPrice.add(unitPriceForeheadColor)));
+			} else {
+				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
+						.subtract(secondStoreOpenRate.multiply(retailPrice));
+			}
+		}
+
+		// pattern 6
+		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			if (valueLotLarge.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceForeheadColor).subtract(primaryStoreCommissionAmount)
+						.subtract(secondStoreOpenAmount);
+			} else {
+				tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+			}
+		}
+
+		// pattern 7
+		if (!BigDecimal.ZERO.equals(retailPrice) && !BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor)
+						.subtract(primaryStoreOpenRate
+								.multiply(retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor)))
+						.subtract(secondStoreOpenRate
+								.multiply(retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor)));
+			} else if (valueLotSmall.compareTo(lotQuantity) >= 0 && valueLotLarge.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceSmallParcel)
+						.subtract(primaryStoreOpenRate.multiply(retailPrice.add(unitPriceSmallParcel)))
+						.subtract(secondStoreOpenRate.multiply(retailPrice.add(unitPriceSmallParcel)));
+			} else {
+				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
+						.subtract(secondStoreOpenRate.multiply(retailPrice));
+			}
+		}
+
+		// pattern 8
+		if (!BigDecimal.ZERO.equals(retailPrice) && !BigDecimal.ZERO.equals(unitPriceSmallParcel)
+				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
+				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
+			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceForeheadColor).add(unitPriceSmallParcel)
+						.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+			} else if (valueLotSmall.compareTo(lotQuantity) >= 0 && valueLotLarge.compareTo(lotQuantity) < 0) {
+				tempValue = retailPrice.add(unitPriceForeheadColor).subtract(primaryStoreCommissionAmount)
+						.subtract(secondStoreOpenAmount);
+			} else {
+				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
+						.subtract(secondStoreOpenRate.multiply(retailPrice));
+			}
+		}
 
 	}
 
 	private boolean checkStatusCdApplyed(String statusCd) {
-		return ConstStatus.STATUS_BEFORE_APPLY.equals(statusCd)
-				|| ConstStatus.STATUS_BACKED_AWAY.equals(statusCd)
+		return ConstStatus.STATUS_BEFORE_APPLY.equals(statusCd) || ConstStatus.STATUS_BACKED_AWAY.equals(statusCd)
 				|| ConstStatus.STATUS_SENT_BACK.equals(statusCd);
 	}
-	
+
 	public String getCsvFilePath() {
 		return this.csvFilePath;
 	}

@@ -62,10 +62,11 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		Umb01Dto umb01Dto = new Umb01Dto();
 		// get data Umb01Dto form JSON
 		parseJSONtoUMB01Temp(umb01Dto, rsJson.getJSONObject(0), dbType);
-
+		
 		if (2 == dbType) {
 			parseJSONtoUMB01Master(umb01Dto, rsJson.getJSONObject(0), dbType);
 		}
+		
 
 		return umb01Dto;
 	}
@@ -260,7 +261,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// ロット数量
 		umb01Dto.getPriceRefDto()
 				.setLotQuantity(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.LOT_QUANTITY));
-		// ロット数量
+		// 末端価格
 		umb01Dto.getPriceRefDto()
 				.setRetailPrice(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.RETAIL_PRICE));
 		// 小口配送単価
@@ -312,7 +313,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		// 遡及区分
 		umb01Dto.getPriceRefDto().setRetroactiveClassification(
 				WebDbUtils.getValue(resultJson, MitsubishiConst.RETROACTIVE_CLASSIFICATION));
-		
+
 		umb01Dto.getPriceRefDto().setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPLICATION_REC_NO));
 		
 		umb01Dto.getPriceRefDto().setAppRecepNoCancel(WebDbUtils.getValue(resultJson, MitsubishiConst.CANCEL_APPRECP_NO));
