@@ -32,6 +32,11 @@ public class Umb01Dto implements Serializable {
 	private String id;
 	
 	/**
+	 * 管理NO
+	 */
+	private String managerNo;
+	
+	/**
 	 * 仮単価マスタデータ参照
 	 */
 	private WDBRefParam unitPriceDataRef;
@@ -214,5 +219,19 @@ public class Umb01Dto implements Serializable {
 	 */
 	public void setTotalRetailPrice(BigDecimal totalRetailPrice) {
 		this.totalRetailPrice = totalRetailPrice;
+	}
+
+	/**
+	 * @return the managerNo
+	 */
+	public String getManagerNo() {
+		return managerNo;
+	}
+
+	/**
+	 * @param managerNo the managerNo to set
+	 */
+	public void setManagerNo(String managerNo) {
+		this.managerNo = managerNo;
 	}
 }

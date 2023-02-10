@@ -167,6 +167,8 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	private void parseJSONtoUMB01Temp(Umb01Dto umb01Dto, JSONObject resultJson, int dbType) throws JSONException {
 		// id
 		umb01Dto.setId(WebDbUtils.getValue(resultJson, "No"));
+		// id
+		umb01Dto.setManagerNo(WebDbUtils.getValue(resultJson, MitsubishiConst.MANAGER_NO));
 		// データ移行NO
 		umb01Dto.getPriceUnitRefDto()
 				.setDataMigrationNo(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.DATA_LINE_NO));
@@ -342,6 +344,10 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<PATTERN>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getPattern())
 				+ "</PATTERN>" + CR_LF;
+		
+		xmlString += "<MANAGERNO>"
+				+ StringUtils.toEmpty(param.getManagerNo())
+				+ "</MANAGERNO>" + CR_LF;
 		
 		xmlString += "<UNITPRICEDATAREF>"
 //				+ StringUtils.toEmpty(param.getUnitPriceDataRef())
