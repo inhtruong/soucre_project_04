@@ -87,7 +87,7 @@
 				<f:facet name="navi-bottom-right">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal"
-							label="ステータス更新" rendered="#{UMB01Bean.mode == '1'}"
+							label="ステータス更新" rendered="#{UMB01Bean.showBtnUpdateStatus}"
 							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
@@ -369,7 +369,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_retailPrice" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.retailPrice}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -393,7 +393,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_unitPriceSmallParcel" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceSmallParcel}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -417,7 +417,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_unitPriceForeheadColor" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceForeheadColor}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -461,7 +461,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_primaryStoreCommissionAmount" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreCommissionAmount}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -485,7 +485,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_secondStoreOpenAmount" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
 										value="#{UMB01Bean.umb01Dto.secondStoreOpenAmount}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -509,7 +509,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_primaryStoreOpenRate" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreOpenRate}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -533,7 +533,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_secondStoreOpenRate" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
 										value="#{UMB01Bean.umb01Dto.secondStoreOpenRate}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"

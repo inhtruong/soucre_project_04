@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.naming.InitialContext;
 import javax.transaction.UserTransaction;
-import javax.xml.transform.TransformerException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +42,7 @@ import net.poweregg.dataflow.entity.ApplicationForm;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
+import net.poweregg.mitsubishi.dto.PriceUnitRefDto;
 import net.poweregg.mitsubishi.dto.UMB01TempDto;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
 import net.poweregg.mitsubishi.service.MitsubishiService;
@@ -58,7 +59,6 @@ import net.poweregg.util.DateUtils;
 import net.poweregg.util.FacesContextUtils;
 import net.poweregg.util.NumberUtils;
 import net.poweregg.util.StringUtils;
-import net.poweregg.web.engine.dataflow.CommonUtil;
 import net.poweregg.web.engine.navigation.LoginUser;
 import net.poweregg.webdb.util.ArrayCollectionUtil;
 
@@ -206,18 +206,13 @@ public class UMB01Bean implements Serializable {
 			setCurrentStatus(umb01Dto.getPriceRefDto().getStatusCD());
 		}
 
-		Date nowDate = new Date();
-		dateRange = new DateRange();
-		dateRange.setStartDate(DateUtils.addDate(nowDate, "MONTH", -1));
-		dateRange.setEndDate(nowDate);
+		
 
 		umb01Dto.getPriceCalParam().setPattern("0");
 
-		if (umb01Dto.getPriceRefDto().getApplicationStartDate() != null) {
-			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationStartDate());
-		}
-		if (umb01Dto.getPriceRefDto().getApplicationEndDate() != null) {
-			dateRange.setStartDate(umb01Dto.getPriceRefDto().getApplicationEndDate());
+		if (umb01Dto.getPriceRefDto().getApplicationStartDate() == null) {
+			Date nowDate = new Date();
+			umb01Dto.getPriceRefDto().setApplicationStartDate(DateUtils.addDate(nowDate, "yyyy/MM/dd", -1));
 		}
 
 		// make XML table price
@@ -230,9 +225,6 @@ public class UMB01Bean implements Serializable {
 	 * @return "confirm"
 	 */
 	public String toConfirm() {
-		umb01Dto.getPriceRefDto().setApplicationStartDate(dateRange.getStartDate());
-		umb01Dto.getPriceRefDto().setApplicationEndDate(dateRange.getEndDate());
-
 		// ワークフローパラメタ編集
 		dataflowHelper.setApplyDate(getToday());
 		dataflowHelper.setTitle(titleApply);
@@ -330,6 +322,24 @@ public class UMB01Bean implements Serializable {
 		FacesContextUtils.putToFlash("return", true);
 		return "return";
 
+	}
+	
+	/**
+	 * すべてのフィールドが等しい場合、「ステータスの更新」ボタンを表示する必要があることを示します。
+	 * 
+	 * @return
+	 */
+	public boolean showBtnUpdateStatus() {
+	    PriceUnitRefDto dto = umb01Dto.getPriceUnitRefDto();
+
+	    return dto.getCustomerCD().equals(dto.getDestinationCD1())
+	            && dto.getDestinationCD1().equals(dto.getDestinationCD2())
+	            && dto.getDestinationCD2().equals(dto.getProductNameAbbreviation())
+	            && dto.getProductNameAbbreviation().equals(dto.getColorNo())
+	            && dto.getColorNo().equals(dto.getCurrencyCD())
+	            && dto.getCurrencyCD().equals(dto.getClientBranchNumber())
+	            && dto.getClientBranchNumber().equals(dto.getPriceForm())
+	            && dto.getPriceForm().equals(dto.getUsageCD());
 	}
 
 	/**
@@ -543,8 +553,6 @@ public class UMB01Bean implements Serializable {
 		umitsubishiTempDto.setDataLineNo(content[j++]);
 		/** データNO */
 		umitsubishiTempDto.setDataNo(content[j++]);
-		/** 管理NO */
-		umitsubishiTempDto.setManagerNo(content[j++]);
 		/** 送信元レコード作成日時 */
 		umitsubishiTempDto.setSrcCreateDate(content[j++]);
 		/** 会社CD */
@@ -952,8 +960,8 @@ public class UMB01Bean implements Serializable {
 		umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
 		umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
 		
-		primaryPercent = primaryStoreCommissionAmount.divide(totalRetailPrice).multiply(new BigDecimal("100"));
-		secondaryPercent = secondStoreOpenAmount.divide(totalRetailPrice).multiply(new BigDecimal("100"));
+		primaryPercent = primaryStoreCommissionAmount.divide(totalRetailPrice, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
+		secondaryPercent = secondStoreOpenAmount.divide(totalRetailPrice, 2, RoundingMode.HALF_UP).multiply(new BigDecimal("100"));
 		tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
 		
 		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());

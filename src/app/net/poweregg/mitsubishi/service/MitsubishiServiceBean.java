@@ -24,7 +24,6 @@ import net.poweregg.mitsubishi.webdb.utils.QueryConj;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.security.CertificationService;
-import net.poweregg.util.DateUtils;
 import net.poweregg.util.StringUtils;
 
 @Stateless
