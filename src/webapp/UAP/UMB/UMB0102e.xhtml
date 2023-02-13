@@ -84,26 +84,16 @@
 					</h:panelGroup>
 				</f:facet>
 
-				<f:facet name="navi-upper-left">
+				<f:facet name="navi-bottom-right">
 					<h:panelGroup>
-						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認"
+						<p:commandButton buttonClass="normal"
+							label="ステータス更新" rendered="#{UMB01Bean.mode == '1'}"
 							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
-						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
-							immediate="true" label="キャンセル" cancelButton="true"
-							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
-					</h:panelGroup>
-				</f:facet>
-				<f:facet name="navi-bottom-left">
-					<h:panelGroup>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認"
+							label="確認" 
 							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
-						<p:commandButton buttonClass="normal" img="/img/b_cancel.gif"
-							immediate="true" label="キャンセル" cancelButton="true"
-							action="#{UMB01Bean.page0102eReturn}">&#160;&#160;</p:commandButton>
 					</h:panelGroup>
 				</f:facet>
 
@@ -197,6 +187,9 @@
 								<rich:column styleClass="headBorderRight" style="width:50px">
 									契約番号
 								</rich:column>
+								<rich:column rendered="#{UMB01Bean.currentMode == 2}" styleClass="headBorderRight" style="width:50px">
+									契約枝番(管理No)
+								</rich:column>
 							</rich:columnGroup>
 						</f:facet>
 
@@ -211,6 +204,9 @@
 						</rich:column>
 						<rich:column styleClass="borderRight">
 							<h:outputText id="tab1_contractNumber" value="#{UMB01Bean.umb01Dto.priceRefDto.contractNumber}"></h:outputText>
+						</rich:column>
+						<rich:column rendered="#{UMB01Bean.currentMode == 2}" styleClass="borderRight">
+							<h:outputText id="tab1_managerNo" value="#{UMB01Bean.umb01Dto.managerNo}"></h:outputText>
 						</rich:column>
 					</rich:dataTable>
 					
@@ -334,13 +330,13 @@
 						var="umb01">
 							<f:facet name="header">
 								<rich:columnGroup>
-									<rich:column styleClass="headBorderRight" style="width:50px">
+									<rich:column rendered="#{UMB01Bean.currentMode == 2}" styleClass="headBorderRight" style="width:50px">
 										適用開始日
 									</rich:column>
 								</rich:columnGroup>
 							</f:facet>
 
-							<rich:column styleClass="borderRight">
+							<rich:column rendered="#{UMB01Bean.currentMode == 2}" styleClass="borderRight">
 								<h:outputText id="tab1_applicationStartDate" value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}"></h:outputText>
 							</rich:column>
 						</rich:dataTable>
@@ -373,7 +369,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_retailPrice" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.retailPrice}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -397,7 +393,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_unitPriceSmallParcel" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceSmallParcel}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -421,7 +417,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_unitPriceForeheadColor" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.unitPriceForeheadColor}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -465,7 +461,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_primaryStoreCommissionAmount" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreCommissionAmount}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -489,7 +485,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_secondStoreOpenAmount" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
 										value="#{UMB01Bean.umb01Dto.secondStoreOpenAmount}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -513,7 +509,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_primaryStoreOpenRate" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreOpenRate}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -537,7 +533,7 @@
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
 										id="tab1_secondStoreOpenRate" styleClass="short text_off"
-										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
+										digitsBeforePoint="21" digitsAfterPoint="0" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 2}"
 										value="#{UMB01Bean.umb01Dto.secondStoreOpenRate}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
@@ -582,11 +578,27 @@
 								<rich:column style="background-color: #fff; width: 56%;">
 									<h:selectOneMenu id="tab1_reasonInquiry"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.reasonInquiry}">
-										<f:selectItems value="#{UMB01Bean.dataUpdateCategoryList}" />
+										<f:selectItems value="#{UMB01Bean.reasonInquiryList}" />
 									</h:selectOneMenu>
 								</rich:column>
 							</rich:columnGroup>
 						</f:facet>
+					</rich:dataTable>
+
+					<rich:dataTable id="i_tableData20" rowKeyVar="rowkey" style="margin-bottom:10px; width: 125px;"
+						rowClasses="oddRow, evenRow" border="0" value="#{UMB01Bean.umb01Dto}"
+						var="umb01">
+							<f:facet name="header">
+								<rich:columnGroup>
+									<rich:column styleClass="headBorderRight" style="width:50px">
+										適用開始日
+									</rich:column>
+								</rich:columnGroup>
+							</f:facet>
+
+							<rich:column styleClass="borderRight" style="height: 26.68px;">
+								<h:outputText id="tab1_applicationStartDate2" value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}"></h:outputText>
+							</rich:column>
 					</rich:dataTable>
 				</p:div>
 			</p:panelMain>

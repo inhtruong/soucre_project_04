@@ -51,10 +51,10 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            	
 	            </TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRERETAILPRICE2"/>
+	            	
 	            </TD>
 	            <TD class="itemUmb">
 	            	
@@ -90,7 +90,7 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            	
 	            </TD>
 	            <TD class="itemUmb">
 	            	
@@ -168,7 +168,7 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            	
 	            </TD>
 	            <TD class="itemUmb">
 	            	
@@ -207,7 +207,7 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            	<xsl:value-of select="./DELIRETAILPRICE1"/>
 	            </TD>
 	            <TD class="itemUmb">
 	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
@@ -226,7 +226,7 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            	<xsl:value-of select="./DELITOTALRETAILPRICE1"/>
 	            </TD>
 	            <TD class="itemUmb">
 	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
@@ -268,7 +268,7 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            	<xsl:value-of select="./DELIPARTITIONUNITPRICE1"/>
 	            </TD>
 	            <TD class="itemUmb">
 	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
@@ -286,12 +286,12 @@
 			<TR>
 	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
 	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	            <TH style="width: 12%" class="labelUmb">割増無</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            	<xsl:value-of select="./DELIRETAILPRICE1"/>
 	            </TD>
 	            <TD class="itemUmb">
 	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
@@ -310,16 +310,49 @@
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            	<xsl:value-of select="./DELITOTALRETAILPRICE1"/>
 	            </TD>
 	            <TD class="itemUmb">
 	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
 	            </TD>
 	        </TR>
 	        <TR>
+	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            	<xsl:value-of select="./DELIPARTITIONUNITPRICE1"/>
 	            </TD>
 	            <TD class="itemUmb">
 	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
@@ -327,6 +360,436 @@
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	        </TR>
+    	</TABLE>
+	</xsl:when>
+	<xsl:when test="./PATTERN='3'">
+		<TABLE class="detail umb" id="umb">
+			<TR>
+	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	            <TH style="width: 12%" class="labelUmb">割増無</TH>
+	            <TH style="width: 12%" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口配送単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./SMALLUNITPRICEPARCEL1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELITOTALRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	             <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLTOTALRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLPRIMARYOPENRATE"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLPARTITIONUNITPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	        </TR>
+    	</TABLE>
+	</xsl:when>
+	<xsl:when test="./PATTERN='4'">
+		<TABLE class="detail umb" id="umb">
+			<TR>
+	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	            <TH style="width: 12%" class="labelUmb">割増無</TH>
+	            <TH style="width: 12%" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口配送単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./SMALLUNITPRICEPARCEL1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELITOTALRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	             <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLTOTALRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLPRIMARYOPENAMOUNT"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLPARTITIONUNITPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	        </TR>
+    	</TABLE>
+	</xsl:when>
+	<xsl:when test="./PATTERN='5'">
+		<TABLE class="detail umb" id="umb">
+			<TR>
+	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	            <TH style="width: 12%" class="labelUmb">割増無</TH>
+	            <TH style="width: 12%" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGERETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./LARGEUNITPRICEFOREHEAD1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELITOTALRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	             <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGETOTALRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGEPRIMARYOPENRATE"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGEPARTITIONUNITPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	            <TD class="itemUmb">手入力</TD>
+	        </TR>
+    	</TABLE>
+	</xsl:when>
+	<xsl:when test="./PATTERN='6'">
+		<TABLE class="detail umb" id="umb">
+			<TR>
+	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 12%" class="labelUmb">直販</TH>
+	            <TH style="width: 12%" class="labelUmb">割増無</TH>
+	            <TH style="width: 12%" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRERETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGERETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./LARGEUNITPRICEFOREHEAD1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">小口着色単価</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">末端単価　合計</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELITOTALRETAILPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALRETAILPRICE1"/>
+	            </TD>
+	             <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGETOTALRETAILPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGEPRIMARYOPENAMOUNT"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
+	            <TD class="labelUmb">率(%)</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb"></TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./DELIPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPREPARTITIONUNITPRICE1"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGEPARTITIONUNITPRICE1"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" colspan="2">仕切単価(決定値)</TD>
+	            <TD class="itemUmb">手入力</TD>
 	            <TD class="itemUmb">手入力</TD>
 	            <TD class="itemUmb">手入力</TD>
 	        </TR>

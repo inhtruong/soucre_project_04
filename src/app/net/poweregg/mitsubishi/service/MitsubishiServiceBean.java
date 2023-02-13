@@ -351,11 +351,11 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		
 		xmlString += "<UNITPRICEDATAREF>"
 //				+ StringUtils.toEmpty(param.getUnitPriceDataRef())
-				+ "UNITPRICEDATAREF" + "</UNITPRICEDATAREF>" + CR_LF;
+				+ "</UNITPRICEDATAREF>" + CR_LF;
 
 		xmlString += "<PRICEDATAREF>"
 //				+ StringUtils.toEmpty(param.getPriceDataRef())
-				+ "PRICEDATAREF" + "</PRICEDATAREF>" + CR_LF;
+				+ "</PRICEDATAREF>" + CR_LF;
 
 		xmlString += "<DATAMIGRATIONNO>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getDataMigrationNo())
 				+ "</DATAMIGRATIONNO>" + CR_LF;
@@ -439,8 +439,8 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<USAGECD>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getUsageCD()) + "</USAGECD>" + CR_LF;
 
 		xmlString += "<USAGEREF>"
-//				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getUsageRef())
-				+ "USAGEREF" + "</USAGEREF>" + CR_LF;
+				+ StringUtils.toEmpty(param.getPriceUnitRefDto().getUsageRef().getTargetFieldName())
+				+ "</USAGEREF>" + CR_LF;
 
 		xmlString += "<DELIVERYDATE>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getDeliveryDate())
 				+ "</DELIVERYDATE>" + CR_LF;
@@ -450,9 +450,6 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ "</COMMODITYCLASSIFICATIONCD1>" + CR_LF;
 
 		xmlString += "<ORDERDATE>" + StringUtils.formatDate(param.getPriceUnitRefDto().getOrderDate()) + "</ORDERDATE>"
-				+ CR_LF;
-
-		xmlString += "<REGISTRAR>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getRegistrar()) + "</REGISTRAR>"
 				+ CR_LF;
 
 		xmlString += "<REGISTRAR>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getRegistrar()) + "</REGISTRAR>"
@@ -775,99 +772,9 @@ public class MitsubishiServiceBean implements MitsubishiService {
 			queryBlocks.put(MitsubishiConst.CANCEL_APPRECP_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
 		}
-		/** 送信元レコード作成日時 */
-		queryBlocks.put(MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME,
-				WebDbUtils.createRecordItem(DateUtils.convertDateTime(umb01Dto.getPriceUnitRefDto().getSrcCreateDate(), "yyyyMMdd")));
-		/** 会社CD */
-		queryBlocks.put(MitsubishiConst.COMPANY_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getCompanyCD()));
-		/** 取引CD */
-		queryBlocks.put(MitsubishiConst.TRANSACTION_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getTransactionCD()));
-		/** 売上部門CD */
-		queryBlocks.put(MitsubishiConst.SALES_DEPARTMENT_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getSalesDepartmentCD()));
-		/** 上位部門CD */
-		queryBlocks.put(MitsubishiConst.UPPER_CATEGORY_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getUpperCategoryCD()));
-		/** 会計部門CD */
-		queryBlocks.put(MitsubishiConst.ACCOUNT_DEPARTMENT_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getAccountDepartmentCD()));
-		/** 受注NO */
-		queryBlocks.put(MitsubishiConst.ORDER_NO,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getOrderNo()));
-		/** 受注明細NO */
-		queryBlocks.put(MitsubishiConst.SALES_ORDER_NO,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getSalesOrderNo()));
-		/** 得意先CD */
-		queryBlocks.put(MitsubishiConst.CUSTOMER_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getCustomerCD()));
-		/** 得意先名 */
-		queryBlocks.put(MitsubishiConst.CUSTOMER_NAME,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getCustomerName()));
-		/** 仕向先CD1 */
-		queryBlocks.put(MitsubishiConst.DESTINATION_CD1,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getDestinationCD1()));
-		/** 仕向先名1 */
-		queryBlocks.put(MitsubishiConst.DESTINATION_NAME1,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getDestinationName1()));
-		/** 仕向先CD2 */
-		queryBlocks.put(MitsubishiConst.DESTINATION_CD2,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getDestinationCD2()));
-		/** 仕向先名2 */
-		queryBlocks.put(MitsubishiConst.DESTINATION_NAME2,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getDestinationName2()));
-		/** 納品先CD */
-		queryBlocks.put(MitsubishiConst.DESTINATION_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getDeliveryDestinationCD()));
-		/** 納品先名 */
-		queryBlocks.put(MitsubishiConst.DELIVERY_DESTINATION_NAME,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getDeliveryDestinationName()));
-		/** 品名略号 */
-		queryBlocks.put(MitsubishiConst.PRODUCT_NAME_ABBREVIATION,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getProductNameAbbreviation()));
-		/** カラーNO */
-		queryBlocks.put(MitsubishiConst.COLOR_NO,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getColorNo()));
-		/** グレード1 */
-		queryBlocks.put(MitsubishiConst.GRADE_1,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getGrade1()));
-//		/** ユーザー品目 */
-//		queryBlocks.put(MitsubishiConst.USER_PRODUCT_NAME,
-//				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getUserItem()));
-		/** 通貨CD */
-		queryBlocks.put(MitsubishiConst.CURRENCY_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getCurrencyCD()));
-		/** 取引単位CD */
-		queryBlocks.put(MitsubishiConst.TRANSACTION_UNIT_CD,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getTransactionUnitCD()));
-		/** 荷姿 */
-		queryBlocks.put(MitsubishiConst.PACKING,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getPacking()));
-		/** 取引先枝番 */
-		queryBlocks.put(MitsubishiConst.CLIENT_BRANCH_NUMBER,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getClientBranchNumber()));
-		/** 価格形態 */
-		queryBlocks.put(MitsubishiConst.PRICE_FORM,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getPriceForm()));
-//		/** 用途参照 */
-//		queryBlocks.put(MitsubishiConst.USAGE_REF,
-//				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getUsageRef())));
-		/** 納品予定日時 */
-		queryBlocks.put(MitsubishiConst.SCHEDULED_DELIVERY_DATE,
-				WebDbUtils.createRecordItem(DateUtils.convertDateTime(umb01Dto.getPriceUnitRefDto().getDeliveryDate(), "yyyyMMdd")));
-		/** 受注日 */
-		queryBlocks.put(MitsubishiConst.ORDER_DATE,
-				WebDbUtils.createRecordItem(DateUtils.convertDateTime(umb01Dto.getPriceUnitRefDto().getOrderDate(), "yyyyMMdd")));
-		/** 登録担当者 */
-		queryBlocks.put(MitsubishiConst.REGISTRAR,
-				WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getRegistrar()));
-		/** データ移行NO */
-		queryBlocks.put(MitsubishiConst.DATA_LINE_NO,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataMigrationNo())));
-		/** データNO */
-		queryBlocks.put(MitsubishiConst.DATA_NO,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo())));
+		/** 用途参照 */
+		queryBlocks.put(MitsubishiConst.USAGE_REF,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getUsageRef().getTargetFieldID())));
 		/** 末端価格 */
 		queryBlocks.put(MitsubishiConst.RETAIL_PRICE,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getRetailPrice())));
@@ -883,6 +790,12 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		/** 一次店口銭率 */
 		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPENING_RATE, WebDbUtils
 				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate())));
+		/** 二次店口銭額 */
+		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_AMOUNT, WebDbUtils
+				.createRecordItem(StringUtils.toEmpty(umb01Dto.getSecondStoreOpenAmount())));
+		/** 二次店口銭率 */
+		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_RATE, WebDbUtils
+				.createRecordItem(StringUtils.toEmpty(umb01Dto.getSecondStoreOpenRate())));
 		/** 仕切単価（決定値） */
 		queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPartitionUnitPrice())));

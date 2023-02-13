@@ -196,7 +196,7 @@ Modification date :
 					</TD>
 					<TD class="label">用途参照</TD>
 					<TD class="item">
-						<xsl:value-of select="./USAGEDEF"/>
+						<xsl:value-of select="./USAGEREF"/>
 					</TD>
 				</TR>
 				<TR>

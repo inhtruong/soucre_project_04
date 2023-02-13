@@ -896,6 +896,11 @@ public class WebDbUtils {
 		return classInfos.stream().filter(classInfo -> classInfo.getClassName().equals(className))
 				.map(ClassInfo::getChardata1).findAny().orElse("");
 	}
+	
+	public static String getChardata1ByClassNo(List<ClassInfo> classInfos, String classNo) {
+		return classInfos.stream().filter(classInfo -> classInfo.getClassno().equals(classNo))
+				.map(ClassInfo::getChardata1).findAny().orElse("");
+	}
 
 	public WebDBConnectParam getWebDBConnectParam() {
 		return webDBConnectParam;

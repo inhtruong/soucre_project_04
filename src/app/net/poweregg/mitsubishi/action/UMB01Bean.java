@@ -58,6 +58,7 @@ import net.poweregg.util.DateUtils;
 import net.poweregg.util.FacesContextUtils;
 import net.poweregg.util.NumberUtils;
 import net.poweregg.util.StringUtils;
+import net.poweregg.web.engine.dataflow.CommonUtil;
 import net.poweregg.web.engine.navigation.LoginUser;
 import net.poweregg.webdb.util.ArrayCollectionUtil;
 
@@ -126,7 +127,7 @@ public class UMB01Bean implements Serializable {
 
 	private List<SelectItem> transactionList;
 	private List<SelectItem> dataUpdateCategoryList;
-	private List<SelectItem> reasonInquiryList;
+	private List<String> reasonInquiryList = new ArrayList<>();
 	private List<SelectItem> retroactiveClassificationList;
 	private List<SelectItem> customerReqConfirmList;
 
@@ -183,6 +184,8 @@ public class UMB01Bean implements Serializable {
 	private void initApplyScreenByDbType(int dbType) throws Exception {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
+		
+		initItems(webDBClassInfos);
 
 		// get value from WebDB
 		umb01Dto = mitsubishiService.getDataMitsubishi(dataNo, dbType);
@@ -635,23 +638,28 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void calculateValue() throws Exception {
 		// 末端価格
-		BigDecimal retailPrice = umb01Dto.getPriceRefDto().getRetailPrice();
+		BigDecimal retailPrice = toBigDecimal(umb01Dto.getPriceRefDto().getRetailPrice());
 		// 小口配送単価
-		BigDecimal unitPriceSmallParcel = umb01Dto.getPriceRefDto().getUnitPriceSmallParcel();
+		BigDecimal unitPriceSmallParcel = toBigDecimal(umb01Dto.getPriceRefDto().getUnitPriceSmallParcel());
 		// 小口着色単価
-		BigDecimal unitPriceForeheadColor = umb01Dto.getPriceRefDto().getUnitPriceForeheadColor();
+		BigDecimal unitPriceForeheadColor = toBigDecimal(umb01Dto.getPriceRefDto().getUnitPriceForeheadColor());
 		// 一次店口銭率
-		BigDecimal primaryStoreOpenRate = umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate();
+		BigDecimal primaryStoreOpenRate = toBigDecimal(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate());
 		// 一次店口銭金額
-		BigDecimal primaryStoreCommissionAmount = umb01Dto.getPriceRefDto().getPrimaryStoreCommissionAmount();
+		BigDecimal primaryStoreCommissionAmount = toBigDecimal(umb01Dto.getPriceRefDto().getPrimaryStoreCommissionAmount());
 		// 二次店口銭率
-		BigDecimal secondStoreOpenRate = umb01Dto.getSecondStoreOpenRate();
+		BigDecimal secondStoreOpenRate = toBigDecimal(umb01Dto.getSecondStoreOpenRate());
 		// 二次店口銭額
-		BigDecimal secondStoreOpenAmount = umb01Dto.getSecondStoreOpenAmount();
+		BigDecimal secondStoreOpenAmount = toBigDecimal(umb01Dto.getSecondStoreOpenAmount());
 		// ロット数量
-		BigDecimal lotQuantity = umb01Dto.getPriceRefDto().getLotQuantity();
+		BigDecimal lotQuantity = toBigDecimal(umb01Dto.getPriceRefDto().getLotQuantity());
+
 		BigDecimal tempValue = new BigDecimal("0");
 		BigDecimal totalRetailPrice = new BigDecimal("0");
+		BigDecimal primaryDiscount = new BigDecimal("0");
+		BigDecimal secondaryDiscount = new BigDecimal("0");
+		BigDecimal primaryPercent = new BigDecimal("0");
+		BigDecimal secondaryPercent = new BigDecimal("0");
 		BigDecimal valueLotSmall = new BigDecimal("100");
 		BigDecimal valueLotLarge = new BigDecimal("300");
 
@@ -660,17 +668,10 @@ public class UMB01Bean implements Serializable {
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			totalRetailPrice = retailPrice;
-			tempValue = retailPrice.subtract(retailPrice.multiply(primaryStoreOpenRate))
-					.subtract(retailPrice.multiply(secondStoreOpenRate));
-			
+
+			calculatePattern1(retailPrice, primaryStoreOpenRate, secondStoreOpenRate, totalRetailPrice, tempValue,
+					primaryDiscount, secondaryDiscount);
 			umb01Dto.getPriceCalParam().setPattern("1");
-			umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
-			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
-			umb01Dto.getPriceCalParam().setNoPrePrimaryOpenRate(primaryStoreOpenRate.toString());
-			umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
-			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
-			
 		}
 
 		// pattern 2
@@ -678,15 +679,10 @@ public class UMB01Bean implements Serializable {
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			totalRetailPrice = retailPrice;
-			tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
 			
+			calculatePattern2(retailPrice, primaryStoreCommissionAmount, secondStoreOpenAmount, totalRetailPrice,
+					tempValue, primaryPercent, secondaryPercent);
 			umb01Dto.getPriceCalParam().setPattern("2");
-			umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
-			umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
-			umb01Dto.getPriceCalParam().setNoPrePrimaryOpenAmount(primaryStoreCommissionAmount.toString());
-			umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
-			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
 		}
 
 		// pattern 3
@@ -694,13 +690,46 @@ public class UMB01Bean implements Serializable {
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+			if (lotQuantity.compareTo(valueLotSmall) < 0) {
+				
+				calculatePattern1(retailPrice, primaryStoreOpenRate, secondStoreOpenRate, totalRetailPrice, tempValue,
+						primaryDiscount, secondaryDiscount);
+				
 				totalRetailPrice = retailPrice.add(unitPriceSmallParcel);
-				tempValue = totalRetailPrice.subtract(totalRetailPrice.multiply(primaryStoreOpenRate))
-						.subtract(primaryStoreOpenRate.multiply(secondStoreOpenRate));
+				tempValue = totalRetailPrice.subtract(totalRetailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100")))
+						.subtract(primaryStoreOpenRate.multiply(secondStoreOpenRate).divide(new BigDecimal("100")));
+				
+				umb01Dto.getPriceCalParam().setSmallRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallUnitPriceParcel1(unitPriceSmallParcel.toString());
+				umb01Dto.getPriceCalParam().setSmallTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallPrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSmallPartitionUnitPrice1(tempValue.toString());
+				umb01Dto.getPriceCalParam().setPattern("3");
+				lotQuantity = valueLotSmall;
 			} else {
-				tempValue = retailPrice.subtract(retailPrice.multiply(primaryStoreOpenRate))
-						.subtract(retailPrice.multiply(secondStoreOpenRate));
+				totalRetailPrice = retailPrice;
+				tempValue = retailPrice.subtract(retailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100")))
+						.subtract(retailPrice.multiply(secondStoreOpenRate).divide(new BigDecimal("100")));
+				
+				umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setDeliPrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
+					
+				umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setNoPrePrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
+				
+				umb01Dto.getPriceCalParam().setSmallRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallPrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSmallPartitionUnitPrice1(tempValue.toString());
+				umb01Dto.getPriceCalParam().setPattern("3");
 			}
 		}
 
@@ -709,12 +738,35 @@ public class UMB01Bean implements Serializable {
 				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+			if (lotQuantity.compareTo(valueLotSmall) < 0) {
+				calculatePattern2(retailPrice, primaryStoreCommissionAmount, secondStoreOpenAmount, totalRetailPrice,
+						tempValue, primaryPercent, secondaryPercent);
+				
 				totalRetailPrice = retailPrice.add(unitPriceSmallParcel);
 				tempValue = totalRetailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+				
+				umb01Dto.getPriceCalParam().setSmallRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallUnitPriceParcel1(unitPriceSmallParcel.toString());
+				umb01Dto.getPriceCalParam().setSmallTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallPrimaryOpenAmount(primaryStoreCommissionAmount.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setSmallPartitionUnitPrice1(tempValue.toString());
+				umb01Dto.getPriceCalParam().setPattern("4");
 			} else {
 				totalRetailPrice = retailPrice;
 				tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+				
+				umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setDeliPrimaryOpenAmount(primaryStoreCommissionAmount.toString());
+				umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
+				
+				umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setNoPrePrimaryOpenAmount(primaryStoreCommissionAmount.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
+				umb01Dto.getPriceCalParam().setPattern("4");
 			}
 		}
 
@@ -723,14 +775,26 @@ public class UMB01Bean implements Serializable {
 				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && !BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			if (valueLotLarge.compareTo(lotQuantity) < 0) {
+			if (lotQuantity.compareTo(valueLotLarge) < 0) {
+				calculatePattern1(retailPrice, primaryStoreOpenRate, secondStoreOpenRate, totalRetailPrice, tempValue,
+						primaryDiscount, secondaryDiscount);
+				
 				totalRetailPrice = retailPrice.add(unitPriceForeheadColor);
-				tempValue = totalRetailPrice.subtract(totalRetailPrice.multiply(primaryStoreOpenRate))
-						.subtract(totalRetailPrice.multiply(secondStoreOpenRate));
-			} else {
-				totalRetailPrice = retailPrice;
-				tempValue = retailPrice.subtract(retailPrice.multiply(primaryStoreOpenRate))
-						.subtract(retailPrice.multiply(secondStoreOpenRate));
+				tempValue = totalRetailPrice.subtract(totalRetailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100")))
+						.subtract(totalRetailPrice.multiply(secondStoreOpenRate).divide(new BigDecimal("100")));
+				
+				umb01Dto.getPriceCalParam().setLargeRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setLargeUnitPriceForehead1(unitPriceForeheadColor.toString());
+				umb01Dto.getPriceCalParam().setLargeTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setLargePrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setLargePartitionUnitPrice1(tempValue.toString());
+				umb01Dto.getPriceCalParam().setPattern("5");
+//			} else {
+//				totalRetailPrice = retailPrice;
+//				tempValue = retailPrice.subtract(retailPrice.multiply(primaryStoreOpenRate))
+//						.subtract(retailPrice.multiply(secondStoreOpenRate));
 			}
 		}
 
@@ -739,10 +803,25 @@ public class UMB01Bean implements Serializable {
 				&& !BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& !BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-			if (valueLotLarge.compareTo(lotQuantity) < 0) {
+			if (lotQuantity.compareTo(valueLotLarge) < 0) {
+				
+				calculatePattern2(retailPrice, primaryStoreCommissionAmount, secondStoreOpenAmount, totalRetailPrice,
+						tempValue, primaryPercent, secondaryPercent);
+				
 				totalRetailPrice = retailPrice;
 				tempValue = retailPrice.add(unitPriceForeheadColor).subtract(primaryStoreCommissionAmount)
 						.subtract(secondStoreOpenAmount);
+				
+				umb01Dto.getPriceCalParam().setLargeRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setLargeUnitPriceForehead1(unitPriceForeheadColor.toString());
+				umb01Dto.getPriceCalParam().setLargeTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setLargePrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setLargePrimaryOpenAmount(primaryStoreCommissionAmount.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setLargePartitionUnitPrice1(tempValue.toString());
+				
+				umb01Dto.getPriceCalParam().setPattern("6");
 			} else {
 				totalRetailPrice = retailPrice;
 				tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
@@ -755,14 +834,40 @@ public class UMB01Bean implements Serializable {
 				&& BigDecimal.ZERO.equals(primaryStoreCommissionAmount) && !BigDecimal.ZERO.equals(secondStoreOpenRate)
 				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
 			if (valueLotSmall.compareTo(lotQuantity) < 0) {
+				
+				calculatePattern1(retailPrice, primaryStoreOpenRate, secondStoreOpenRate, totalRetailPrice, tempValue,
+						primaryDiscount, secondaryDiscount);
+				
+				totalRetailPrice = retailPrice.add(unitPriceForeheadColor);
+				tempValue = totalRetailPrice.subtract(totalRetailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100")))
+						.subtract(totalRetailPrice.multiply(secondStoreOpenRate).divide(new BigDecimal("100")));
+				
+				umb01Dto.getPriceCalParam().setLargeRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setLargeUnitPriceForehead1(unitPriceForeheadColor.toString());
+				umb01Dto.getPriceCalParam().setLargeTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setLargePrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setLargePartitionUnitPrice1(tempValue.toString());
+				
 				totalRetailPrice = retailPrice.add(unitPriceSmallParcel).add(unitPriceForeheadColor);
-				BigDecimal primaryDiscount = primaryStoreOpenRate.multiply(retailPrice.add(totalRetailPrice));
-				BigDecimal secondaryDiscount = secondStoreOpenRate.multiply(retailPrice.add(totalRetailPrice));
+				primaryDiscount = totalRetailPrice.multiply(primaryStoreOpenRate.divide(new BigDecimal("100")));
+				secondaryDiscount = totalRetailPrice.multiply(secondStoreOpenRate.divide(new BigDecimal("100")));
 				tempValue = totalRetailPrice.subtract(primaryDiscount).subtract(secondaryDiscount);
+				
+				umb01Dto.getPriceCalParam().setSmallRetailPrice1(retailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallUnitPriceForehead1(unitPriceForeheadColor.toString());
+				umb01Dto.getPriceCalParam().setSmallUnitPriceForehead1(unitPriceForeheadColor.toString());
+				umb01Dto.getPriceCalParam().setSmallTotalRetailPrice1(totalRetailPrice.toString());
+				umb01Dto.getPriceCalParam().setSmallPrimaryOpenRate(primaryStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+				umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+				umb01Dto.getPriceCalParam().setSmallPartitionUnitPrice1(tempValue.toString());
+				
 			} else if (valueLotSmall.compareTo(lotQuantity) >= 0 && valueLotLarge.compareTo(lotQuantity) < 0) {
 				totalRetailPrice = retailPrice.add(unitPriceSmallParcel);
-				BigDecimal primaryDiscount = primaryStoreOpenRate.multiply(totalRetailPrice);
-				BigDecimal secondaryDiscount = secondStoreOpenRate.multiply(totalRetailPrice);
+				primaryDiscount = primaryStoreOpenRate.multiply(totalRetailPrice);
+				secondaryDiscount = secondStoreOpenRate.multiply(totalRetailPrice);
 				tempValue = retailPrice.add(unitPriceSmallParcel).subtract(primaryDiscount).subtract(secondaryDiscount);
 			} else {
 				tempValue = retailPrice.subtract(primaryStoreOpenRate.multiply(retailPrice))
@@ -795,7 +900,71 @@ public class UMB01Bean implements Serializable {
 		return ConstStatus.STATUS_BEFORE_APPLY.equals(statusCd) || ConstStatus.STATUS_BACKED_AWAY.equals(statusCd)
 				|| ConstStatus.STATUS_SENT_BACK.equals(statusCd);
 	}
+	
+	/**
+	 * check null value of BigDecimal
+	 */
+	private static BigDecimal toBigDecimal(BigDecimal value) {
+		if (value == null) {
+			return BigDecimal.ZERO;
+		}
+		return value;
+	}
 
+	private void initItems(List<ClassInfo> classInfos) {
+		// 用途参照
+		usageRef = WebDbUtils.getChardata1ByClassNo(classInfos, MitsubishiConst.CLASS_NO.CLASSNO_12.getValue());
+
+		// 伺い理由
+		for (ClassInfo classInfo : classInfos) {
+			if ("REASON_INQUIRY".equals(classInfo.getClassName())) {
+				reasonInquiryList.add(classInfo.getChardata1());
+			}
+		}
+	}
+	
+	private void calculatePattern1(BigDecimal retailPrice,BigDecimal primaryStoreOpenRate, BigDecimal secondStoreOpenRate,
+			BigDecimal totalRetailPrice, BigDecimal tempValue, BigDecimal primaryDiscount, BigDecimal secondaryDiscount) {
+		totalRetailPrice = retailPrice;
+		tempValue = totalRetailPrice;
+		umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
+		umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
+		
+		primaryDiscount = totalRetailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100"));
+		secondaryDiscount = totalRetailPrice.multiply(secondStoreOpenRate).divide(new BigDecimal("100"));
+		tempValue = retailPrice.subtract(primaryDiscount).subtract(secondaryDiscount);
+		
+		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPrePrimaryOpenRate(primaryStoreOpenRate.toString());
+		umb01Dto.getPriceCalParam().setNoPrePrimaryOpenAmount(primaryDiscount.toString());
+		umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondStoreOpenRate.toString());
+		umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondaryDiscount.toString());
+		umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
+	}
+	
+	private void calculatePattern2(BigDecimal retailPrice,BigDecimal primaryStoreCommissionAmount, BigDecimal secondStoreOpenAmount,
+			BigDecimal totalRetailPrice, BigDecimal tempValue, BigDecimal primaryPercent, BigDecimal secondaryPercent) {
+		totalRetailPrice = retailPrice;
+		tempValue = totalRetailPrice;
+		umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
+		umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
+		
+		primaryPercent = primaryStoreCommissionAmount.divide(totalRetailPrice).multiply(new BigDecimal("100"));
+		secondaryPercent = secondStoreOpenAmount.divide(totalRetailPrice).multiply(new BigDecimal("100"));
+		tempValue = retailPrice.subtract(primaryStoreCommissionAmount).subtract(secondStoreOpenAmount);
+		
+		umb01Dto.getPriceCalParam().setNoPreRetailPrice1(retailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPreTotalRetailPrice1(totalRetailPrice.toString());
+		umb01Dto.getPriceCalParam().setNoPrePrimaryOpenRate(primaryPercent.toString());
+		umb01Dto.getPriceCalParam().setNoPrePrimaryOpenAmount(primaryStoreCommissionAmount.toString());
+		umb01Dto.getPriceCalParam().setSecondStoreOpenRate(secondaryPercent.toString());
+		umb01Dto.getPriceCalParam().setSecondStoreOpenAmount(secondStoreOpenAmount.toString());
+		umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
+	}
+	
 	public String getCsvFilePath() {
 		return this.csvFilePath;
 	}
@@ -1033,14 +1202,14 @@ public class UMB01Bean implements Serializable {
 	/**
 	 * @return the reasonInquiryList
 	 */
-	public List<SelectItem> getReasonInquiryList() {
+	public List<String> getReasonInquiryList() {
 		return reasonInquiryList;
 	}
 
 	/**
 	 * @param reasonInquiryList the reasonInquiryList to set
 	 */
-	public void setReasonInquiryList(List<SelectItem> reasonInquiryList) {
+	public void setReasonInquiryList(List<String> reasonInquiryList) {
 		this.reasonInquiryList = reasonInquiryList;
 	}
 
