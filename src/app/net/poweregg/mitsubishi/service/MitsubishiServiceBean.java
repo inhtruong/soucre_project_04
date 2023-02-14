@@ -501,6 +501,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceRefDto().getRetroactiveClassification())
 				+ "</RETROACTIVECLASSIFICATION>" + CR_LF;
 
+		// 末端単価
 		xmlString += "<NOPRERETAILPRICE1>" + StringUtils.toEmpty(param.getPriceCalParam().getNoPreRetailPrice1())
 				+ "</NOPRERETAILPRICE1>" + CR_LF;
 
@@ -525,6 +526,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<SMALLRETAILPRICE1>" + StringUtils.toEmpty(param.getPriceCalParam().getLargeRetailPrice2())
 				+ "</SMALLRETAILPRICE1>" + CR_LF;
 
+		// 小口配送単価
 		xmlString += "<DELIUNITPRICEPARCEL1>" + StringUtils.toEmpty(param.getPriceCalParam().getDeliUnitPriceParcel1())
 				+ "</DELIUNITPRICEPARCEL1>" + CR_LF;
 
@@ -539,6 +541,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallUnitPriceParcel2()) + "</SMALLUNITPRICEPARCEL2>"
 				+ CR_LF;
 
+		// 小口着色単価
 		xmlString += "<LARGEUNITPRICEFOREHEAD1>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getLargeUnitPriceForehead1())
 				+ "</LARGEUNITPRICEFOREHEAD1>" + CR_LF;
@@ -555,6 +558,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallUnitPriceForehead2())
 				+ "</SMALLUNITPRICEFOREHEAD2>" + CR_LF;
 
+		// 末端単価　合計
 		xmlString += "<NOPRETOTALRETAILPRICE1>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPreTotalRetailPrice1())
 				+ "</NOPRETOTALRETAILPRICE1>" + CR_LF;
@@ -587,6 +591,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallTotalRetailPrice2())
 				+ "</SMALLTOTALRETAILPRICE2>" + CR_LF;
 
+		// 一次店口銭
 		xmlString += "<NOPREPRIMARYOPENAMOUNT>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPrePrimaryOpenAmount())
 				+ "</NOPREPRIMARYOPENAMOUNT>" + CR_LF;
@@ -603,18 +608,88 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallPrimaryOpenAmount())
 				+ "</SMALLPRIMARYOPENAMOUNT>" + CR_LF;
 
-		xmlString += "<NOPREPRIMARYOPENRATE>" + StringUtils.toEmpty(param.getPriceCalParam().getNoPrePrimaryOpenRate())
+		xmlString += "<NOPREPRIMARYOPENRATE>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPrePrimaryOpenRate())
 				+ "</NOPREPRIMARYOPENRATE>" + CR_LF;
 
-		xmlString += "<DELIPRIMARYOPENRATE>" + StringUtils.toEmpty(param.getPriceCalParam().getDeliPrimaryOpenRate())
+		xmlString += "<DELIPRIMARYOPENRATE>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getDeliPrimaryOpenRate())
 				+ "</DELIPRIMARYOPENRATE>" + CR_LF;
 
-		xmlString += "<LARGEPRIMARYOPENRATE>" + StringUtils.toEmpty(param.getPriceCalParam().getLargePrimaryOpenRate())
+		xmlString += "<LARGEPRIMARYOPENRATE>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getLargePrimaryOpenRate())
 				+ "</LARGEPRIMARYOPENRATE>" + CR_LF;
 
-		xmlString += "<SMALLPRIMARYOPENRATE>" + StringUtils.toEmpty(param.getPriceCalParam().getSmallPrimaryOpenRate())
+		xmlString += "<SMALLPRIMARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallPrimaryOpenRate())
 				+ "</SMALLPRIMARYOPENRATE>" + CR_LF;
+		
+		// 二次店口銭
+		xmlString += "<NOPRESECONDARYOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPreSecondaryOpenAmount())
+				+ "</NOPRESECONDARYOPENAMOUNT>" + CR_LF;
 
+		xmlString += "<DELISECONDARYOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getDeliSecondaryOpenAmount())
+				+ "</DELISECONDARYOPENAMOUNT>" + CR_LF;
+
+		xmlString += "<LARGESECONDARYOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getLargeSecondaryOpenAmount())
+				+ "</LARGESECONDARYOPENAMOUNT>" + CR_LF;
+
+		xmlString += "<SMALLSECONDARYOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallSecondaryOpenAmount())
+				+ "</SMALLSECONDARYOPENAMOUNT>" + CR_LF;
+		
+		xmlString += "<NOPRESECONDARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPreSecondaryOpenRate())
+				+ "</NOPRESECONDARYOPENRATE>" + CR_LF;
+
+		xmlString += "<DELISECONDARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getDeliSecondaryOpenRate())
+				+ "</DELISECONDARYOPENRATE>" + CR_LF;
+
+		xmlString += "<LARGESECONDARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getLargeSecondaryOpenRate())
+				+ "</LARGESECONDARYOPENRATE>" + CR_LF;
+
+		xmlString += "<SMALLSECONDARYOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallSecondaryOpenRate())
+				+ "</SMALLSECONDARYOPENRATE>" + CR_LF;
+		
+		// 口銭合計
+		xmlString += "<NOPRETOTALOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPreTotalOpenAmount())
+				+ "</NOPRETOTALOPENAMOUNT>" + CR_LF;
+
+		xmlString += "<DELITOTALOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getDeliTotalOpenAmount()) + 
+				"</DELITOTALOPENAMOUNT>" + CR_LF;
+
+		xmlString += "<LARGETOTALOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getLargeTotalOpenAmount())
+				+ "</LARGETOTALOPENAMOUNT>" + CR_LF;
+
+		xmlString += "<SMALLTOTALOPENAMOUNT>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallTotalOpenAmount())
+				+ "</SMALLTOTALOPENAMOUNT>" + CR_LF;
+
+		xmlString += "<NOPRETOTALOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPreTotalOpenRate())
+				+ "</NOPRETOTALOPENRATE>" + CR_LF;
+
+		xmlString += "<DELITOTALOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getDeliTotalOpenRate())
+				+ "</DELITOTALOPENRATE>" + CR_LF;
+
+		xmlString += "<LARGETOTALOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getLargeTotalOpenRate())
+				+ "</LARGETOTALOPENRATE>" + CR_LF;
+
+		xmlString += "<SMALLTOTALOPENRATE>" 
+				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallTotalOpenRate())
+				+ "</SMALLTOTALOPENRATE>" + CR_LF;
+		
 		xmlString += "<NOPREPRIMARYCOMMISAMOUNT>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPrePrimaryCommisAmount())
 				+ "</NOPREPRIMARYCOMMISAMOUNT>" + CR_LF;
@@ -637,6 +712,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<SECONDSTOREOPENAMOUNT>" + StringUtils.toEmpty(param.getSecondStoreOpenAmount())
 				+ "</SECONDSTOREOPENAMOUNT>" + CR_LF;
 
+		// 仕切単価(計算値)
 		xmlString += "<NOPREPARTITIONUNITPRICE1>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getNoPrePartitionUnitPrice1())
 				+ "</NOPREPARTITIONUNITPRICE1>" + CR_LF;

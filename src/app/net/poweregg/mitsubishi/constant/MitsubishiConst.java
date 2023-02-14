@@ -138,7 +138,7 @@ public class MitsubishiConst {
 	public static final String SALESPERSON_CD = "売上担当者CD";
 	public static final String SALESPERSON_NAME = "売上担当者名";
 	public static final String PRICE_MASTER = "価格マスタ";
-	public static final String STATUS_CD = "状態CD";
+	public static final String STATUS_CD = "状態";
 	public static final String NEW_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(新規)";
 	public static final String EDIT_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(編集)";
 	public static final String DEPRECATION_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(廃止)";

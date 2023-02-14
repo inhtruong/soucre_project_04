@@ -12,10 +12,13 @@
         }
 
         .detailUmb {
-        	width:100%;
         	border-collapse: collapse;
             text-align: center;
         }
+        
+        .detail.umb {
+    		width: 1775px;
+    	}
 
         .labelUmb {
             background-color: #E0E0E0;
@@ -38,15 +41,15 @@
 <xsl:template match="TB_DEFAULT">
 <xsl:choose>
 	<xsl:when test="./PATTERN='0'">
-		<TABLE class="detail umb" id="umb">
+		<TABLE class="detail umb" id="umb" style="width: 1775px">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
-	            <TH style="width: 12%" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
-	            <TH style="width: 12%" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
-	            <TH style="width: 12%" class="labelUmb">小口着色<BR />(100-299kg)</TH>
-	            <TH style="width: 12%" class="labelUmb">小口着色+配送<BR />（0-99kg)</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 200px" class="labelUmb">直販</TH>
+	            <TH style="width: 200px" class="labelUmb">割増無</TH>
+	            <TH style="width: 200px" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
+	            <TH style="width: 200px" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
+	            <TH style="width: 200px" class="labelUmb">小口着色<BR />(100-299kg)</TH>
+	            <TH style="width: 200px" class="labelUmb">小口着色+配送<BR />（0-99kg)</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
@@ -198,11 +201,11 @@
     	</TABLE>
 	</xsl:when>
 	<xsl:when test="./PATTERN='1'">
-		<TABLE class="detail umb" id="umb">
+		<TABLE class="detail umb" id="umb" style="width: 1775px">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 622px" class="labelUmb">直販</TH>
+	            <TH style="width: 622px" class="labelUmb">割増無</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
@@ -236,34 +239,46 @@
 	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./NOPREPRIMARYOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
@@ -282,11 +297,11 @@
     	</TABLE>
 	</xsl:when>
 	<xsl:when test="./PATTERN='2'">
-		<TABLE class="detail umb" id="umb">
+		<TABLE class="detail umb" id="umb" style="width: 1775px">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 622px" class="labelUmb">直販</TH>
+	            <TH style="width: 622px" class="labelUmb">割増無</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
@@ -320,34 +335,46 @@
 	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./NOPREPRIMARYOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
@@ -368,10 +395,10 @@
 	<xsl:when test="./PATTERN='3'">
 		<TABLE class="detail umb" id="umb">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
-	            <TH style="width: 12%" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 411px" class="labelUmb">直販</TH>
+	            <TH style="width: 411px" class="labelUmb">割増無</TH>
+	            <TH style="width: 411px" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
@@ -415,42 +442,64 @@
 	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	        </TR>
-	        <TR>
-	            <TD class="labelUmb">金額</TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	        </TR>
-	        <TR>
-	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
-	            <TD class="labelUmb">率(%)</TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./SMALLPRIMARYOPENRATE"/>
+	            	<xsl:value-of select="./NOPRESECONDARYOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLSECONDARYOPENRATE"/>
 	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLSECONDARYOPENAMOUNT"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./NOPREPRIMARYOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./SMALLPRIMARYOPENRATE"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLSECONDARYOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLTOTALOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLTOTALOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
@@ -475,10 +524,10 @@
 	<xsl:when test="./PATTERN='4'">
 		<TABLE class="detail umb" id="umb">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
-	            <TH style="width: 12%" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 411px" class="labelUmb">直販</TH>
+	            <TH style="width: 411px" class="labelUmb">割増無</TH>
+	            <TH style="width: 411px" class="labelUmb">小口配送料のみ<BR />（100kg未満）</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
@@ -522,44 +571,64 @@
 	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLSECONDARYOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
 	            <TD class="itemUmb">
-	            	
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLSECONDARYOPENAMOUNT"/>
 	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./NOPREPRIMARYOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./SMALLPRIMARYOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./SMALLPRIMARYOPENAMOUNT"/>
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLSECONDARYOPENAMOUNT"/>
 	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLTOTALOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./SMALLTOTALOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
@@ -584,10 +653,10 @@
 	<xsl:when test="./PATTERN='5'">
 		<TABLE class="detail umb" id="umb">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
-	            <TH style="width: 12%" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 411px" class="labelUmb">直販</TH>
+	            <TH style="width: 411px" class="labelUmb">割増無</TH>
+	            <TH style="width: 411px" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
@@ -631,42 +700,64 @@
 	            <TD class="labelUmb" rowspan="2">二次口銭<BR />(率)</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	        </TR>
-	        <TR>
-	            <TD class="labelUmb">金額</TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	        </TR>
-	        <TR>
-	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
-	            <TD class="labelUmb">率(%)</TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
 	            <TD class="itemUmb">
-	            	<xsl:value-of select="./LARGEPRIMARYOPENRATE"/>
+	            	<xsl:value-of select="./NOPRESECONDARYOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGESECONDARYOPENRATE"/>
 	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGESECONDARYOPENAMOUNT"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb" rowspan="2">一次口銭<BR />(率)</TD>
+	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./NOPREPRIMARYOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	           		<xsl:value-of select="./LARGEPRIMARYOPENRATE"/>
+	            </TD>
+	        </TR>
+	        <TR>
+	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGESECONDARYOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" rowspan="2">口銭合計</TD>
 	            <TD class="labelUmb">率(%)</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENRATE"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGETOTALOPENRATE"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb">金額</TD>
 	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
-	            <TD class="itemUmb"></TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./NOPRETOTALOPENAMOUNT"/>
+	            </TD>
+	            <TD class="itemUmb">
+	            	<xsl:value-of select="./LARGETOTALOPENAMOUNT"/>
+	            </TD>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">仕切単価(計算値)</TD>
@@ -691,10 +782,10 @@
 	<xsl:when test="./PATTERN='6'">
 		<TABLE class="detail umb" id="umb">
 			<TR>
-	            <TH style="width: 28%" class="labelUmb" colspan="2"></TH>
-	            <TH style="width: 12%" class="labelUmb">直販</TH>
-	            <TH style="width: 12%" class="labelUmb">割増無</TH>
-	            <TH style="width: 12%" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
+	            <TH class="labelUmb" colspan="2"></TH>
+	            <TH style="width: 411px" class="labelUmb">直販</TH>
+	            <TH style="width: 411px" class="labelUmb">割増無</TH>
+	            <TH style="width: 411px" class="labelUmb">小口着色料のみ<BR />(100-299kg)</TH>
 	        </TR>
 	        <TR>
 	            <TD class="labelUmb" colspan="2">末端単価</TD>
