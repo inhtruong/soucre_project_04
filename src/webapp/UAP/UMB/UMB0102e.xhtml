@@ -87,7 +87,7 @@
 				<f:facet name="navi-bottom-right">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal"
-							label="ステータス更新" rendered="#{UMB01Bean.showBtnUpdateStatus}"
+							label="ステータス更新" rendered="#{UMB01Bean.showBtnUpdateStatus()}"
 							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
@@ -444,6 +444,11 @@
 										value="#{UMB01Bean.selectRateOrAmount}">
 										<f:selectItem itemLabel="口銭率" itemValue="1" />
 										<f:selectItem itemLabel="口銭額" itemValue="2" />
+										
+										<a4j:ajax listener="#{UMB01Bean.convertRateToAmount}" event="change" immediate="false" execute="@this"
+											oncomplete="fncAfterCallAjax()"
+											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"
+											render="tab1_primaryStoreOpenAmount, tab1_primaryStoreOpenRate, tab1_secondStoreOpenAmount, tab1_secondStoreOpenRate" />
 									</h:selectOneRadio>
 								</rich:column>
 							</rich:columnGroup>
@@ -460,10 +465,10 @@
 								</rich:column>
 								<rich:column style="background-color: #fff; width: 50%;">
 									<p:inputNumber 
-										id="tab1_primaryStoreCommissionAmount" styleClass="short text_off"
+										id="tab1_primaryStoreOpenAmount" styleClass="short text_off"
 										digitsBeforePoint="21" digitsAfterPoint="2" onchange="" minus="true"
 										dec="true" disabled="#{UMB01Bean.selectRateOrAmount == 1}"
-										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreCommissionAmount}">
+										value="#{UMB01Bean.umb01Dto.priceRefDto.primaryStoreOpenAmount}">
 										<a4j:ajax listener="#{UMB01Bean.calculateValue}" event="change" immediate="false" execute="@this"
 											oncomplete="fncAfterCallAjax()"
 											onbeforesubmit="fncBeforeCallAjax('#{messages.common_l_processing}')"

@@ -167,6 +167,26 @@ public class PriceCalParam implements Serializable {
 	private String smallPrimaryOpenAmount;
 	
 	/**
+	 * 二次店口銭(金額)(割増無)
+	 */
+	private String noPreSecondaryOpenAmount;
+	
+	/**
+	 * 二次店口銭(金額)(配送)
+	 */
+	private String deliSecondaryOpenAmount;
+	
+	/**
+	 * 二次店口銭(金額)(299kg)
+	 */
+	private String largeSecondaryOpenAmount;
+	
+	/**
+	 * 二次店口銭(金額)(100kg)
+	 */
+	private String smallSecondaryOpenAmount;
+	
+	/**
 	 * 一次店口銭率(割増無)
 	 */
 	private String noPrePrimaryOpenRate;
@@ -185,6 +205,66 @@ public class PriceCalParam implements Serializable {
 	 * 一次店口銭率(100kg)
 	 */
 	private String smallPrimaryOpenRate;
+	
+	/**
+	 * 二次店口銭率(割増無)
+	 */
+	private String noPreSecondaryOpenRate;
+	
+	/**
+	 * 二次店口銭率(配送)
+	 */
+	private String deliSecondaryOpenRate;
+	
+	/**
+	 * 二次店口銭率(299kg)
+	 */
+	private String largeSecondaryOpenRate;
+	
+	/**
+	 * 二次店口銭率(100kg)
+	 */
+	private String smallSecondaryOpenRate;
+	
+	/**
+	 * 一次店口銭率(割増無)
+	 */
+	private String noPreTotalOpenRate;
+	
+	/**
+	 * 口銭合計率(配送)
+	 */
+	private String deliTotalOpenRate;
+	
+	/**
+	 * 口銭合計率(299kg)
+	 */
+	private String largeTotalOpenRate;
+	
+	/**
+	 *口銭合計率(100kg)
+	 */
+	private String smallTotalOpenRate;
+	
+	/**
+	 * 口銭合計(金額)(割増無)
+	 */
+	private String noPreTotalOpenAmount;
+	
+	/**
+	 * 口銭合計(金額)(配送)
+	 */
+	private String deliTotalOpenAmount;
+	
+	/**
+	 * 口銭合計(金額)(299kg)
+	 */
+	private String largeTotalOpenAmount;
+	
+	/**
+	 * 口銭合計(金額)(100kg)
+	 */
+	private String smallTotalOpenAmount;
 	
 	/**
 	 * 一次店口銭金額(割増無)
@@ -912,5 +992,229 @@ public class PriceCalParam implements Serializable {
 	 */
 	public void setSmallPartitionUnitPrice2(String smallPartitionUnitPrice2) {
 		this.smallPartitionUnitPrice2 = smallPartitionUnitPrice2;
+	}
+
+	/**
+	 * @return the noPreSecondaryOpenAmount
+	 */
+	public String getNoPreSecondaryOpenAmount() {
+		return noPreSecondaryOpenAmount;
+	}
+
+	/**
+	 * @param noPreSecondaryOpenAmount the noPreSecondaryOpenAmount to set
+	 */
+	public void setNoPreSecondaryOpenAmount(String noPreSecondaryOpenAmount) {
+		this.noPreSecondaryOpenAmount = noPreSecondaryOpenAmount;
+	}
+
+	/**
+	 * @return the deliSecondaryOpenAmount
+	 */
+	public String getDeliSecondaryOpenAmount() {
+		return deliSecondaryOpenAmount;
+	}
+
+	/**
+	 * @param deliSecondaryOpenAmount the deliSecondaryOpenAmount to set
+	 */
+	public void setDeliSecondaryOpenAmount(String deliSecondaryOpenAmount) {
+		this.deliSecondaryOpenAmount = deliSecondaryOpenAmount;
+	}
+
+	/**
+	 * @return the largeSecondaryOpenAmount
+	 */
+	public String getLargeSecondaryOpenAmount() {
+		return largeSecondaryOpenAmount;
+	}
+
+	/**
+	 * @param largeSecondaryOpenAmount the largeSecondaryOpenAmount to set
+	 */
+	public void setLargeSecondaryOpenAmount(String largeSecondaryOpenAmount) {
+		this.largeSecondaryOpenAmount = largeSecondaryOpenAmount;
+	}
+
+	/**
+	 * @return the smallSecondaryOpenAmount
+	 */
+	public String getSmallSecondaryOpenAmount() {
+		return smallSecondaryOpenAmount;
+	}
+
+	/**
+	 * @param smallSecondaryOpenAmount the smallSecondaryOpenAmount to set
+	 */
+	public void setSmallSecondaryOpenAmount(String smallSecondaryOpenAmount) {
+		this.smallSecondaryOpenAmount = smallSecondaryOpenAmount;
+	}
+
+	/**
+	 * @return the noPreSecondaryOpenRate
+	 */
+	public String getNoPreSecondaryOpenRate() {
+		return noPreSecondaryOpenRate;
+	}
+
+	/**
+	 * @param noPreSecondaryOpenRate the noPreSecondaryOpenRate to set
+	 */
+	public void setNoPreSecondaryOpenRate(String noPreSecondaryOpenRate) {
+		this.noPreSecondaryOpenRate = noPreSecondaryOpenRate;
+	}
+
+	/**
+	 * @return the deliSecondaryOpenRate
+	 */
+	public String getDeliSecondaryOpenRate() {
+		return deliSecondaryOpenRate;
+	}
+
+	/**
+	 * @param deliSecondaryOpenRate the deliSecondaryOpenRate to set
+	 */
+	public void setDeliSecondaryOpenRate(String deliSecondaryOpenRate) {
+		this.deliSecondaryOpenRate = deliSecondaryOpenRate;
+	}
+
+	/**
+	 * @return the largeSecondaryOpenRate
+	 */
+	public String getLargeSecondaryOpenRate() {
+		return largeSecondaryOpenRate;
+	}
+
+	/**
+	 * @param largeSecondaryOpenRate the largeSecondaryOpenRate to set
+	 */
+	public void setLargeSecondaryOpenRate(String largeSecondaryOpenRate) {
+		this.largeSecondaryOpenRate = largeSecondaryOpenRate;
+	}
+
+	/**
+	 * @return the smallSecondaryOpenRate
+	 */
+	public String getSmallSecondaryOpenRate() {
+		return smallSecondaryOpenRate;
+	}
+
+	/**
+	 * @param smallSecondaryOpenRate the smallSecondaryOpenRate to set
+	 */
+	public void setSmallSecondaryOpenRate(String smallSecondaryOpenRate) {
+		this.smallSecondaryOpenRate = smallSecondaryOpenRate;
+	}
+
+	/**
+	 * @return the noPreTotalOpenRate
+	 */
+	public String getNoPreTotalOpenRate() {
+		return noPreTotalOpenRate;
+	}
+
+	/**
+	 * @param noPreTotalOpenRate the noPreTotalOpenRate to set
+	 */
+	public void setNoPreTotalOpenRate(String noPreTotalOpenRate) {
+		this.noPreTotalOpenRate = noPreTotalOpenRate;
+	}
+
+	/**
+	 * @return the deliTotalOpenRate
+	 */
+	public String getDeliTotalOpenRate() {
+		return deliTotalOpenRate;
+	}
+
+	/**
+	 * @param deliTotalOpenRate the deliTotalOpenRate to set
+	 */
+	public void setDeliTotalOpenRate(String deliTotalOpenRate) {
+		this.deliTotalOpenRate = deliTotalOpenRate;
+	}
+
+	/**
+	 * @return the largeTotalOpenRate
+	 */
+	public String getLargeTotalOpenRate() {
+		return largeTotalOpenRate;
+	}
+
+	/**
+	 * @param largeTotalOpenRate the largeTotalOpenRate to set
+	 */
+	public void setLargeTotalOpenRate(String largeTotalOpenRate) {
+		this.largeTotalOpenRate = largeTotalOpenRate;
+	}
+
+	/**
+	 * @return the smallTotalOpenRate
+	 */
+	public String getSmallTotalOpenRate() {
+		return smallTotalOpenRate;
+	}
+
+	/**
+	 * @param smallTotalOpenRate the smallTotalOpenRate to set
+	 */
+	public void setSmallTotalOpenRate(String smallTotalOpenRate) {
+		this.smallTotalOpenRate = smallTotalOpenRate;
+	}
+
+	/**
+	 * @return the noPreTotalOpenAmount
+	 */
+	public String getNoPreTotalOpenAmount() {
+		return noPreTotalOpenAmount;
+	}
+
+	/**
+	 * @param noPreTotalOpenAmount the noPreTotalOpenAmount to set
+	 */
+	public void setNoPreTotalOpenAmount(String noPreTotalOpenAmount) {
+		this.noPreTotalOpenAmount = noPreTotalOpenAmount;
+	}
+
+	/**
+	 * @return the deliTotalOpenAmount
+	 */
+	public String getDeliTotalOpenAmount() {
+		return deliTotalOpenAmount;
+	}
+
+	/**
+	 * @param deliTotalOpenAmount the deliTotalOpenAmount to set
+	 */
+	public void setDeliTotalOpenAmount(String deliTotalOpenAmount) {
+		this.deliTotalOpenAmount = deliTotalOpenAmount;
+	}
+
+	/**
+	 * @return the largeTotalOpenAmount
+	 */
+	public String getLargeTotalOpenAmount() {
+		return largeTotalOpenAmount;
+	}
+
+	/**
+	 * @param largeTotalOpenAmount the largeTotalOpenAmount to set
+	 */
+	public void setLargeTotalOpenAmount(String largeTotalOpenAmount) {
+		this.largeTotalOpenAmount = largeTotalOpenAmount;
+	}
+
+	/**
+	 * @return the smallTotalOpenAmount
+	 */
+	public String getSmallTotalOpenAmount() {
+		return smallTotalOpenAmount;
+	}
+
+	/**
+	 * @param smallTotalOpenAmount the smallTotalOpenAmount to set
+	 */
+	public void setSmallTotalOpenAmount(String smallTotalOpenAmount) {
+		this.smallTotalOpenAmount = smallTotalOpenAmount;
 	}
 }
