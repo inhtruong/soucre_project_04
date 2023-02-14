@@ -744,6 +744,15 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		xmlString += "<SMALLPARTITIONUNITPRICE2>"
 				+ StringUtils.toEmpty(param.getPriceCalParam().getSmallPartitionUnitPrice2())
 				+ "</SMALLPARTITIONUNITPRICE2>" + CR_LF;
+		
+		// 小口配送単価(計算値)
+		xmlString += "<CALUNITPRICEPARCEL>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getCalUnitPriceParcel())
+				+ "</CALUNITPRICEPARCEL>" + CR_LF;
+		// 小口着色単価(計算値)
+		xmlString += "<CALUNITPRICEFOREHEAD>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getCalUnitPriceForehead())
+				+ "</CALUNITPRICEFOREHEAD>" + CR_LF;
 
 		xmlString += "</TB_DEFAULT>" + CR_LF;
 		xmlString += "</U_MITSUBISHI>" + CR_LF;

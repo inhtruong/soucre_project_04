@@ -335,6 +335,18 @@ public class PriceCalParam implements Serializable {
 	 * 仕切単価2(計算値)(100kg)
 	 */
 	private String smallPartitionUnitPrice2;
+	
+	/**
+	 * 小口配送単価(計算値)
+	 */
+	private String calUnitPriceParcel;
+	
+	/**
+	 * 小口配送単価(計算値)
+	 */
+	private String calUnitPriceForehead;
+	
+	
 
 	/**
 	 * @return the pattern
@@ -1216,5 +1228,33 @@ public class PriceCalParam implements Serializable {
 	 */
 	public void setSmallTotalOpenAmount(String smallTotalOpenAmount) {
 		this.smallTotalOpenAmount = smallTotalOpenAmount;
+	}
+
+	/**
+	 * @return the calUnitPriceParcel
+	 */
+	public String getCalUnitPriceParcel() {
+		return calUnitPriceParcel;
+	}
+
+	/**
+	 * @param calUnitPriceParcel the calUnitPriceParcel to set
+	 */
+	public void setCalUnitPriceParcel(String calUnitPriceParcel) {
+		this.calUnitPriceParcel = calUnitPriceParcel;
+	}
+
+	/**
+	 * @return the calUnitPriceForehead
+	 */
+	public String getCalUnitPriceForehead() {
+		return calUnitPriceForehead;
+	}
+
+	/**
+	 * @param calUnitPriceForehead the calUnitPriceForehead to set
+	 */
+	public void setCalUnitPriceForehead(String calUnitPriceForehead) {
+		this.calUnitPriceForehead = calUnitPriceForehead;
 	}
 }
