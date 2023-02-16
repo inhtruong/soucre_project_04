@@ -76,10 +76,8 @@ public class MitsubishiConst {
 	public static final String SEARCH_LIST_WEBDB = "searchListWebDB";
 	public static final String BACK_TO_SEARCH = "backToSearhPage";
 	
-
-	
 	// constant for csv umb01
-	public static final String DATA_LINE_NO = "データ移行NO";
+	public static final String DATA_LINE_NO = "データ行NO";
 	public static final String DATA_NO = "データNO";
 	public static final String SOURCE_RECORD_CREATION_DATETIME = "送信元レコード作成日時";
 	public static final String DATE_UPDATE_CATEGORY = "データ更新区分";
@@ -139,9 +137,9 @@ public class MitsubishiConst {
 	public static final String SALESPERSON_NAME = "売上担当者名";
 	public static final String PRICE_MASTER = "価格マスタ";
 	public static final String STATUS_CD = "状態";
-	public static final String NEW_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(新規)";
-	public static final String EDIT_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(編集)";
-	public static final String DEPRECATION_PRICE_INQUIRY_MASTER_APPLICATION = "価格伺いマスタ申請(廃止)";
+	public static final String NEW_PRICE_INQUIRY_MASTER_APPLICATION = "新規申請";
+	public static final String EDIT_PRICE_INQUIRY_MASTER_APPLICATION = "編集申請";
+	public static final String DEPRECATION_PRICE_INQUIRY_MASTER_APPLICATION = "廃止申請";
 	public static final String APPLICATION_REC_NO = "申請受付番号";
 	public static final String NOT_APPLIED = "未申請";
 	public static final String START_LOG = "処理開始";

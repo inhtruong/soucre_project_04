@@ -287,15 +287,15 @@
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">小口配送単価</TH>
-							<TD class="item"></TD>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:if test="PATTERN='3' or PATTERN='4'">
 									<xsl:value-of select="./LARGEUNITPRICEFOREHEAD1" />
 								</xsl:if>
 							</TD>
-							<TD class="item"></TD>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:if test="PATTERN='7' or PATTERN='8'">
 									<xsl:value-of select="./LARGEUNITPRICEFOREHEAD1" />
@@ -304,9 +304,9 @@
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">小口着色単価</TH>
-							<TD class="item"></TD>
-							<TD class="item"></TD>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:if test="PATTERN='5' or PATTERN='6'">
 									<xsl:value-of select="./SMALLUNITPRICEPARCEL1" />
@@ -359,7 +359,7 @@
 								(率)
 							</TH>
 							<TH class="label">率(%)</TH>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:value-of select="./NOPRESECONDARYOPENRATE" />
 							</TD>
@@ -386,7 +386,7 @@
 						</TR>
 						<TR>
 							<TH class="label">金額</TH>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT" />
 							</TD>
@@ -418,7 +418,7 @@
 								(率)
 							</TH>
 							<TH class="label">率(%)</TH>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:value-of select="./NOPREPRIMARYOPENRATE" />
 							</TD>
@@ -445,7 +445,7 @@
 						</TR>
 						<TR>
 							<TH class="label">金額</TH>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:value-of select="./NOPRESECONDARYOPENAMOUNT" />
 							</TD>
@@ -473,7 +473,7 @@
 						<TR>
 							<TH class="label" rowspan="2">口銭合計</TH>
 							<TH class="label">率(%)</TH>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:value-of select="./NOPRETOTALOPENRATE" />
 							</TD>
@@ -500,7 +500,7 @@
 						</TR>
 						<TR>
 							<TH class="label">金額</TH>
-							<TD class="item"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
 								<xsl:value-of select="./NOPRETOTALOPENAMOUNT" />
 							</TD>
@@ -556,44 +556,40 @@
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">小口配送単価(計算値)</TH>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
+								<xsl:if test="PATTERN='3' or PATTERN='4'">
+									<xsl:value-of select="./CALSMALLUNITPRICEPARCEL" />
+								</xsl:if>
 							</TD>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
+								<xsl:if test="PATTERN='7' or PATTERN='8'">
+									<xsl:value-of select="./CALSMALLUNITPRICEPARCEL" />
+								</xsl:if>
 							</TD>
 						</TR>
 						<TR>
 							<TH class="label" colspan="2">小口着色単価(計算値)</TH>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
+							<TD class="itemUmb unSelectTb"></TD>
 							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
+								<xsl:if test="PATTERN='5' or PATTERN='6'">
+									<xsl:value-of select="./CALLARGEUNITPRICEFOREHEAD" />
+								</xsl:if>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
+								<xsl:if test="PATTERN='7' or PATTERN='8'">
+									<xsl:value-of select="./CALLARGEUNITPRICEFOREHEAD" />
+								</xsl:if>
 							</TD>
 							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
-							</TD>
-							<TD class="item">
-								<xsl:value-of select="./SMALLRETAILPRICE1" />
+								<xsl:if test="PATTERN='7' or PATTERN='8'">
+									<xsl:value-of select="./CALSMALLUNITPRICEFOREHEAD" />
+								</xsl:if>
 							</TD>
 						</TR>
 						<TR>

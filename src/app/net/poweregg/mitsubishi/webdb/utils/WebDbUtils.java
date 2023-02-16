@@ -684,10 +684,7 @@ public class WebDbUtils {
 
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
 					CloseableHttpResponse response = httpClient.execute(httpPut)) {
-				int responseCode = response.getStatusLine().getStatusCode();
-				if (responseCode != HttpStatus.SC_CREATED) {
-					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
-				}
+
 				JSONObject result = new JSONObject(EntityUtils.toString(response.getEntity()));
 				StringBuffer msg = new StringBuffer();
 				if (result.has(WebDbConstant.JSON_MESSAGE)) {
@@ -697,9 +694,9 @@ public class WebDbUtils {
 					msg.append(StringUtils.addEmpty(result.get(WebDbConstant.JSON_DETAILS)));
 				}
 				if (!StringUtils.nullOrBlank(msg.toString())) {
+					System.out.println(result.toString());
 					return msg.toString();
 				}
-				System.out.println(result.toString());
 			}
 			return "";
 
@@ -743,11 +740,11 @@ public class WebDbUtils {
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
 					CloseableHttpResponse response = httpClient.execute(httpPost)) {
 				int responseCode = response.getStatusLine().getStatusCode();
-				if (responseCode != HttpStatus.SC_CREATED) {
-					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
-				}
 				JSONObject result = new JSONObject(EntityUtils.toString(response.getEntity()));
 				StringBuffer msg = new StringBuffer();
+				if (responseCode != HttpStatus.SC_CREATED) {
+					msg.append("異常終了（HTTP エラーコード） : " + responseCode + "。");
+				}
 				if (result.has(WebDbConstant.JSON_MESSAGE)) {
 					msg.append(StringUtils.addEmpty(result.get(WebDbConstant.JSON_MESSAGE)));
 				}
@@ -755,9 +752,9 @@ public class WebDbUtils {
 					msg.append(StringUtils.addEmpty(result.get(WebDbConstant.JSON_DETAILS)));
 				}
 				if (!StringUtils.nullOrBlank(msg.toString())) {
+					System.out.println(msg.toString());
 					return msg.toString();
 				}
-				System.out.println(msg.toString());
 			}
 			return "";
 
@@ -798,11 +795,11 @@ public class WebDbUtils {
 			try (CloseableHttpClient httpClient = HttpClients.createDefault();
 					CloseableHttpResponse response = httpClient.execute(httpPost)) {
 				int responseCode = response.getStatusLine().getStatusCode();
-				if (responseCode != HttpStatus.SC_OK) {
-					throw new RuntimeException("異常終了（HTTP エラーコード） : " + responseCode);
-				}
 				JSONObject result = new JSONObject(EntityUtils.toString(response.getEntity()));
 				StringBuffer msg = new StringBuffer();
+				if (responseCode != HttpStatus.SC_CREATED) {
+					msg.append("異常終了（HTTP エラーコード） : " + responseCode + "。");
+				}
 				if (result.has(WebDbConstant.JSON_MESSAGE)) {
 					msg.append(StringUtils.addEmpty(result.get(WebDbConstant.JSON_MESSAGE)));
 				}
@@ -810,9 +807,9 @@ public class WebDbUtils {
 					msg.append(StringUtils.addEmpty(result.get(WebDbConstant.JSON_DETAILS)));
 				}
 				if (!StringUtils.nullOrBlank(msg.toString())) {
+					System.out.println(msg.toString());
 					return msg.toString();
 				}
-				System.out.println(msg.toString());
 			}
 			return "";
 

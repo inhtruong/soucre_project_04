@@ -337,16 +337,24 @@ public class PriceCalParam implements Serializable {
 	private String smallPartitionUnitPrice2;
 	
 	/**
-	 * 小口配送単価(計算値)
+	 * 小口配送単価(計算値)(100kg)
 	 */
-	private String calUnitPriceParcel;
+	private String calSmallUnitPriceParcel;
 	
 	/**
-	 * 小口配送単価(計算値)
+	 * 小口配送単価(計算値)(299kg)
 	 */
-	private String calUnitPriceForehead;
+	private String calLargeUnitPriceParcel;
 	
+	/**
+	 * 小口配送単価(計算値)(100kg)
+	 */
+	private String calSmallUnitPriceForehead;
 	
+	/**
+	 * 小口配送単価(計算値)(299kg)
+	 */
+	private String calLargeUnitPriceForehead;
 
 	/**
 	 * @return the pattern
@@ -1231,30 +1239,58 @@ public class PriceCalParam implements Serializable {
 	}
 
 	/**
-	 * @return the calUnitPriceParcel
+	 * @return the calSmallUnitPriceParcel
 	 */
-	public String getCalUnitPriceParcel() {
-		return calUnitPriceParcel;
+	public String getCalSmallUnitPriceParcel() {
+		return calSmallUnitPriceParcel;
 	}
 
 	/**
-	 * @param calUnitPriceParcel the calUnitPriceParcel to set
+	 * @param calSmallUnitPriceParcel the calSmallUnitPriceParcel to set
 	 */
-	public void setCalUnitPriceParcel(String calUnitPriceParcel) {
-		this.calUnitPriceParcel = calUnitPriceParcel;
+	public void setCalSmallUnitPriceParcel(String calSmallUnitPriceParcel) {
+		this.calSmallUnitPriceParcel = calSmallUnitPriceParcel;
 	}
 
 	/**
-	 * @return the calUnitPriceForehead
+	 * @return the calLargeUnitPriceParcel
 	 */
-	public String getCalUnitPriceForehead() {
-		return calUnitPriceForehead;
+	public String getCalLargeUnitPriceParcel() {
+		return calLargeUnitPriceParcel;
 	}
 
 	/**
-	 * @param calUnitPriceForehead the calUnitPriceForehead to set
+	 * @param calLargeUnitPriceParcel the calLargeUnitPriceParcel to set
 	 */
-	public void setCalUnitPriceForehead(String calUnitPriceForehead) {
-		this.calUnitPriceForehead = calUnitPriceForehead;
+	public void setCalLargeUnitPriceParcel(String calLargeUnitPriceParcel) {
+		this.calLargeUnitPriceParcel = calLargeUnitPriceParcel;
+	}
+
+	/**
+	 * @return the calSmallUnitPriceForehead
+	 */
+	public String getCalSmallUnitPriceForehead() {
+		return calSmallUnitPriceForehead;
+	}
+
+	/**
+	 * @param calSmallUnitPriceForehead the calSmallUnitPriceForehead to set
+	 */
+	public void setCalSmallUnitPriceForehead(String calSmallUnitPriceForehead) {
+		this.calSmallUnitPriceForehead = calSmallUnitPriceForehead;
+	}
+
+	/**
+	 * @return the calLargeUnitPriceForehead
+	 */
+	public String getCalLargeUnitPriceForehead() {
+		return calLargeUnitPriceForehead;
+	}
+
+	/**
+	 * @param calLargeUnitPriceForehead the calLargeUnitPriceForehead to set
+	 */
+	public void setCalLargeUnitPriceForehead(String calLargeUnitPriceForehead) {
+		this.calLargeUnitPriceForehead = calLargeUnitPriceForehead;
 	}
 }

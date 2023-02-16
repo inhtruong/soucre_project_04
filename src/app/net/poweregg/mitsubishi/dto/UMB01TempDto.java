@@ -207,9 +207,9 @@ public class UMB01TempDto implements Serializable {
 	 * 用途参照
 	 */
 	private String usageRef;
-
+	
 	/**
-	 * 状態CD
+	 * 状態
 	 */
 	private String stateCD;
 

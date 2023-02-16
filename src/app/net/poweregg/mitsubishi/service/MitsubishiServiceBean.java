@@ -746,13 +746,19 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ "</SMALLPARTITIONUNITPRICE2>" + CR_LF;
 		
 		// 小口配送単価(計算値)
-		xmlString += "<CALUNITPRICEPARCEL>"
-				+ StringUtils.toEmpty(param.getPriceCalParam().getCalUnitPriceParcel())
-				+ "</CALUNITPRICEPARCEL>" + CR_LF;
+		xmlString += "<CALSMALLUNITPRICEPARCEL>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getCalSmallUnitPriceParcel())
+				+ "</CALSMALLUNITPRICEPARCEL>" + CR_LF;
+		xmlString += "<CALLARGEUNITPRICEPARCEL>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getCalLargeUnitPriceParcel())
+				+ "</CALLARGEUNITPRICEPARCEL>" + CR_LF;
 		// 小口着色単価(計算値)
-		xmlString += "<CALUNITPRICEFOREHEAD>"
-				+ StringUtils.toEmpty(param.getPriceCalParam().getCalUnitPriceForehead())
-				+ "</CALUNITPRICEFOREHEAD>" + CR_LF;
+		xmlString += "<CALSMALLUNITPRICEFOREHEAD>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getCalSmallUnitPriceForehead())
+				+ "</CALSMALLUNITPRICEFOREHEAD>" + CR_LF;
+		xmlString += "<CALLARGEUNITPRICEFOREHEAD>"
+				+ StringUtils.toEmpty(param.getPriceCalParam().getCalLargeUnitPriceForehead())
+				+ "</CALLARGEUNITPRICEFOREHEAD>" + CR_LF;
 
 		xmlString += "</TB_DEFAULT>" + CR_LF;
 		xmlString += "</U_MITSUBISHI>" + CR_LF;
@@ -845,6 +851,9 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		if (MitsubishiConst.MODE_NEW.equals(mode)) {
 			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getAppRecepNo()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getStatusCD()));
+			/** 適用開始日 */
+			queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getApplicationStartDate())));
 		}
 		// mode edit
 		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
@@ -868,9 +877,9 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		/** 小口着色単価 */
 		queryBlocks.put(MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceForeheadColor())));
-		/** 一次店口銭金額 */
-		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_COMMISSION_AMOUNT, WebDbUtils
-				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreCommissionAmount())));
+		/** 一次店口銭額 */
+		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPEN_AMOUNT, WebDbUtils
+				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenAmount())));
 		/** 一次店口銭率 */
 		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPENING_RATE, WebDbUtils
 				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate())));
