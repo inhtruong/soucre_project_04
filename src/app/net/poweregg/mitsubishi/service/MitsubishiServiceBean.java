@@ -261,7 +261,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		umb01Dto.getPriceRefDto().setWarning(WebDbUtils.getValue(resultJson, MitsubishiConst.WARNING));
 		// ロット数量
 		umb01Dto.getPriceRefDto()
-				.setLotQuantity(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.LOT_QUANTITY));
+				.setLotQuantity(WebDbUtils.getValue(resultJson, MitsubishiConst.LOT_QUANTITY));
 		// 末端価格
 		umb01Dto.getPriceRefDto()
 				.setRetailPrice(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.RETAIL_PRICE));
@@ -852,18 +852,24 @@ public class MitsubishiServiceBean implements MitsubishiService {
 			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getAppRecepNo()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getStatusCD()));
 			/** 適用開始日 */
-			queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE,
-					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getApplicationStartDate())));
+//			queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE,
+//					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getApplicationStartDate())));
 		}
 		// mode edit
 		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
 			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNo()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
+			/** 改定前単価 */
+			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceBefRevision())));
 		}
 		// mode cancel
 		if (MitsubishiConst.MODE_CANCEL.equals(mode)) {
 			queryBlocks.put(MitsubishiConst.CANCEL_APPRECP_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
+			/** 改定前単価 */
+			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceBefRevision())));
 		}
 		/** 用途参照 */
 		queryBlocks.put(MitsubishiConst.USAGE_REF,
@@ -892,6 +898,12 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		/** 仕切単価（決定値） */
 		queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPartitionUnitPrice())));
+		/** ロット数量 */
+		queryBlocks.put(MitsubishiConst.LOT_QUANTITY,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getLotQuantity())));
+//		/** 伺い理由 */
+//		queryBlocks.put(MitsubishiConst.REASON_INQUIRY,
+//				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getReasonInquiry())));
 		
 		return queryBlocks;
 	}

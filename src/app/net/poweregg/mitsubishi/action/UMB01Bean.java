@@ -149,6 +149,8 @@ public class UMB01Bean implements Serializable {
 	private String currentMode;
 	private String currentDataNo;
 	private String currentStatus;
+	private BigDecimal tempPartitionPrice;
+	private boolean showBtnStatus;
 
 	private int selectRateOrAmount;
 
@@ -205,18 +207,17 @@ public class UMB01Bean implements Serializable {
 		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 		
-		
-
 		// get value from WebDB
 		umb01Dto = mitsubishiService.getDataMitsubishi(currentDataNo, dbType);
 		if (umb01Dto == null) {
 			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + currentDataNo + "は存在しません");
 			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + currentDataNo + " は存在しません");
 		}
-		
 		// set status apply
 		if (1 == dbType) {
 			setCurrentStatus(umb01Dto.getPriceUnitRefDto().getStatusCD());
+			// show/hide button update
+			showBtnStatus = showBtnUpdateStatus();
 		}
 		if (2 == dbType) {
 			if (umb01Dto.getPriceRefDto().getStatusCD() == null) {
@@ -225,11 +226,9 @@ public class UMB01Bean implements Serializable {
 			}
 			setCurrentStatus(umb01Dto.getPriceRefDto().getStatusCD());
 		}
-		
+		// initialization item
 		initItems(webDBClassInfos);
-
 		
-
 		// make XML table price
 		outputHtml = new DataFlowUtil().transformXML2HTML(mitsubishiService.createXMLTablePrice(umb01Dto), FILE_XML);
 	}
@@ -302,22 +301,24 @@ public class UMB01Bean implements Serializable {
 				return StringUtils.EMPTY;
 			}
 			
+			umb01Dto.getPriceRefDto().setUnitPriceBefRevision(tempPartitionPrice);
+			
 			// 計算値
 			switch (umb01Dto.getPriceCalParam().getPattern()) {
-				case "1":
-				case "2":
-					umb01Dto.getPriceRefDto().setLotQuantity(new BigDecimal("100"));
-					break;
 				case "3":
 				case "4":
-					umb01Dto.getPriceRefDto().setLotQuantity(new BigDecimal("100"));
+					umb01Dto.getPriceRefDto().setLotQuantity("100,0");
 					break;
 				case "5":
 				case "6":
-					umb01Dto.getPriceRefDto().setLotQuantity(new BigDecimal("300"));
+					umb01Dto.getPriceRefDto().setLotQuantity("0,100");
+					break;
+				case "7":
+				case "8":
+					umb01Dto.getPriceRefDto().setLotQuantity("300,100,0");
 					break;
 				default:
-					umb01Dto.getPriceRefDto().setLotQuantity(new BigDecimal("300"));
+					umb01Dto.getPriceRefDto().setLotQuantity("0");
 					break;
 			}
 
@@ -379,30 +380,30 @@ public class UMB01Bean implements Serializable {
 	 * すべてのフィールドが等しい場合、「ステータスの更新」ボタンを表示する必要があることを示します。
 	 * 
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean showBtnUpdateStatus() {
-		PriceUnitRefDto dto = umb01Dto.getPriceUnitRefDto();
-		
-		if (!StringUtils.nullOrBlank(dto.getCustomerCD()) 
-				&& !StringUtils.nullOrBlank(dto.getDestinationCD1())
-				&& !StringUtils.nullOrBlank(dto.getDestinationCD2())
-				&& !StringUtils.nullOrBlank(dto.getProductNameAbbreviation())
-				&& !StringUtils.nullOrBlank(dto.getColorNo())
-				&& !StringUtils.nullOrBlank(dto.getCurrencyCD())
-				&& !StringUtils.nullOrBlank(dto.getClientBranchNumber())
-				&& !StringUtils.nullOrBlank(dto.getPriceForm())
-				) {
-		return dto.getCustomerCD().equals(dto.getDestinationCD1())
-				&& dto.getDestinationCD1().equals(dto.getDestinationCD2())
-				&& dto.getDestinationCD2().equals(dto.getProductNameAbbreviation())
-				&& dto.getProductNameAbbreviation().equals(dto.getColorNo())
-				&& dto.getColorNo().equals(dto.getCurrencyCD())
-				&& dto.getCurrencyCD().equals(dto.getClientBranchNumber())
-				&& dto.getClientBranchNumber().equals(dto.getPriceForm())
-				&& dto.getPriceForm().equals(dto.getUsageCD());
+	public boolean showBtnUpdateStatus() throws Exception {
+		// get value from WebDB Master
+		Umb01Dto umb01Master = mitsubishiService.getDataMitsubishi(currentDataNo, 2);
+		if (umb01Master == null) {
+			return false;
 		}
+
+		PriceUnitRefDto dto = umb01Dto.getPriceUnitRefDto();
+		PriceUnitRefDto dtoMaster = umb01Master.getPriceUnitRefDto();
 		
-		return false;
+		return pricesMatch(dto, dtoMaster);
+	}	
+	
+	private boolean pricesMatch(PriceUnitRefDto current, PriceUnitRefDto master) {
+		return current.getCustomerCD().equals(master.getCustomerCD())
+				&& current.getDestinationCD1().equals(master.getDestinationCD1())
+				&& current.getDestinationCD2().equals(master.getDestinationCD2())
+				&& current.getProductNameAbbreviation().equals(master.getProductNameAbbreviation())
+				&& current.getColorNo().equals(master.getColorNo())
+				&& current.getCurrencyCD().equals(master.getCurrencyCD())
+				&& current.getClientBranchNumber().equals(master.getClientBranchNumber())
+				&& current.getPriceForm().equals(master.getPriceForm());
 	}
 
 	/**
@@ -755,15 +756,20 @@ public class UMB01Bean implements Serializable {
 		// 小口着色単価
 		BigDecimal unitPriceForeheadColor = toBigDecimal(umb01Dto.getPriceRefDto().getUnitPriceForeheadColor());
 		// 一次店口銭率
-		BigDecimal primaryStoreOpenRate = toBigDecimal(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate());
+		BigDecimal primaryStoreOpenRate = new BigDecimal("0");
 		// 一次店口銭(金額)
-		BigDecimal primaryStoreOpenAmount = toBigDecimal(umb01Dto.getPriceRefDto().getPrimaryStoreOpenAmount());
+		BigDecimal primaryStoreOpenAmount = new BigDecimal("0");
 		// 二次店口銭率
-		BigDecimal secondStoreOpenRate = toBigDecimal(umb01Dto.getSecondStoreOpenRate());
+		BigDecimal secondStoreOpenRate = new BigDecimal("0");
 		// 二次店口銭額
-		BigDecimal secondStoreOpenAmount = toBigDecimal(umb01Dto.getSecondStoreOpenAmount());
-		// ロット数量
-		BigDecimal lotQuantity = toBigDecimal(umb01Dto.getPriceRefDto().getLotQuantity());
+		BigDecimal secondStoreOpenAmount = new BigDecimal("0");
+		if (selectRateOrAmount == 1) { 
+			primaryStoreOpenRate = toBigDecimal(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate());
+			secondStoreOpenRate = toBigDecimal(umb01Dto.getSecondStoreOpenRate());
+		} else {
+			primaryStoreOpenAmount = toBigDecimal(umb01Dto.getPriceRefDto().getPrimaryStoreOpenAmount());
+			secondStoreOpenAmount = toBigDecimal(umb01Dto.getSecondStoreOpenAmount());
+		}
 
 		BigDecimal tempValue = new BigDecimal("0");
 		BigDecimal tempValueOfNoPre = new BigDecimal("0");
@@ -774,27 +780,6 @@ public class UMB01Bean implements Serializable {
 		BigDecimal secondaryPercent = new BigDecimal("0");
 		BigDecimal valueLotSmall = new BigDecimal("100");
 		BigDecimal valueLotLarge = new BigDecimal("300");
-		
-		// pattern 0.1
-		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
-				&& BigDecimal.ZERO.equals(unitPriceForeheadColor) && BigDecimal.ZERO.equals(primaryStoreOpenRate)
-				&& BigDecimal.ZERO.equals(primaryStoreOpenAmount) && BigDecimal.ZERO.equals(secondStoreOpenRate)
-				&& BigDecimal.ZERO.equals(secondStoreOpenAmount)) {
-
-			totalRetailPrice = retailPrice;
-			tempValue = totalRetailPrice;
-			primaryDiscount = totalRetailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100"));
-			secondaryDiscount = totalRetailPrice.multiply(secondStoreOpenRate).divide(new BigDecimal("100"));
-			
-			umb01Dto.getPriceCalParam().setDeliRetailPrice1(retailPrice.toString());
-			umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
-			umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
-			
-			umb01Dto.getPriceRefDto().setPrimaryStoreOpenAmount(primaryDiscount);
-			umb01Dto.setSecondStoreOpenAmount(secondaryDiscount);
-			
-			umb01Dto.getPriceCalParam().setPattern("1a");
-		}
 
 		// pattern 1
 		if (!BigDecimal.ZERO.equals(retailPrice) && BigDecimal.ZERO.equals(unitPriceSmallParcel)
@@ -808,6 +793,8 @@ public class UMB01Bean implements Serializable {
 			umb01Dto.getPriceCalParam().setDeliTotalRetailPrice1(totalRetailPrice.toString());
 			umb01Dto.getPriceCalParam().setDeliPartitionUnitPrice1(tempValue.toString());
 			
+			primaryDiscount = totalRetailPrice.multiply(primaryStoreOpenRate).divide(new BigDecimal("100"));
+			secondaryDiscount = totalRetailPrice.multiply(secondStoreOpenRate).divide(new BigDecimal("100"));
 			tempValue = retailPrice.subtract(primaryDiscount).subtract(secondaryDiscount);
 			tempValueOfNoPre = tempValue;
 
@@ -820,6 +807,9 @@ public class UMB01Bean implements Serializable {
 			umb01Dto.getPriceCalParam().setNoPreTotalOpenRate(primaryStoreOpenRate.add(secondStoreOpenRate).toString());
 			umb01Dto.getPriceCalParam().setNoPreTotalOpenAmount(primaryDiscount.add(secondaryDiscount).toString());
 			umb01Dto.getPriceCalParam().setNoPrePartitionUnitPrice1(tempValue.toString());
+			
+			umb01Dto.getPriceRefDto().setPrimaryStoreOpenAmount(primaryDiscount);
+			umb01Dto.setSecondStoreOpenAmount(secondaryDiscount);
 			
 			umb01Dto.getPriceCalParam().setPattern("1");
 		}
@@ -1275,6 +1265,8 @@ public class UMB01Bean implements Serializable {
 			Date nowDate = new Date();
 			umb01Dto.getPriceRefDto().setApplicationStartDate(DateUtils.addDate(nowDate, "yyyy/MM/dd", -1));
 		}
+		
+		tempPartitionPrice = umb01Dto.getPartitionUnitPrice();
 	}
 	
 	public String getCsvFilePath() {
@@ -1685,5 +1677,33 @@ public class UMB01Bean implements Serializable {
 	 */
 	public void setCurrentDataNo(String currentDataNo) {
 		this.currentDataNo = currentDataNo;
+	}
+
+	/**
+	 * @return the tempPartitionPrice
+	 */
+	public BigDecimal getTempPartitionPrice() {
+		return tempPartitionPrice;
+	}
+
+	/**
+	 * @param tempPartitionPrice the tempPartitionPrice to set
+	 */
+	public void setTempPartitionPrice(BigDecimal tempPartitionPrice) {
+		this.tempPartitionPrice = tempPartitionPrice;
+	}
+
+	/**
+	 * @return the showBtnStatus
+	 */
+	public boolean isShowBtnStatus() {
+		return showBtnStatus;
+	}
+
+	/**
+	 * @param showBtnStatus the showBtnStatus to set
+	 */
+	public void setShowBtnStatus(boolean showBtnStatus) {
+		this.showBtnStatus = showBtnStatus;
 	}
 }

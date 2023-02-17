@@ -196,13 +196,13 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		if (dbType == 1) {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION, WebDbUtils
-					.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION)));
+					.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE)));
 			/** 状態CD */
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(ConstStatus.STATUS_BEFORE_APPLY));
 		}else {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
-					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE)));
+					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION)));
 		}
 		/** 申請受付番号 */
 		queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO,
@@ -327,12 +327,21 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		/** 小口着色単価 */
 		queryBlocks.put(MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR,
 				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR)));
+		/** 一次店口銭(金額)*/
+		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPEN_AMOUNT, WebDbUtils
+				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PRIMARY_STORE_OPEN_AMOUNT)));
 		/** 一次店口銭金額 */
 		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_COMMISSION_AMOUNT, WebDbUtils
 				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PRIMARY_STORE_COMMISSION_AMOUNT)));
 		/** 一次店口銭率 */
 		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPENING_RATE, WebDbUtils
 				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PRIMARY_STORE_OPENING_RATE)));
+		/** 二次店口銭額 */
+		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_AMOUNT, WebDbUtils
+				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.SECOND_STORE_OPEN_AMOUNT)));
+		/** 二次店口銭率 */
+		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_RATE, WebDbUtils
+				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.SECOND_STORE_OPEN_RATE)));
 		/** 仕切単価（決定値） */
 		queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
 				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE)));

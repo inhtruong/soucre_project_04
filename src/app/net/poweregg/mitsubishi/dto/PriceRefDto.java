@@ -34,7 +34,7 @@ public class PriceRefDto implements Serializable {
 	/**
 	 * ロット数量
 	 */
-	private BigDecimal lotQuantity;
+	private String lotQuantity;
 
 	/**
 	 * 末端価格
@@ -139,14 +139,14 @@ public class PriceRefDto implements Serializable {
 	/**
 	 * @return the lotQuantity
 	 */
-	public BigDecimal getLotQuantity() {
+	public String getLotQuantity() {
 		return lotQuantity;
 	}
 
 	/**
 	 * @param lotQuantity the lotQuantity to set
 	 */
-	public void setLotQuantity(BigDecimal lotQuantity) {
+	public void setLotQuantity(String lotQuantity) {
 		this.lotQuantity = lotQuantity;
 	}
 

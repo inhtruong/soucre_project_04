@@ -87,11 +87,11 @@
 				<f:facet name="navi-bottom-right">
 					<h:panelGroup>
 						<p:commandButton buttonClass="normal" label="ステータス更新"
-							rendered="#{UMB01Bean.showBtnUpdateStatus()}"
+							rendered="#{UMB01Bean.showBtnStatus}"
 							confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
-							label="確認" confirmMessage="#{messages.umb_m_toConfirm}"
+							label="内容確認" confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_cancel.png"
 							label="#{messages.cap21_m_cancel}" immediate="true"
@@ -192,7 +192,7 @@
 								<rich:column styleClass="headBorderRight" style="width:50px">
 									契約番号
 								</rich:column>
-								<rich:column rendered="#{UMB01Bean.currentMode == 2}"
+								<rich:column rendered="#{UMB01Bean.currentMode != 1}"
 									styleClass="headBorderRight" style="width:50px">
 									契約枝番(管理No)
 								</rich:column>
@@ -639,7 +639,7 @@
 						</f:facet>
 					</rich:dataTable>
 
-					<rich:dataTable id="i_tableData20" rowKeyVar="rowkey"
+					<rich:dataTable rendered="#{UMB01Bean.mode == '1'}" id="i_tableData20" rowKeyVar="rowkey"
 						style="margin-bottom:10px; width: 20%;"
 						rowClasses="oddRow, evenRow" border="0"
 						value="#{UMB01Bean.umb01Dto}" var="umb01">
@@ -649,7 +649,7 @@
 									適用開始日
 								</rich:column>
 								<rich:column style="background-color: #fff; width: 61.5%;">
-									<p:inputDate id="tab1_applicationStartDate2" rendered="#{UMB01Bean.mode == '1'}"
+									<p:inputDate id="tab1_applicationStartDate2"
 										value="#{UMB01Bean.umb01Dto.priceRefDto.applicationStartDate}">
 										<f:converter converterId="net.poweregg.faces.DateConverter" />
 									</p:inputDate>
