@@ -898,6 +898,11 @@ public class WebDbUtils {
 		return classInfos.stream().filter(classInfo -> classInfo.getClassno().equals(classNo))
 				.map(ClassInfo::getChardata1).findAny().orElse("");
 	}
+	
+	public static BigDecimal getNumdata1ByClassNo(List<ClassInfo> classInfos, String classNo) {
+		return classInfos.stream().filter(classInfo -> classInfo.getClassno().equals(classNo))
+				.map(ClassInfo::getNumdata1).findAny().orElse(BigDecimal.ZERO); // return 0 if not found
+	}
 
 	public WebDBConnectParam getWebDBConnectParam() {
 		return webDBConnectParam;

@@ -218,7 +218,8 @@ public class MitsubishiConst {
 		CLASSNO_4("4"), CLASSNO_5("5"), CLASSNO_6("6"),
 		CLASSNO_7("7"), CLASSNO_8("8"), CLASSNO_9("9"),
 		CLASSNO_10("10"), CLASSNO_11("11"), CLASSNO_12("12"),
-		CLASSNO_13("13"), CLASSNO_14("14"), CLASSNO_15("15");
+		CLASSNO_13("13"), CLASSNO_14("14"), CLASSNO_15("15"),
+		CLASSNO_20("20");
 
 		private final String value;
 

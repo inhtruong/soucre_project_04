@@ -22,31 +22,43 @@ public interface MitsubishiService {
 	 * @throws Exception
 	 */
 	public Umb01Dto getDataMitsubishi(String dataNo, int dbType) throws Exception;
-	
+
+	public Umb01Dto getDataUpdateStatus(int dbType, String customerCD, String destinationCD1,
+			String destinationCD2, String productNameAbbreviation, String colorNo, String currencyCD,
+			String clientBranchNumber, String priceForm, String managerNo) throws Exception;
+
 	/**
 	 * get table from table master of price
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	public List<UMB01MasterDto> getDataPriceMaster() throws Exception;
-	
+
 	/**
 	 * create XML table price
+	 * 
 	 * @return
 	 */
 	public String createXMLTablePrice(Umb01Dto umb01Dto);
-	
+
 	/**
 	 * Update Record DB Temp
+	 * 
 	 * @param recordNo
 	 * @param umb01Dto
 	 * @return
 	 * @throws Exception
 	 */
-	public void updateRecordDbPrice(String logFileFullPath, Umb01Dto umb01Dto, int dbType, String mode) throws Exception;
+	public void updateRecordDbPrice(String logFileFullPath, Umb01Dto umb01Dto, int dbType, String mode)
+			throws Exception;
+	
+	public void updateStatusRecord(String logFileFullPath, Umb01Dto umb01Dto, int dbType)
+			throws Exception;
 
 	/**
 	 * Find Data UMB By Condition
+	 * 
 	 * @param webdbUtils
 	 * @param field
 	 * @param value
@@ -54,12 +66,17 @@ public interface MitsubishiService {
 	 * @throws Exception
 	 */
 	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value) throws Exception;
+	
+	public JSONArray findDataUpdateStatusByCondition(WebDbUtils webdbUtils, String customerCD,
+			String destinationCD1, String destinationCD2, String productNameAbbreviation, String colorNo,
+			String currencyCD, String clientBranchNumber, String priceForm, String managerNo) throws Exception;
 
 	/**
 	 * Get Info Web DB
+	 * 
 	 * @param dbType
 	 * @return
 	 */
 	public List<ClassInfo> getInfoWebDb();
-	
+
 }

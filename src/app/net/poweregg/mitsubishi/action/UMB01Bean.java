@@ -46,7 +46,6 @@ import net.poweregg.dataflow.entity.ApplicationForm;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.CLASS_NO;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
-import net.poweregg.mitsubishi.dto.PriceCalParam;
 import net.poweregg.mitsubishi.dto.PriceUnitRefDto;
 import net.poweregg.mitsubishi.dto.UMB01TempDto;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
@@ -152,7 +151,6 @@ public class UMB01Bean implements Serializable {
 	private String currentStatus;
 	private BigDecimal tempPartitionPrice;
 	private boolean showBtnStatus;
-	private int numericCode;
 	private String contactSrceen;
 
 	private int selectRateOrAmount;
@@ -299,6 +297,12 @@ public class UMB01Bean implements Serializable {
 		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
 
 		try {
+			// 
+			if (StringUtils.nullOrBlank(umb01Dto.getPriceRefDto().getAppRecepNoCancel())
+					&& !StringUtils.nullOrBlank(umb01Dto.getPriceRefDto().getAppRecepNo())) {
+				currentStatus = "1001";
+			}
+			
 			// check apply
 			if (!checkStatusCdApplyed(currentStatus)) {
 				LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), " Error: 申請しました。");
@@ -409,6 +413,46 @@ public class UMB01Bean implements Serializable {
 				&& current.getCurrencyCD().equals(master.getCurrencyCD())
 				&& current.getClientBranchNumber().equals(master.getClientBranchNumber())
 				&& current.getPriceForm().equals(master.getPriceForm());
+	}
+	
+	public String processUpdateStatus() throws Exception {
+		List<ClassInfo> webDBClassInfos = mitsubishiService.getInfoWebDb();
+		String logFileFullPath = LogUtils.generateLogFileFullPath(webDBClassInfos);
+		
+		PriceUnitRefDto dto = umb01Dto.getPriceUnitRefDto();
+		// get value from WebDB Master
+		Umb01Dto umb01Master = mitsubishiService.getDataUpdateStatus(2, dto.getCustomerCD(),
+				dto.getDestinationCD1(), dto.getDestinationCD2(), dto.getProductNameAbbreviation(), dto.getColorNo(),
+				dto.getCurrencyCD(), dto.getClientBranchNumber(), dto.getPriceForm(), null);
+		
+		String statusCdMaster = umb01Master.getPriceRefDto().getStatusCD();
+		String appRecepNoCancel = umb01Master.getPriceRefDto().getAppRecepNoCancel();
+		int latestManagerNo = Integer.parseInt(umb01Master.getManagerNo());
+		
+		// check record applying
+		if (ConstStatus.STATUS_UNDER_DELIBERATION.equals(statusCdMaster)) {
+			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(),
+					" Error: 参照元データは承認処理中です。承認前データで登録します。");
+			facesMessages.add(FacesMessage.SEVERITY_ERROR, "参照元データは承認処理中です。承認前データで登録します。", "");
+			return StringUtils.EMPTY;
+		}
+		
+		if (ConstStatus.STATUS_APPROVED.equals(statusCdMaster) 
+				&& !StringUtils.nullOrBlank(appRecepNoCancel)) {
+			// find data in history DB
+			int managerNo = latestManagerNo - 1;
+			Umb01Dto umb01History = mitsubishiService.getDataUpdateStatus(3, dto.getCustomerCD(),
+					dto.getDestinationCD1(), dto.getDestinationCD2(), dto.getProductNameAbbreviation(), dto.getColorNo(),
+					dto.getCurrencyCD(), dto.getClientBranchNumber(), dto.getPriceForm(), StringUtils.toEmpty(managerNo));
+			
+			mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1, currentMode);
+			mitsubishiService.updateStatusRecord(logFileFullPath, umb01History, 3);
+		} else {
+			mitsubishiService.updateRecordDbPrice(logFileFullPath, umb01Dto, 1, currentMode);
+			mitsubishiService.updateStatusRecord(logFileFullPath, umb01Master, 2);
+		}
+		
+		return "apply";
 	}
 
 	/**
@@ -1221,8 +1265,8 @@ public class UMB01Bean implements Serializable {
 	}
 	
 	public static boolean isBlank(BigDecimal value) {
-        return (value == null || value.signum() == 0);
-    }
+		return (value == null || value.signum() == 0);
+	}
 
 	private void initItems(List<ClassInfo> classInfos) throws Exception {
 		// 用途参照
@@ -1255,9 +1299,13 @@ public class UMB01Bean implements Serializable {
 		tempPartitionPrice = umb01Dto.getPartitionUnitPrice();
 		
 		// 契約番号
-		// get numericCode to table ...
-		numericCode = 2;
-		contactSrceen = String.format("%1s%08d", loginUser.getCorpID(), numericCode);
+		if (MitsubishiConst.MODE_NEW.equals(currentMode)) {
+			BigDecimal numericCode = WebDbUtils.getNumdata1ByClassNo(classInfos,
+					MitsubishiConst.CLASS_NO.CLASSNO_20.getValue());
+			String numericCodeString = numericCode.setScale(0, RoundingMode.DOWN).toString();
+			umb01Dto.getPriceRefDto().setContractNumber(
+					String.format("%1s%08d", loginUser.getCorpID(), Long.parseLong(numericCodeString)));
+		}
 	}
 	
 	public String getCsvFilePath() {

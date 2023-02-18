@@ -89,7 +89,7 @@
 						<p:commandButton buttonClass="normal" label="ステータス更新"
 							rendered="#{UMB01Bean.showBtnStatus}"
 							confirmMessage="#{messages.umb_m_toConfirm}"
-							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
+							action="#{UMB01Bean.processUpdateStatus()}">&#160;&#160;</p:commandButton>
 						<p:commandButton buttonClass="normal" img="/img/b_ok.gif"
 							label="内容確認" confirmMessage="#{messages.umb_m_toConfirm}"
 							action="#{UMB01Bean.toConfirm}">&#160;&#160;</p:commandButton>
@@ -213,7 +213,7 @@
 						</rich:column>
 						<rich:column styleClass="borderRight">
 							<h:outputText id="tab1_contractNumber"
-								value="#{UMB01Bean.contactSrceen}"></h:outputText>
+								value="#{UMB01Bean.umb01Dto.priceRefDto.contractNumber}"></h:outputText>
 						</rich:column>
 						<rich:column rendered="#{UMB01Bean.currentMode == 2}"
 							styleClass="borderRight">
