@@ -567,7 +567,7 @@
 						<TD class="labelUmb" colspan="2">小口配送単価</TD>
 						<TD class="itemUmb unSelectTb"></TD>
 						<TD class="itemUmb unSelectTb"></TD>
-						<TD class="itemUmb unSelectTb">
+						<TD class="itemUmb">
 							<xsl:value-of select="./SMALLUNITPRICEPARCEL1" />
 						</TD>
 					</TR>

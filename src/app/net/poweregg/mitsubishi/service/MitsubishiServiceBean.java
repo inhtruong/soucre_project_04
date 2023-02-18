@@ -24,6 +24,7 @@ import net.poweregg.mitsubishi.webdb.utils.QueryConj;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.security.CertificationService;
+import net.poweregg.util.DateUtils;
 import net.poweregg.util.StringUtils;
 
 @Stateless
@@ -851,9 +852,6 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		if (MitsubishiConst.MODE_NEW.equals(mode)) {
 			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO, WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getAppRecepNo()));
 			queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(umb01Dto.getPriceUnitRefDto().getStatusCD()));
-			/** 適用開始日 */
-//			queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE,
-//					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getApplicationStartDate())));
 		}
 		// mode edit
 		if (MitsubishiConst.MODE_EDIT.equals(mode)) {
@@ -901,9 +899,12 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		/** ロット数量 */
 		queryBlocks.put(MitsubishiConst.LOT_QUANTITY,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getLotQuantity())));
-//		/** 伺い理由 */
-//		queryBlocks.put(MitsubishiConst.REASON_INQUIRY,
-//				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getReasonInquiry())));
+		/** 適用開始日 */
+		queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE,
+				WebDbUtils.createRecordItem(DateUtils.convertDateTime(umb01Dto.getPriceRefDto().getApplicationStartDate(),"yyyyMMdd")));
+		/** 伺い理由 */
+		queryBlocks.put(MitsubishiConst.REASON_INQUIRY,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getReasonInquiry())));
 		
 		return queryBlocks;
 	}

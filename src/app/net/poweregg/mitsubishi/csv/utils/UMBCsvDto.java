@@ -37,18 +37,18 @@ public class UMBCsvDto {
 		 }
 		 if (lotNumArray.length > 0) {
 			// 小口配送単価
-			 Long priceSmallParcel =  Long.valueOf(0);
+			 double priceSmallParcel = 0;
 			 if (WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL) != null && !"".equals(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL))) {
-				 priceSmallParcel = Long.parseLong(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
+				 priceSmallParcel = Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
 			 }
 			 // 小口着色単価
-			 Long priceForheadColor =  Long.valueOf(0);
+			 double priceForheadColor = 0;
 			 if (WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR) != null && !"".equals(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR))) {
-				 priceForheadColor = Long.parseLong(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
+				 priceForheadColor = Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
 			 }
 
 			 for (int i = 0; i < lotNumArray.length; i++) {
-				Long priceTemp = Long.valueOf(0);
+				double priceTemp = 0;
 				// データ行NO
 				addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.DATA_LINE_NO));
 				// データNO
@@ -178,8 +178,8 @@ public class UMBCsvDto {
 						// 小口着色単価
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
 						// 末端価格、エンドユーザー単価
-						priceTemp = Long.parseLong(WebDbUtils.getValue(data, MitsubishiConst.TOTAL_RETAIL_PRICE)) - Long.parseLong(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
-						addColumnData(builder, Long.valueOf(priceTemp).toString());
+						priceTemp = Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.TOTAL_RETAIL_PRICE)) - Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
+						addColumnData(builder, String.valueOf(priceTemp));
 					}
 					if ("100".equals(lotNumArray[i])) {
 						// 仕切単価(決定値)
@@ -191,8 +191,8 @@ public class UMBCsvDto {
 						// 小口着色単価
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR));
 						// 末端価格、エンドユーザー単価
-						priceTemp = Long.parseLong(WebDbUtils.getValue(data, MitsubishiConst.TOTAL_RETAIL_PRICE)) - Long.parseLong(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
-						addColumnData(builder, Long.valueOf(priceTemp).toString());
+						priceTemp = Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.TOTAL_RETAIL_PRICE)) - Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
+						addColumnData(builder, String.valueOf(priceTemp));
 					}
 					if ("0".equals(lotNumArray[i])) {
 						// 仕切単価(決定値)

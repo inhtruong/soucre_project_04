@@ -250,8 +250,8 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		queryBlocks.put(MitsubishiConst.SALES_ORDER_NO,
 				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.SALES_ORDER_NO)));
 		/** 得意先CD */
-		queryBlocks.put(MitsubishiConst.TRANSACTION_CD,
-				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.TRANSACTION_CD)));
+		queryBlocks.put(MitsubishiConst.CUSTOMER_CD,
+				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.CUSTOMER_CD)));
 		/** 得意先名 */
 		queryBlocks.put(MitsubishiConst.CUSTOMER_NAME,
 				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.CUSTOMER_NAME)));
