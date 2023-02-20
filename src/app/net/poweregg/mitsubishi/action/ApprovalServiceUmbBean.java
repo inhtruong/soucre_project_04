@@ -66,16 +66,16 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 			webdbUtilsBD1 = new WebDbUtils(webDBClassInfos, 0, dbType);
 			if(mode ==3) {
 				rsJson = mitsubishiService.findDataUmbByCondition(webdbUtilsBD1,
-						MitsubishiConst.CANCEL_APPRECP_NO, StringUtils.toEmpty(appRecepNo));
+						MitsubishiConst.CANCEL_APPRECP_NO, StringUtils.toEmpty(appRecepNo),MitsubishiConst.MANAGER_NO);
 			}else {
 				rsJson = mitsubishiService.findDataUmbByCondition(webdbUtilsBD1,
-						MitsubishiConst.APPLICATION_REC_NO, StringUtils.toEmpty(appRecepNo));
+						MitsubishiConst.APPLICATION_REC_NO, StringUtils.toEmpty(appRecepNo),MitsubishiConst.MANAGER_NO);
 			}
 			if (rsJson == null || rsJson.length() == 0) {
 				if (1 == mode) {
 					webdbUtilsBD1 = new WebDbUtils(webDBClassInfos, 0, mode);
 					rsJson = mitsubishiService.findDataUmbByCondition(webdbUtilsBD1,
-							MitsubishiConst.APPLICATION_REC_NO, StringUtils.toEmpty(appRecepNo));
+							MitsubishiConst.APPLICATION_REC_NO, StringUtils.toEmpty(appRecepNo),MitsubishiConst.MANAGER_NO);
 					if (rsJson == null || rsJson.length() == 0) {
 						throw new Exception("Error: 申請受付番号「" + appRecepNo + "」は存在しない。");
 					}else {
@@ -156,10 +156,11 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 						/** 状態CD */
 						queryBlocks.put(MitsubishiConst.STATUS_CD, WebDbUtils.createRecordItem(status));
 					}
+					//export csv
+					String filePath = createFileName(MitsubishiConst.CSV_EXTENSION);
+					ExportCsvUtils.exportCsvUMB01(recordObj, filePath);
 				}
-				//export csv
-				String filePath = createFileName(MitsubishiConst.CSV_EXTENSION);
-				ExportCsvUtils.exportCsvUMB01(recordObj, filePath);
+				
 				//Import data to webDB
 				String result = webdbUtils.registJsonObject(queryBlocks, true);
 				if (!ConvertUtils.isNullOrEmpty(result)) {
@@ -192,7 +193,7 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		if (1 == mode) {
 			/** 管理No */
 			queryBlocks.put(MitsubishiConst.MANAGER_NO,WebDbUtils.createRecordItem("1"));
-		}  
+		}
 		if (dbType == 1) {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION, WebDbUtils
@@ -203,6 +204,9 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 			/** 改定前単価 */
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION,
 					WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION)));
+			if (dbType == 3) {
+				queryBlocks.put(MitsubishiConst.MANAGER_NO,WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.MANAGER_NO)));
+			}
 		}
 		/** 申請受付番号 */
 		queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO,
@@ -342,6 +346,9 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		/** 二次店口銭率 */
 		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_RATE, WebDbUtils
 				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.SECOND_STORE_OPEN_RATE)));
+		/** 末端価格合計 */
+		queryBlocks.put(MitsubishiConst.TOTAL_RETAIL_PRICE, WebDbUtils
+				.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.TOTAL_RETAIL_PRICE)));
 		/** 仕切単価（決定値） */
 		queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
 				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.PARTITION_UNIT_PRICE)));
@@ -370,7 +377,6 @@ public class ApprovalServiceUmbBean implements ApprovalServiceUmb {
 		/** データNO */
 		queryBlocks.put(MitsubishiConst.DATA_NO,
 				WebDbUtils.createRecordItem(WebDbUtils.getValue(recordObj, MitsubishiConst.DATA_NO)));
-
 		return queryBlocks;
 	}
 

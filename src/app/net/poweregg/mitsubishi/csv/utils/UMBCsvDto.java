@@ -100,7 +100,7 @@ public class UMBCsvDto {
 					addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.CLIENT_BRANCH_NUMBER));
 					// 価格形態
 					addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PRICE_FORM));
-					if ("100".equals(lotNumArray[i])) {
+					if ("0".equals(lotNumArray[i])) {
 						// 仕切単価(決定値)
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PARTITION_UNIT_PRICE));
 						// 改定前単価
@@ -112,7 +112,7 @@ public class UMBCsvDto {
 						// 末端価格、エンドユーザー単価
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.RETAIL_PRICE));
 					}
-					if ("0".equals(lotNumArray[i])) {
+					if ("100".equals(lotNumArray[i])) {
 						// 仕切単価(決定値)
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PARTITION_UNIT_PRICE));
 						// 改定前単価
@@ -168,7 +168,7 @@ public class UMBCsvDto {
 					addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.CLIENT_BRANCH_NUMBER));
 					// 価格形態
 					addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PRICE_FORM));
-					if ("300".equals(lotNumArray[i])) {
+					if ("0".equals(lotNumArray[i])) {
 						// 仕切単価(決定値)
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PARTITION_UNIT_PRICE));
 						// 改定前単価
@@ -194,7 +194,7 @@ public class UMBCsvDto {
 						priceTemp = Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.TOTAL_RETAIL_PRICE)) - Double.parseDouble(WebDbUtils.getValue(data, MitsubishiConst.UNIT_PRICE_SMALL_PARCEL));
 						addColumnData(builder, String.valueOf(priceTemp));
 					}
-					if ("0".equals(lotNumArray[i])) {
+					if ("300".equals(lotNumArray[i])) {
 						// 仕切単価(決定値)
 						addColumnData(builder, WebDbUtils.getValue(data, MitsubishiConst.PARTITION_UNIT_PRICE));
 						// 改定前単価

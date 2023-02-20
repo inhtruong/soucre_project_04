@@ -1,32 +1,48 @@
 package net.poweregg.mitsubishi.service;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.sql.DataSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import net.poweregg.annotations.Login;
+import net.poweregg.annotations.Single;
 import net.poweregg.common.ClassificationService;
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.constant.MitsubishiConst;
 import net.poweregg.mitsubishi.constant.MitsubishiConst.COMMON_NO;
+import net.poweregg.mitsubishi.csv.utils.ExportCsvUtils;
 import net.poweregg.mitsubishi.dto.UMB01MasterDto;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
+import net.poweregg.mitsubishi.webdb.utils.ConvertUtils;
 import net.poweregg.mitsubishi.webdb.utils.LogUtils;
 import net.poweregg.mitsubishi.webdb.utils.Operand;
 import net.poweregg.mitsubishi.webdb.utils.QueryConj;
 import net.poweregg.mitsubishi.webdb.utils.WebDbConstant;
 import net.poweregg.mitsubishi.webdb.utils.WebDbUtils;
 import net.poweregg.security.CertificationService;
+import net.poweregg.util.DBUtil;
 import net.poweregg.util.DateUtils;
+import net.poweregg.util.PESystemProperties;
 import net.poweregg.util.StringUtils;
-
+import net.poweregg.web.engine.navigation.LoginUser;
 @Stateless
 public class MitsubishiServiceBean implements MitsubishiService {
 
@@ -38,6 +54,14 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 	@PersistenceContext(unitName = "pe4jPU")
 	private EntityManager em;
+	
+	@Inject
+	@Login
+	private LoginUser loginUser;
+	
+	@Inject
+	@Single
+	private transient Map<String, String> messages;
 
 	private Long offset = 0L;
 	private Long limit = null;
@@ -52,7 +76,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	@Override
 	public Umb01Dto getDataMitsubishi(String dataNo, int dbType) throws Exception {
 		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
-		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo);
+		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo,MitsubishiConst.MANAGER_NO);
 
 		// Khong tim duoc thi return
 		if (rsJson == null || rsJson.length() == 0) {
@@ -71,14 +95,14 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	}
 
 	@Override
-	public Umb01Dto getDataUpdateStatus(int dbType, String customerCD, String destinationCD1,
-			String destinationCD2, String productNameAbbreviation, String colorNo, String currencyCD,
-			String clientBranchNumber, String priceForm, String managerNo) throws Exception {
+	public Umb01Dto getDataUpdateStatus(int dbType, String customerCD, String destinationCD1, String destinationCD2,
+			String productNameAbbreviation, String colorNo, String currencyCD, String clientBranchNumber,
+			String priceForm, String managerNo) throws Exception {
 		Umb01Dto umb01Dto = new Umb01Dto();
 
 		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
-		JSONArray rsJson = findDataUpdateStatusByCondition(webdbUtils, customerCD, destinationCD1,
-				destinationCD2, productNameAbbreviation, colorNo, currencyCD, clientBranchNumber, priceForm, managerNo);
+		JSONArray rsJson = findDataUpdateStatusByCondition(webdbUtils, customerCD, destinationCD1, destinationCD2,
+				productNameAbbreviation, colorNo, currencyCD, clientBranchNumber, priceForm, managerNo);
 
 		// Khong tim duoc thi return
 		if (rsJson == null || rsJson.length() == 0) {
@@ -111,7 +135,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				COMMON_NO.COMMON_NO_UMB01.getValue());
 		List<UMB01MasterDto> umbResults = new ArrayList<>();
 
-		if (webDBClassInfos == null) {
+		if (webDBClassInfos == null || webDBClassInfos.size() ==0 ) {
 			return null;
 		}
 
@@ -274,18 +298,6 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		umb01Dto.getPriceUnitRefDto().setOrderDate(WebDbUtils.getDateValue(resultJson, MitsubishiConst.ORDER_DATE));
 		// 登録担当者
 		umb01Dto.getPriceUnitRefDto().setRegistrar(WebDbUtils.getValue(resultJson, MitsubishiConst.REGISTRAR));
-
-		if (1 == dbType) {
-			umb01Dto.getPriceUnitRefDto()
-					.setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPLICATION_REC_NO));
-			umb01Dto.getPriceUnitRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
-		}
-
-	}
-
-	private void parseJSONtoUMB01Master(Umb01Dto umb01Dto, JSONObject resultJson, int dbType) throws JSONException {
-		// 警告
-		umb01Dto.getPriceRefDto().setWarning(WebDbUtils.getValue(resultJson, MitsubishiConst.WARNING));
 		// ロット数量
 		umb01Dto.getPriceRefDto().setLotQuantity(WebDbUtils.getValue(resultJson, MitsubishiConst.LOT_QUANTITY));
 		// 末端価格
@@ -316,6 +328,18 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		umb01Dto.setPartitionUnitPrice(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.PARTITION_UNIT_PRICE));
 		// 末端価格合計
 		umb01Dto.setTotalRetailPrice(WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.TOTAL_RETAIL_PRICE));
+
+		if (1 == dbType) {
+			umb01Dto.getPriceUnitRefDto()
+					.setAppRecepNo(WebDbUtils.getValue(resultJson, MitsubishiConst.APPLICATION_REC_NO));
+			umb01Dto.getPriceUnitRefDto().setStatusCD(WebDbUtils.getValue(resultJson, MitsubishiConst.STATUS_CD));
+		}
+
+	}
+
+	private void parseJSONtoUMB01Master(Umb01Dto umb01Dto, JSONObject resultJson, int dbType) throws JSONException {
+		// 警告
+		umb01Dto.getPriceRefDto().setWarning(WebDbUtils.getValue(resultJson, MitsubishiConst.WARNING));
 		// 改定前単価
 		umb01Dto.getPriceRefDto().setUnitPriceBefRevision(
 				WebDbUtils.getBigDecimalValue(resultJson, MitsubishiConst.UNIT_PRICE_BEFORE_REVISION));
@@ -457,9 +481,14 @@ public class MitsubishiServiceBean implements MitsubishiService {
 				+ CR_LF;
 
 		xmlString += "<USAGECD>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getUsageCD()) + "</USAGECD>" + CR_LF;
-
-		xmlString += "<USAGEREF>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getUsageRef().getTargetFieldName())
-				+ "</USAGEREF>" + CR_LF;
+		
+		if(param.getPriceUnitRefDto().getUsageRef() != null && param.getPriceUnitRefDto().getUsageRef().getTargetFieldName()!=null) {
+			xmlString += "<USAGEREF>" +
+						StringUtils.toEmpty(param.getPriceUnitRefDto().getUsageRef().getTargetFieldName())
+			+ "</USAGEREF>" + CR_LF;
+		}else {
+			xmlString += "<USAGEREF>"+ "" + "</USAGEREF>" + CR_LF;
+		}
 
 		xmlString += "<DELIVERYDATE>" + StringUtils.toEmpty(param.getPriceUnitRefDto().getDeliveryDate())
 				+ "</DELIVERYDATE>" + CR_LF;
@@ -789,7 +818,7 @@ public class MitsubishiServiceBean implements MitsubishiService {
 			throws Exception {
 		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
 		String dataNo = StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo());
-		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo);
+		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo,MitsubishiConst.MANAGER_NO);
 
 		// Khong tim duoc thi record no return luon
 		if (rsJson == null || rsJson.length() == 0) {
@@ -799,31 +828,44 @@ public class MitsubishiServiceBean implements MitsubishiService {
 
 		// chuan bi du lieu jsonobject
 		JSONObject queryBlocks = new JSONObject();
-		queryBlocks = createJsonQuery(umb01Dto, mode);
+		if (StringUtils.nullOrBlank(mode)) {
+			queryBlocks.put(MitsubishiConst.STATUS_CD,
+					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
+		} else {
+			queryBlocks = createJsonQuery(umb01Dto, mode);
+		}
 
-		// update thông qua rest api
+		// update thông qua rest api/
 		webdbUtils.putJsonObject(queryBlocks, umb01Dto.getId(), false, false, false);
+		
+		// update 
+		if ("1".equals(mode)) {
+			/**Update 契約番号 */
+			String contracNumber = WebDbUtils.getValue(queryBlocks, MitsubishiConst.CONTRACT_NUMBER);
+			String companyId = loginUser.getCorpID();
+			if(contracNumber!= null && !"".equals(contracNumber)) {
+				 String[] contracNumberArray = new String[]{};
+				 contracNumberArray = contracNumber.split(companyId);
+				if (contracNumberArray.length>0) {
+					int i = contracNumberArray.length-1;
+					updateDivisionNumber(Long.valueOf(contracNumberArray[i])+1);
+				}
+			}
+		}
+
+		
 	}
-	
-	@Override
-	public void updateStatusRecord(String logFileFullPath, Umb01Dto umb01Dto, int dbType)
-			throws Exception {
-		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, dbType);
-		String dataNo = StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo());
-		JSONArray rsJson = findDataUmbByCondition(webdbUtils, MitsubishiConst.DATA_NO, dataNo);
 
-		// Khong tim duoc thi record no return luon
-		if (rsJson == null || rsJson.length() == 0) {
-			LogUtils.writeLog(logFileFullPath, COMMON_NO.COMMON_NO_UMB01.getValue(), "Error:" + dataNo + "は存在しません");
-			throw new Exception("Error: " + MitsubishiConst.DATA_NO + " " + dataNo + " は存在しません");
-		}
+	@Override
+	public void registerRecordDbPrice(String logFileFullPath, Umb01Dto umb01Dto) throws Exception {
+		WebDbUtils webdbUtils = new WebDbUtils(getInfoWebDb(), 0, 2);
 
 		// chuan bi du lieu jsonobject
 		JSONObject queryBlocks = new JSONObject();
-		queryBlocks = createJsonQueryForInput(umb01Dto);
+		queryBlocks = createJsonQuery(umb01Dto, null);
 
-		// update thông qua rest api
-		webdbUtils.putJsonObject(queryBlocks, umb01Dto.getId(), false, false, false);
+		// register thông qua rest api
+		webdbUtils.registJsonObject(queryBlocks, true);
 	}
 
 	/**
@@ -836,13 +878,15 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	 * @throws Exception
 	 */
 	@Override
-	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value) throws Exception {
+	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value,String order) throws Exception {
 
 		JSONArray condOr = new JSONArray();
 		condOr.put(WebDbUtils.createConditionQuery(field, Operand.EQUALS, value));
 		JSONArray queryBlocks = new JSONArray();
 		queryBlocks.put(WebDbUtils.createConditionBlock(QueryConj.AND, QueryConj.AND, condOr));
-
+		if ( order!= null && "".equals(order)) {
+			queryBlocks.put(WebDbUtils.createOrderQuery(order, true));
+		}
 		// call API
 		JSONObject tempJson = webdbUtils.getDataFormAPI(queryBlocks.toString(), null, offset, limit);
 		JSONArray rsJson = webdbUtils.getJsonObjectWebDB(tempJson, offset, limit);
@@ -851,10 +895,9 @@ public class MitsubishiServiceBean implements MitsubishiService {
 	}
 
 	@Override
-	public JSONArray findDataUpdateStatusByCondition(WebDbUtils webdbUtils,
-			String customerCD, String destinationCD1, String destinationCD2, String productNameAbbreviation,
-			String colorNo, String currencyCD, String clientBranchNumber, String priceForm, String managerNo)
-			throws Exception {
+	public JSONArray findDataUpdateStatusByCondition(WebDbUtils webdbUtils, String customerCD, String destinationCD1,
+			String destinationCD2, String productNameAbbreviation, String colorNo, String currencyCD,
+			String clientBranchNumber, String priceForm, String managerNo) throws Exception {
 
 		JSONArray condOr = new JSONArray();
 		condOr.put(WebDbUtils.createConditionQuery(MitsubishiConst.CUSTOMER_CD, Operand.EQUALS, customerCD));
@@ -935,9 +978,133 @@ public class MitsubishiServiceBean implements MitsubishiService {
 			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION, WebDbUtils
 					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceBefRevision())));
 		}
+
+		if (StringUtils.nullOrBlank(mode)) {
+			queryBlocks.put(MitsubishiConst.STATUS_CD,
+					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getStatusCD()));
+			queryBlocks.put(MitsubishiConst.APPLICATION_REC_NO,
+					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNo()));
+			queryBlocks.put(MitsubishiConst.CANCEL_APPRECP_NO,
+					WebDbUtils.createRecordItem(umb01Dto.getPriceRefDto().getAppRecepNoCancel()));
+			/** 契約番号 */
+			queryBlocks.put(MitsubishiConst.CONTRACT_NUMBER,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getContractNumber())));
+			/** 改定前単価 */
+			queryBlocks.put(MitsubishiConst.UNIT_PRICE_BEFORE_REVISION, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceBefRevision())));
+			/** データ移行NO */
+			queryBlocks.put(MitsubishiConst.DATA_LINE_NO, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataMigrationNo())));
+			/** データNO */
+			queryBlocks.put(MitsubishiConst.DATA_NO,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo())));
+			/** 送信元レコード作成日時 */
+			queryBlocks.put(MitsubishiConst.SOURCE_RECORD_CREATION_DATETIME, WebDbUtils.createRecordItem(
+					DateUtils.convertDateTime(umb01Dto.getPriceUnitRefDto().getSrcCreateDate(), "yyyyMMdd")));
+			/** 会社CD */
+			queryBlocks.put(MitsubishiConst.COMPANY_CD,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getCompanyCD())));
+			/** 取引CD */
+			queryBlocks.put(MitsubishiConst.TRANSACTION_CD,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getTransactionCD())));
+			/** 売上部門CD */
+			queryBlocks.put(MitsubishiConst.SALES_DEPARTMENT_CD, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getSalesDepartmentCD())));
+			/** 上位部門CD */
+			queryBlocks.put(MitsubishiConst.UPPER_CATEGORY_CD, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getUpperCategoryCD())));
+			/** 会計部門CD */
+			queryBlocks.put(MitsubishiConst.ACCOUNT_DEPARTMENT_CD, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getAccountDepartmentCD())));
+			/** 受注NO */
+			queryBlocks.put(MitsubishiConst.ORDER_NO,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getOrderNo())));
+			/** 受注明細NO */
+			queryBlocks.put(MitsubishiConst.SALES_ORDER_NO,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getSalesOrderNo())));
+			/** 得意先CD */
+			queryBlocks.put(MitsubishiConst.CUSTOMER_CD,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getCustomerCD())));
+			/** 得意先名 */
+			queryBlocks.put(MitsubishiConst.CUSTOMER_NAME,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getCustomerName())));
+			/** 仕向先CD1 */
+			queryBlocks.put(MitsubishiConst.DESTINATION_CD1, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDestinationCD1())));
+			/** 仕向先名1 */
+			queryBlocks.put(MitsubishiConst.DESTINATION_NAME1, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDestinationName1())));
+			/** 仕向先CD2 */
+			queryBlocks.put(MitsubishiConst.DESTINATION_CD2, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDestinationCD2())));
+			/** 仕向先名2 */
+			queryBlocks.put(MitsubishiConst.DESTINATION_NAME2, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDestinationName2())));
+			/** 納品先CD */
+			queryBlocks.put(MitsubishiConst.DESTINATION_CD, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDeliveryDestinationCD())));
+			/** 納品先名 */
+			queryBlocks.put(MitsubishiConst.DELIVERY_DESTINATION_NAME, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDeliveryDestinationName())));
+			/** 品名略号 */
+			queryBlocks.put(MitsubishiConst.PRODUCT_NAME_ABBREVIATION, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getProductNameAbbreviation())));
+			/** カラーNO */
+			queryBlocks.put(MitsubishiConst.COLOR_NO,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getColorNo())));
+			/** グレード1 */
+			queryBlocks.put(MitsubishiConst.GRADE_1,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getGrade1())));
+			/** ユーザー品目 */
+			queryBlocks.put(MitsubishiConst.USER_PRODUCT_NAME,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getUserItem())));
+			/** 通貨CD */
+			queryBlocks.put(MitsubishiConst.CURRENCY_CD,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getCurrencyCD())));
+			/** 取引単位CD */
+			queryBlocks.put(MitsubishiConst.TRANSACTION_UNIT_CD, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getTransactionUnitCD())));
+			/** 荷姿 */
+			queryBlocks.put(MitsubishiConst.PACKING,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getPacking())));
+			/** 取引先枝番 */
+			queryBlocks.put(MitsubishiConst.CLIENT_BRANCH_NUMBER, WebDbUtils
+					.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getClientBranchNumber())));
+			/** 価格形態 */
+			queryBlocks.put(MitsubishiConst.PRICE_FORM,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getPriceForm())));
+			/** 納品予定日時 */
+			queryBlocks.put(MitsubishiConst.SCHEDULED_DELIVERY_DATE, WebDbUtils.createRecordItem(
+					DateUtils.convertDateTime(umb01Dto.getPriceUnitRefDto().getDeliveryDate(), "yyyyMMdd")));
+			/** 受注日 */
+			queryBlocks.put(MitsubishiConst.ORDER_DATE, WebDbUtils.createRecordItem(
+					DateUtils.convertDateTime(umb01Dto.getPriceUnitRefDto().getOrderDate(), "yyyyMMdd")));
+			/** 登録担当者 */
+			queryBlocks.put(MitsubishiConst.REGISTRAR,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getRegistrar())));
+			/** 警告 */
+			queryBlocks.put(MitsubishiConst.WARNING,
+					WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getWarning())));
+			/** 新規申請URL */
+			queryBlocks.put(MitsubishiConst.NEW_APPLICATION_URL,
+					WebDbUtils.createRecordURL(getUrlStringByMode(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo()), MitsubishiConst.MODE_NEW)));
+			/** 編集申請URL */
+			queryBlocks.put(MitsubishiConst.EDIT_REQUEST_URL,
+					WebDbUtils.createRecordURL(getUrlStringByMode(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo()), MitsubishiConst.MODE_EDIT)));
+			/** 廃止申請URL */
+			queryBlocks.put(MitsubishiConst.CANCEL_REQUEST_URL,
+					WebDbUtils.createRecordURL(getUrlStringByMode(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getDataNo()), MitsubishiConst.MODE_CANCEL)));
+		}
+		/** グレード1 */
+		queryBlocks.put(MitsubishiConst.GRADE_1,
+				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getGrade1())));
 		/** 用途参照 */
-		queryBlocks.put(MitsubishiConst.USAGE_REF, WebDbUtils
+		if (umb01Dto.getPriceUnitRefDto().getUsageRef()!= null && umb01Dto.getPriceUnitRefDto().getUsageRef().getTargetFieldID() != null && !"".equals(umb01Dto.getPriceUnitRefDto().getUsageRef().getTargetFieldID())){
+			queryBlocks.put(MitsubishiConst.USAGE_REF, WebDbUtils
 				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getUsageRef().getTargetFieldID())));
+		}else {
+			queryBlocks.put(MitsubishiConst.USAGE_REF, WebDbUtils.createRecordItem(""));
+		}
 		/** 末端価格 */
 		queryBlocks.put(MitsubishiConst.RETAIL_PRICE,
 				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getRetailPrice())));
@@ -975,46 +1142,75 @@ public class MitsubishiServiceBean implements MitsubishiService {
 		return queryBlocks;
 	}
 	
-	private JSONObject createJsonQueryForInput(Umb01Dto umb01Dto) throws JSONException, Exception {
-		JSONObject queryBlocks = new JSONObject();
-		
-		/** 用途参照 */
-		queryBlocks.put(MitsubishiConst.USAGE_REF, WebDbUtils
-				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceUnitRefDto().getUsageRef().getTargetFieldID())));
-		/** 末端価格 */
-		queryBlocks.put(MitsubishiConst.RETAIL_PRICE,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getRetailPrice())));
-		/** 小口配送単価 */
-		queryBlocks.put(MitsubishiConst.UNIT_PRICE_SMALL_PARCEL,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceSmallParcel())));
-		/** 小口着色単価 */
-		queryBlocks.put(MitsubishiConst.UNIT_PRICE_FOREHEAD_COLOR, WebDbUtils
-				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getUnitPriceForeheadColor())));
-		/** 一次店口銭額 */
-		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPEN_AMOUNT, WebDbUtils
-				.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenAmount())));
-		/** 一次店口銭率 */
-		queryBlocks.put(MitsubishiConst.PRIMARY_STORE_OPENING_RATE,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getPrimaryStoreOpenRate())));
-		/** 二次店口銭額 */
-		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_AMOUNT,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getSecondStoreOpenAmount())));
-		/** 二次店口銭率 */
-		queryBlocks.put(MitsubishiConst.SECOND_STORE_OPEN_RATE,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getSecondStoreOpenRate())));
-		/** 仕切単価（決定値） */
-		queryBlocks.put(MitsubishiConst.PARTITION_UNIT_PRICE,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPartitionUnitPrice())));
-		/** ロット数量 */
-		queryBlocks.put(MitsubishiConst.LOT_QUANTITY,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getLotQuantity())));
-		/** 適用開始日 */
-		queryBlocks.put(MitsubishiConst.APPLICATION_START_DATE, WebDbUtils.createRecordItem(
-				DateUtils.convertDateTime(umb01Dto.getPriceRefDto().getApplicationStartDate(), "yyyyMMdd")));
-		/** 伺い理由 */
-		queryBlocks.put(MitsubishiConst.REASON_INQUIRY,
-				WebDbUtils.createRecordItem(StringUtils.toEmpty(umb01Dto.getPriceRefDto().getReasonInquiry())));
+	
+	public String createFileName(String ext) {
+		String tenPuDir = PESystemProperties.getInstance().getProperty(MitsubishiConst.TENPU_DIR);
+		List<ClassInfo> webDBClassInfos = getInfoWebDb();
+		if (ConvertUtils.isNullOrEmptyOrBlank(tenPuDir)) {
+			return null;
+		}
+		StringBuffer buffer = new StringBuffer(tenPuDir);
+		buffer.append(MitsubishiConst.SEPARATOR);
+		buffer.append(LogUtils.getCharData1(webDBClassInfos, MitsubishiConst.CLASS_NO.CLASSNO_10.getValue()));
+		buffer.append(ext);
+		return buffer.toString();
+	}
+	
+	@Override
+	public String exportCsvBtnStatusUMB01(Umb01Dto umb01Dto) throws JSONException, Exception {
+		try {
+			String filePath = createFileName(MitsubishiConst.CSV_EXTENSION);
+			JSONObject recordObj= createJsonQuery(umb01Dto, null);
+			return ExportCsvUtils.exportCsvUMB01(recordObj, filePath);
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}
+	}
+	
+	/*
+	 * update {連番} + 1 before update webdb
+	 */
+	public int updateDivisionNumber(Long serial){
+		int cnt =0;
+		StringBuffer queryStr = new StringBuffer();
+		queryStr.append("UPDATE ZT2_CLASS SET ");
+		queryStr.append("NUMDATA1 =" + serial);
+		queryStr.append(" WHERE CORPID ='" + WebDbConstant.ALL_CORP + "' AND COMMONNO = 'UMB01' AND CLASSNAME = '" + MitsubishiConst.CLASS_NO.CLASSNO_20.getValue() +"'");				
+		Query query = this.em.createNativeQuery(queryStr.toString());
 
-		return queryBlocks;
+		cnt  = query.executeUpdate();
+		System.out.println("Update 連番 record: " + cnt);
+		return cnt;
+	}
+	
+	/**
+	 * Create url by mode new,edit,cancel
+	 * 
+	 * @param webDBClassInfos
+	 * @param recordObj
+	 * @param mode
+	 * @return
+	 * @throws JSONException
+	 */
+	private String getUrlStringByMode( String dataNo, String modeConst) throws JSONException {
+
+		StringBuilder url = new StringBuilder(messages.get(MitsubishiConst.PE4J_PROPERTIES));
+
+		if (MitsubishiConst.MODE_NEW.equals(modeConst)) {
+			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
+					dataNo, MitsubishiConst.MODE_NEW));
+		}
+		if (MitsubishiConst.MODE_EDIT.equals(modeConst)) {
+			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
+					dataNo, MitsubishiConst.MODE_EDIT));
+		}
+		if (MitsubishiConst.MODE_CANCEL.equals(modeConst)) {
+			url.append(MessageFormat.format(messages.get(MitsubishiConst.URL_PROPERTIES),
+					dataNo, MitsubishiConst.MODE_CANCEL));
+		}
+
+		return url.toString();
 	}
 }

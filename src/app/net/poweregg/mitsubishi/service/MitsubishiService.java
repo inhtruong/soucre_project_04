@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import net.poweregg.common.entity.ClassInfo;
 import net.poweregg.mitsubishi.dto.Umb01Dto;
@@ -53,7 +54,7 @@ public interface MitsubishiService {
 	public void updateRecordDbPrice(String logFileFullPath, Umb01Dto umb01Dto, int dbType, String mode)
 			throws Exception;
 	
-	public void updateStatusRecord(String logFileFullPath, Umb01Dto umb01Dto, int dbType)
+	public void registerRecordDbPrice(String logFileFullPath, Umb01Dto umb01Dto)
 			throws Exception;
 
 	/**
@@ -65,7 +66,7 @@ public interface MitsubishiService {
 	 * @return
 	 * @throws Exception
 	 */
-	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value) throws Exception;
+	public JSONArray findDataUmbByCondition(WebDbUtils webdbUtils, String field, String value, String order) throws Exception;
 	
 	public JSONArray findDataUpdateStatusByCondition(WebDbUtils webdbUtils, String customerCD,
 			String destinationCD1, String destinationCD2, String productNameAbbreviation, String colorNo,
@@ -79,4 +80,5 @@ public interface MitsubishiService {
 	 */
 	public List<ClassInfo> getInfoWebDb();
 
+	public String exportCsvBtnStatusUMB01(Umb01Dto umb01Dto) throws JSONException, Exception;
 }
